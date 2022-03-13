@@ -1,7 +1,10 @@
 package design.kfu.sunrise.service;
 
-import org.springframework.stereotype.Service;
+import design.kfu.sunrise.domain.dto.AccountCDTO;
+import design.kfu.sunrise.domain.dto.AccountVDTO;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class AccountService {
+public interface AccountService {
+    @Transactional
+    AccountVDTO saveAccount(AccountCDTO accountCDTO);
 }

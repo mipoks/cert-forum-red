@@ -22,6 +22,7 @@ public class Account {
     private String phone;
     private String login;
     private String hashPassword;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
