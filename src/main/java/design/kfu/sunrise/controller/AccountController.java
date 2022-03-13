@@ -21,4 +21,8 @@ public class AccountController {
         return accountService.saveAccount(accountCDTO);
     }
 
+    @PostMapping("/account")
+    public AccountVDTO saveAccount(AccountCDTO accountCDTO){
+        return accountService.saveAccount(accountCDTO);
+    }
 }
