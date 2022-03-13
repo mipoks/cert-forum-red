@@ -1,8 +1,6 @@
 package design.kfu.sunrise.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +18,6 @@ public class Comment {
     private String value;
     @ManyToOne
     private Account account;
+    @OneToOne
+    private Club club;
 }

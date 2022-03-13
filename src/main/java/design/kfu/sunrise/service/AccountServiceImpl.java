@@ -3,6 +3,8 @@ package design.kfu.sunrise.service;
 import design.kfu.sunrise.domain.dto.AccountCDTO;
 import design.kfu.sunrise.domain.dto.AccountVDTO;
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.exception.ErrorType;
+import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +30,13 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountVDTO getAccount(Long accountId){
         return AccountVDTO.from(accountRepository.getById(accountId));
+    }
+
+    @Override
+    public Account findOrThrow(Long userId) {
+        return accountRepository
+                .findById(userId)
+                .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность пользователя не найдена"));
     }
 
 }
