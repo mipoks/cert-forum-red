@@ -1,5 +1,6 @@
 package design.kfu.sunrise.domain.model;
 
+
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -14,36 +15,38 @@ import java.util.Objects;
 @Builder
 @Getter
 @Setter
-public class Club {
+public class Authority {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
+
+    @Enumerated(EnumType.STRING)
+    private AuthorityType authorityType;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "club_accounts",
-            joinColumns = @JoinColumn(name = "club_id"),
+    @JoinTable(name = "authorities_accounts",
+            joinColumns = @JoinColumn(name = "authority_id"),
             inverseJoinColumns = @JoinColumn(name = "accounts_id"))
     private List<Account> accounts = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "club_authorities",
-            joinColumns = @JoinColumn(name = "club_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private List<Authority> authorities = new ArrayList<>();
-
+    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.ALL)
+    private List<Club> clubs = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Club club = (Club) o;
-        return id != null && Objects.equals(id, club.id);
+        Authority that = (Authority) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public enum AuthorityType {
+        READ_CLUB_COMMENTS, WRITE_CLUB_COMMENTS
     }
 }

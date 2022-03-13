@@ -15,27 +15,34 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Table(name = "account")
-public class User {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String phone;
     private String login;
     private String hashPassword;
-
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
     private List<Club> clubs = new ArrayList<>();
+    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
+    private List<Authority> authorities = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        Account account = (Account) o;
+        return id != null && Objects.equals(id, account.id);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public enum Role {
+        USER, ADMIN
     }
 }

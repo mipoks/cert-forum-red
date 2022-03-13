@@ -17,5 +17,5 @@ public class Comment {
     private Long id;
     private String value;
     @ManyToOne
-    private User user;
+    private Account account;
 }
