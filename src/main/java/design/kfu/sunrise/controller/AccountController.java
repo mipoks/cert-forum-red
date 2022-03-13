@@ -4,12 +4,12 @@ import design.kfu.sunrise.domain.dto.AccountCDTO;
 import design.kfu.sunrise.domain.dto.AccountVDTO;
 import design.kfu.sunrise.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AccountController {
@@ -17,12 +17,13 @@ public class AccountController {
 
     @PermitAll
     @PostMapping("/account")
-    public AccountVDTO saveAccount(AccountCDTO accountCDTO){
+    public AccountVDTO saveAccount(@RequestBody AccountCDTO accountCDTO) {
+        log.info("accoutnDTO {}",accountCDTO);
         return accountService.saveAccount(accountCDTO);
     }
 
-    @PostMapping("/account")
-    public AccountVDTO saveAccount(AccountCDTO accountCDTO){
-        return accountService.saveAccount(accountCDTO);
+    @GetMapping("/account/{account_id}")
+    public AccountVDTO getAccount(@PathVariable("account_id") Long accountId) {
+        return accountService.getAccount(accountId);
     }
 }

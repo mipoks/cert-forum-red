@@ -7,4 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface AccountService {
     @Transactional
     AccountVDTO saveAccount(AccountCDTO accountCDTO);
+
+    @Transactional
+    AccountVDTO getAccount(Long accountId);
 }

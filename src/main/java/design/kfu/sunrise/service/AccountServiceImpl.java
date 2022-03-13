@@ -20,7 +20,14 @@ public class AccountServiceImpl implements AccountService {
     public AccountVDTO saveAccount(AccountCDTO accountCDTO){
         accountCDTO.setPassword(passwordEncoder.encode(accountCDTO.getPassword()));
         Account account = AccountCDTO.toAccount(accountCDTO);
+        account.setRole(Account.Role.USER); //fixme
         return AccountVDTO.from(accountRepository.save(account));
+    }
+
+    @Override
+    @Transactional
+    public AccountVDTO getAccount(Long accountId){
+        return AccountVDTO.from(accountRepository.getById(accountId));
     }
 
 }
