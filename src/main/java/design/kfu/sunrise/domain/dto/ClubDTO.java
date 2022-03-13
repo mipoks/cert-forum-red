@@ -15,10 +15,17 @@ public class ClubDTO {
     private String name;
     private String description;
 
-    public static Club toClub(ClubDTO commentDTO) {
+    public static Club toClub(ClubDTO clubDTO) {
         return Club.builder()
-                .name(commentDTO.getName())
-                .description(commentDTO.getDescription())
+                .name(clubDTO.getName())
+                .description(clubDTO.getDescription())
+                .build();
+    }
+
+    public static ClubDTO fromClub(Club club) {
+        return ClubDTO.builder()
+                .name(club.getName())
+                .description(club.getDescription())
                 .build();
     }
 }
