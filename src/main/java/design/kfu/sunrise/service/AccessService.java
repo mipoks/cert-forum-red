@@ -3,7 +3,6 @@ package design.kfu.sunrise.service;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Authority;
 import design.kfu.sunrise.domain.model.Club;
-import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,7 +28,7 @@ public class AccessService {
 
     @Transactional
     public boolean hasAccessToWriteComment(Account account, Club club) {
-        log.info("userId {} subscriptionType {}", account, club);
+        log.info("Account with id {} trying to write comment to Club with id {}", account.getId(), club.getId());
         List<Authority> authorityList = accountService.findOrThrow(account.getId())
                 .getAuthorities();
         Authority writeAuthority = null;
@@ -54,7 +52,7 @@ public class AccessService {
 
     @Transactional
     public boolean hasAccessToReadComment(Account account, Club club) {
-        log.info("userId {} subscriptionType {}", account, club);
+        log.info("Account with id {} trying to read comments from Club with id {}", account.getId(), club.getId());
         List<Authority> authorityList = accountService.findOrThrow(account.getId())
                 .getAuthorities();
         Authority writeAuthority = null;
@@ -78,7 +76,7 @@ public class AccessService {
 
     @Transactional
     public boolean hasAccessToCreateClub(Account account, Club club) {
-        //ToDo реализовать
+        //ToDo реализовать последним
         return true;
     }
 

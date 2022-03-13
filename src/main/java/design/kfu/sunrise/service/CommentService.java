@@ -1,36 +1,22 @@
 package design.kfu.sunrise.service;
 
+import design.kfu.sunrise.domain.dto.CommentDTO;
+import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
-import design.kfu.sunrise.repository.CommentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
-@Service
-public class CommentService {
+public interface CommentService {
+    @Transactional
+    Comment addComment(CommentDTO commentDTO);
 
-    @Autowired
-    private CommentRepository commentRepository;
+    @Transactional
+    void editComment(Comment comment);
 
-    public void addComment(Comment comment) {
-        commentRepository.save(comment);
-    }
+    @Transactional
+    void deleteComment (Comment comment);
 
-    public void editComment(Comment comment) {
-        Optional<Comment> commentOptional = commentRepository.findById(comment.getId());
-        if (commentOptional.isPresent()) {
-            Comment savedComment = commentOptional.get();
-            savedComment.setValue(comment.getValue());
-        }
-        commentRepository.save(comment);
-    }
-
-    public void deleteComment(Comment comment) {
-        Optional<Comment> commentOptional = commentRepository.findById(comment.getId());
-        if (commentOptional.isPresent()) {
-            Comment savedComment = commentOptional.get();
-            commentRepository.delete(savedComment);
-        }
-    }
+    @Transactional
+    List<Comment> getComments(Club club);
 }

@@ -33,6 +33,8 @@ public class Club {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
