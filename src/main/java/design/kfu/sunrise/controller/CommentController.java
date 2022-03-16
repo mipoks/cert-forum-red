@@ -27,4 +27,6 @@ public class CommentController {
     public ResponseEntity<?> getClubComments(@PathVariable("club_id") Club club, @AuthenticationPrincipal(expression = "account") Account account){
         return ResponseEntity.ok(commentService.getComments(club));
     }
+
+
 }

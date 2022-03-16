@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @author Daniyar Zakiev
  */
 @Slf4j
-@Component
 public class LongToAccountConverter implements Converter<Long, Account> {
 
     @Autowired

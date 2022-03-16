@@ -1,9 +1,7 @@
 package design.kfu.sunrise.security.details;
 
 import design.kfu.sunrise.domain.model.Account;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +15,8 @@ import java.util.Collections;
 @NoArgsConstructor
 @Slf4j
 public class UserDetailsImpl implements UserDetails {
+  @Getter
+  @Setter
   private Account account;
 
   @Override

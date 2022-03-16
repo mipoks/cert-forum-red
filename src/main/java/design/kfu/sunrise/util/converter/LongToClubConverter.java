@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author Daniyar Zakiev
  */
-@Slf4j
 @Component
+@Slf4j
 public class LongToClubConverter implements Converter<Long, Club> {
 
     @Autowired
@@ -19,6 +19,8 @@ public class LongToClubConverter implements Converter<Long, Club> {
 
     @Override
     public Club convert(Long clubId) {
+
+        log.info("ClubId is {}",clubId);
         return clubService.findOrThrow(clubId);
     }
 }
