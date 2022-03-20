@@ -48,4 +48,25 @@ public class Club {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public boolean addAccount(Account account) {
+        //ToDo реализовать
+        accounts.add(account);
+        return true;
+    }
+
+    public boolean removeAccount(Account account) {
+        //ToDo реализовать
+        return true;
+    }
+
+    public boolean removeAccountAuthorities(Account account, List<Authority> authorities) {
+        //ToDo реализовать
+        return true;
+    }
+
+    public boolean addAccountAuthorities(Account account, List<Authority> authorities) {
+        //ToDo реализовать
+        return true;
+    }
 }
