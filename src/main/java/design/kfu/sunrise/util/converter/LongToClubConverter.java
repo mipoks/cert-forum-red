@@ -19,8 +19,6 @@ public class LongToClubConverter implements Converter<Long, Club> {
 
     @Override
     public Club convert(Long clubId) {
-
-        log.info("ClubId is {}",clubId);
         return clubService.findOrThrow(clubId);
     }
 }

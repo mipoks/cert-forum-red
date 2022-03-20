@@ -1,7 +1,9 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.ClubDTO;
+import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.ClubRepository;
@@ -9,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -19,21 +21,26 @@ public class ClubServiceImpl implements ClubService {
     private ClubRepository clubRepository;
 
     @Override
-    public Club saveClub(ClubDTO clubDTO) {
-        return clubRepository.save(ClubDTO.toClub(clubDTO));
+    public ClubVDTO addClub(ClubDTO clubDTO) {
+        return ClubVDTO.fromClub(clubRepository.save(ClubDTO.toClub(clubDTO)));
     }
 
     @Override
-    public ClubDTO getClub(Long clubId) {
+    public ClubVDTO getClub(Long clubId) {
         Club club = findOrThrow(clubId);
-        return ClubDTO.fromClub(club);
+        return ClubVDTO.fromClub(club);
     }
 
     @Override
     public Club findOrThrow(Long clubId) {
-        log.info("im here");
         return clubRepository
                 .findById(clubId)
                 .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND, "Сущность клуба не найдена"));
+    }
+
+    @Override
+    public List<Comment> updateComments(Club club) {
+        clubRepository.save(club);
+        return club.getComments();
     }
 }

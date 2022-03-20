@@ -1,9 +1,9 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.CommentDTO;
+import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
-import design.kfu.sunrise.repository.ClubRepository;
 import design.kfu.sunrise.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,13 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private ClubRepository clubRepository;
+    private ClubService clubService;
 
-    public Comment addComment(CommentDTO commentDTO) {
-        return commentRepository.save(CommentDTO.toComment(commentDTO));
+    public CommentDTO addComment(CommentDTO commentDTO, Club club, Account account) {
+        Comment comment = commentRepository.save(CommentDTO.toComment(commentDTO, club, account));
+        club.getComments().add(comment);
+        clubService.updateComments(club);
+        return CommentDTO.fromComment(comment);
     }
 
     public void editComment(Comment comment) {
@@ -43,5 +46,11 @@ public class CommentServiceImpl implements CommentService {
 
     public List<Comment> getComments(Club club) {
         return club.getComments();
+    }
+
+    @Override
+    public CommentDTO editAllComment(Comment comment, CommentDTO commentDTO) {
+        comment.setValue(commentDTO.getValue());
+        return CommentDTO.fromComment(commentRepository.save(comment));
     }
 }

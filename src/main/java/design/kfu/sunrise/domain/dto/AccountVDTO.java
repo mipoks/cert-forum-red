@@ -11,13 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AccountVDTO {
-    private String email;
-    private String phone;
+    private Long id;
+    private String role;
 
     public static AccountVDTO from(Account account) {
         return AccountVDTO.builder()
-                .email(account.getLogin())
-                .phone(account.getPhone())
+                .role(account.getRole().name())
                 .build();
     }
 

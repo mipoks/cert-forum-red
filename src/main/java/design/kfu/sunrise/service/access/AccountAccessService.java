@@ -1,9 +1,11 @@
-package design.kfu.sunrise.service;
+package design.kfu.sunrise.service.access;
 
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Authority;
 import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.repository.CommentRepository;
+import design.kfu.sunrise.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import java.util.List;
 @Service
 @Component(value = "access")
 @RequiredArgsConstructor
-public class AccessService {
+public class AccountAccessService {
 
     @Autowired
     private CommentRepository commentRepository;
@@ -71,6 +73,7 @@ public class AccessService {
                     .isPresent();
         }
         return access;
+//        return true;
     }
 
 
@@ -78,6 +81,15 @@ public class AccessService {
     public boolean hasAccessToCreateClub(Account account, Club club) {
         //ToDo реализовать последним
         return true;
+    }
+
+    @Transactional
+    public boolean hasAccessToEditComment(Comment comment, Account account) {
+        if (comment.getAccount() == account) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
