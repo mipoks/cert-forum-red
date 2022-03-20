@@ -73,12 +73,12 @@ public class AccountAccessService {
                     .isPresent();
         }
         return access;
-//        return true;
     }
 
 
     @Transactional
     public boolean hasAccessToCreateClub(Account account) {
+        //ToDo реализовать
         return true;
     }
 
@@ -91,6 +91,10 @@ public class AccountAccessService {
         }
     }
 
-
+    @Transactional
+    public boolean hasAccessToEnterClub(Account account, Club club) {
+        //ToDo реализовать
+        return true;
+    }
 
 }

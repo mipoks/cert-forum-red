@@ -45,4 +45,12 @@ public class ClubController {
     public ClubVDTO addPost(@Valid ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
         return clubService.addClub(clubDTO);
     }
+
+    @PreAuthorize("@access.hasAccessToEnterClub(#account, #club)")
+    @PostMapping("/club/{club_id}")
+    public ClubVDTO addPost(@PathVariable("club_id") Club club, @AuthenticationPrincipal(expression = "account") Account account) {
+        clubService.addAccountToClub(club, account);
+        return ClubVDTO.fromClub(club);
+    }
+
 }

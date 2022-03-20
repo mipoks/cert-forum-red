@@ -3,6 +3,7 @@ package design.kfu.sunrise.service;
 import design.kfu.sunrise.domain.dto.ClubCDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.domain.model.Authority;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.exception.ErrorType;
@@ -20,6 +21,12 @@ public class ClubServiceImpl implements ClubService {
 
     @Autowired
     private ClubRepository clubRepository;
+
+    @Autowired
+    private AuthorityService authorityService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public ClubVDTO addClub(ClubCDTO clubDTO) {
@@ -47,8 +54,17 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<Account> addAccountToClub(Club club, Account account) {
-        club.addAccount(account);
-        clubRepository.save(club);
+        account.getClubs().add(club);
+
+        Authority authority = Authority
+                .builder()
+                .authorityType(Authority.AuthorityType.READ_CLUB_COMMENTS).build();
+        authority.getClubs().add(club);
+        authority.getAccounts().add(account);
+        authorityService.addAuthority(authority);
+//        clubRepository.save(club);
+//        accountService.update(account);
+//
         return club.getAccounts();
     }
 }
