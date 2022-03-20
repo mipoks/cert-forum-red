@@ -1,6 +1,6 @@
 package design.kfu.sunrise.service;
 
-import design.kfu.sunrise.domain.dto.ClubDTO;
+import design.kfu.sunrise.domain.dto.ClubCDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
@@ -21,8 +21,8 @@ public class ClubServiceImpl implements ClubService {
     private ClubRepository clubRepository;
 
     @Override
-    public ClubVDTO addClub(ClubDTO clubDTO) {
-        return ClubVDTO.fromClub(clubRepository.save(ClubDTO.toClub(clubDTO)));
+    public ClubVDTO addClub(ClubCDTO clubDTO) {
+        return ClubVDTO.fromClub(clubRepository.save(ClubCDTO.toClub(clubDTO)));
     }
 
     @Override

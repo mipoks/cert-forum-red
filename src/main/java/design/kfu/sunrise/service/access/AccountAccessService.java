@@ -78,8 +78,7 @@ public class AccountAccessService {
 
 
     @Transactional
-    public boolean hasAccessToCreateClub(Account account, Club club) {
-        //ToDo реализовать последним
+    public boolean hasAccessToCreateClub(Account account) {
         return true;
     }
 

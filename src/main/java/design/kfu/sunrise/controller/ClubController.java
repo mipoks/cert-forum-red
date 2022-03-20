@@ -1,6 +1,6 @@
 package design.kfu.sunrise.controller;
 
-import design.kfu.sunrise.domain.dto.ClubDTO;
+import design.kfu.sunrise.domain.dto.ClubCDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.dto.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
@@ -36,13 +36,13 @@ public class ClubController {
 
     @PreAuthorize("@access.hasAccessToReadComment(#club, #account)")
     @GetMapping("/club/{club_id}/comments")
-    public List<CommentDTO> getClubComments(@PathVariable("club_id") Club club) {
+    public List<CommentDTO> getClubComments(@PathVariable("club_id") Club club, @AuthenticationPrincipal(expression = "account") Account account) {
         return club.getComments().stream().map(CommentDTO::fromComment).collect(Collectors.toList());
     }
 
-    @PreAuthorize("@access.hasAccessToCreateClub(#account, #club)")
+    @PreAuthorize("@access.hasAccessToCreateClub(#account)")
     @PostMapping("/club")
-    public ClubVDTO addPost(@Valid ClubDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public ClubVDTO addPost(@Valid ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
         return clubService.addClub(clubDTO);
     }
 }
