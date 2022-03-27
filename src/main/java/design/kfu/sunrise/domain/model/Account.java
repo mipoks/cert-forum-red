@@ -4,9 +4,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,10 +25,10 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Club> clubs = new HashSet<>();
     @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Club> clubs = new ArrayList<>();
-    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private List<Authority> authorities = new ArrayList<>();
+    private Set<Authority> authorities = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

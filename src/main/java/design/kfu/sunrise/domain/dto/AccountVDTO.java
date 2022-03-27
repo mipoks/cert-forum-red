@@ -16,6 +16,7 @@ public class AccountVDTO {
 
     public static AccountVDTO from(Account account) {
         return AccountVDTO.builder()
+                .id(account.getId())
                 .role(account.getRole().name())
                 .build();
     }

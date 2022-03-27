@@ -13,4 +13,5 @@ public interface AccountService {
     AccountVDTO getAccount(Long accountId);
     Account findOrThrow(Long accountId);
 
+    AccountVDTO updateAccount(Account account);
 }

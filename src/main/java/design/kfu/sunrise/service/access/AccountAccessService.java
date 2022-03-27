@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -31,7 +31,7 @@ public class AccountAccessService {
     @Transactional
     public boolean hasAccessToWriteComment(Account account, Club club) {
         log.info("Account with id {} trying to write comment to Club with id {}", account.getId(), club.getId());
-        List<Authority> authorityList = accountService.findOrThrow(account.getId())
+        Set<Authority> authorityList = accountService.findOrThrow(account.getId())
                 .getAuthorities();
         Authority writeAuthority = null;
         for (Authority authority : authorityList) {
@@ -55,7 +55,7 @@ public class AccountAccessService {
     @Transactional
     public boolean hasAccessToReadComment(Account account, Club club) {
         log.info("Account with id {} trying to read comments from Club with id {}", account.getId(), club.getId());
-        List<Authority> authorityList = accountService.findOrThrow(account.getId())
+        Set<Authority> authorityList = accountService.findOrThrow(account.getId())
                 .getAuthorities();
         Authority writeAuthority = null;
         for (Authority authority : authorityList) {

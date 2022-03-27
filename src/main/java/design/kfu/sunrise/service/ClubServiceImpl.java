@@ -8,12 +8,14 @@ import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
+import design.kfu.sunrise.repository.AccountRepository;
 import design.kfu.sunrise.repository.ClubRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -47,19 +49,27 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public List<Comment> updateComments(Club club) {
+    public Set<Comment> updateComments(Club club) {
         clubRepository.save(club);
         return club.getComments();
     }
 
-    @Override
-    public List<Account> addAccountToClub(Club club, Account account) {
-        account.getClubs().add(club);
+    @Autowired
+    private AccountRepository accountRepository;
 
-        Authority authority = Authority
-                .builder()
-                .authorityType(Authority.AuthorityType.READ_CLUB_COMMENTS).build();
-        authority.getClubs().add(club);
+
+    @Override
+    @Transactional
+    public Set<Account> addAccountToClub(Club club, Account detachedAccount) {
+
+        Account account = accountRepository.findById(detachedAccount.getId()).get();
+
+        Authority authority = new Authority();
+        authority.setAuthorityType(Authority.AuthorityType.READ_CLUB_COMMENTS);
+        account.getAuthorities().add(authority);
+        club.getAuthorities().add(authority);
+        club.getAccounts().add(account);
+        clubRepository.save(club);
         authority.getAccounts().add(account);
         authorityService.addAuthority(authority);
 //        clubRepository.save(club);

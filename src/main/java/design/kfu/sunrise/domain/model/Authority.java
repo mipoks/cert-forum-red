@@ -5,9 +5,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -28,10 +28,10 @@ public class Authority {
     @JoinTable(name = "authorities_accounts",
             joinColumns = @JoinColumn(name = "authority_id"),
             inverseJoinColumns = @JoinColumn(name = "accounts_id"))
-    private List<Account> accounts = new ArrayList<>();
+    private Set<Account> accounts = new HashSet<>();
 
     @ManyToMany(mappedBy = "authorities", cascade = CascadeType.ALL)
-    private List<Club> clubs = new ArrayList<>();
+    private Set<Club> clubs = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

@@ -39,4 +39,9 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность пользователя не найдена"));
     }
 
+    @Override
+    public AccountVDTO updateAccount(Account account) {
+        accountRepository.save(account);
+        return AccountVDTO.from(account);
+    }
 }

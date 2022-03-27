@@ -5,19 +5,16 @@ import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ClubService {
-    @Transactional
     ClubVDTO addClub(ClubCDTO clubDTO);
 
-    @Transactional
     ClubVDTO getClub(Long clubId);
     Club findOrThrow(Long clubId);
 
-    List<Comment> updateComments(Club club);
+    Set<Comment> updateComments(Club club);
 
-    List<Account> addAccountToClub(Club club, Account account);
+    Set<Account> addAccountToClub(Club club, Account account);
 }

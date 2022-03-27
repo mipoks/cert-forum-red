@@ -4,9 +4,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -25,16 +25,16 @@ public class Club {
     @JoinTable(name = "club_accounts",
             joinColumns = @JoinColumn(name = "club_id"),
             inverseJoinColumns = @JoinColumn(name = "accounts_id"))
-    private List<Account> accounts = new ArrayList<>();
+    private Set<Account> accounts = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "club_authorities",
             joinColumns = @JoinColumn(name = "club_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private List<Authority> authorities = new ArrayList<>();
+    private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private Set<Comment> comments = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

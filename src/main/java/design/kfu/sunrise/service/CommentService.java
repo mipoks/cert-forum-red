@@ -6,7 +6,7 @@ import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 public interface CommentService {
     @Transactional
@@ -19,7 +19,7 @@ public interface CommentService {
     void deleteComment(Comment comment);
 
     @Transactional
-    List<Comment> getComments(Club club);
+    Set<Comment> getComments(Club club);
 
     CommentDTO editAllComment(Comment comment, CommentDTO commentDTO);
 }
