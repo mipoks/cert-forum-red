@@ -17,4 +17,6 @@ public interface ClubService {
     Set<Comment> updateComments(Club club);
 
     Set<Account> addAccountToClub(Club club, Account account);
+
+    void saveAndFlush(Club club);
 }

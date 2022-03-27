@@ -63,18 +63,21 @@ public class ClubServiceImpl implements ClubService {
     public Set<Account> addAccountToClub(Club club, Account detachedAccount) {
 
         Account account = accountRepository.findById(detachedAccount.getId()).get();
+        account.addClub(club);
+        clubRepository.saveAndFlush(club);
 
-        Authority authority = new Authority();
-        authority.setAuthorityType(Authority.AuthorityType.READ_CLUB_COMMENTS);
-        account.getAuthorities().add(authority);
-        club.getAuthorities().add(authority);
-        club.getAccounts().add(account);
-        clubRepository.save(club);
-        authority.getAccounts().add(account);
-        authorityService.addAuthority(authority);
-//        clubRepository.save(club);
-//        accountService.update(account);
-//
+        Authority authority = authorityService.findOrThrow(account, club);
+        authority
+                .addAuthotityType(Authority.AuthorityType.READ_CLUB_COMMENTS)
+                .addAuthotityType(Authority.AuthorityType.WRITE_CLUB_COMMENTS);
+
+        authorityService.save(authority);
+
         return club.getAccounts();
+    }
+
+    @Override
+    public void saveAndFlush(Club club) {
+        clubRepository.saveAndFlush(club);
     }
 }

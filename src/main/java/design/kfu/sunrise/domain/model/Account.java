@@ -25,10 +25,22 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @ManyToMany(mappedBy = "accounts", cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Club> clubs = new HashSet<>();
-    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-    private Set<Authority> authorities = new HashSet<>();
+
+//    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
+//    private Set<Authority> authorities = new HashSet<>();
+
+    public Account addClub(Club club) {
+        club.addAccount(this);
+        return this;
+    }
+
+    public Account removeClub(Club club) {
+        club.removeAccount(this);
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {

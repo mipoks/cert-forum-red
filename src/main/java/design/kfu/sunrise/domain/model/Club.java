@@ -21,17 +21,27 @@ public class Club {
     private String name;
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "club_accounts",
             joinColumns = @JoinColumn(name = "club_id"),
-            inverseJoinColumns = @JoinColumn(name = "accounts_id"))
+            inverseJoinColumns = @JoinColumn(name = "account_id"))
     private Set<Account> accounts = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "club_authorities",
-            joinColumns = @JoinColumn(name = "club_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private Set<Authority> authorities = new HashSet<>();
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "club_authorities",
+//            joinColumns = @JoinColumn(name = "club_id"),
+//            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+//    private Set<Authority> authorities = new HashSet<>();
+
+    public Club addAccount(Account account) {
+        accounts.add(account);
+        return this;
+    }
+
+    public Club removeAccount(Account account) {
+        accounts.remove(account);
+        return this;
+    }
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();

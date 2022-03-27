@@ -6,6 +6,7 @@ import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.repository.CommentRepository;
 import design.kfu.sunrise.service.AccountService;
+import design.kfu.sunrise.service.AuthorityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,27 +28,19 @@ public class AccountAccessService {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private AuthorityService authorityService;
 
     @Transactional
     public boolean hasAccessToWriteComment(Account account, Club club) {
         log.info("Account with id {} trying to write comment to Club with id {}", account.getId(), club.getId());
-        Set<Authority> authorityList = accountService.findOrThrow(account.getId())
-                .getAuthorities();
-        Authority writeAuthority = null;
-        for (Authority authority : authorityList) {
 
-            if (authority.getAuthorityType().equals(Authority.AuthorityType.WRITE_CLUB_COMMENTS)) {
-                writeAuthority = authority;
-            }
-        }
-        boolean access = false;
-        if (writeAuthority != null) {
-            access = writeAuthority.getClubs()
-                    .stream()
-                    .filter(sub -> sub.equals(club))
-                    .findFirst()
-                    .isPresent();
-        }
+        Authority authority = authorityService.findOrThrow(account, club);
+        Set<Authority.AuthorityType> authorityTypeList = authority.getAuthorityTypes();
+        boolean access = authorityTypeList
+                .stream()
+                .anyMatch(type -> type.equals(Authority.AuthorityType.WRITE_CLUB_COMMENTS));
+
         return access;
     }
 
@@ -55,23 +48,13 @@ public class AccountAccessService {
     @Transactional
     public boolean hasAccessToReadComment(Account account, Club club) {
         log.info("Account with id {} trying to read comments from Club with id {}", account.getId(), club.getId());
-        Set<Authority> authorityList = accountService.findOrThrow(account.getId())
-                .getAuthorities();
-        Authority writeAuthority = null;
-        for (Authority authority : authorityList) {
 
-            if (authority.getAuthorityType().equals(Authority.AuthorityType.READ_CLUB_COMMENTS)) {
-                writeAuthority = authority;
-            }
-        }
-        boolean access = false;
-        if (writeAuthority != null) {
-            access = writeAuthority.getClubs()
-                    .stream()
-                    .filter(sub -> sub.equals(club))
-                    .findFirst()
-                    .isPresent();
-        }
+        Authority authority = authorityService.findOrThrow(account, club);
+        Set<Authority.AuthorityType> authorityTypeList = authority.getAuthorityTypes();
+        boolean access = authorityTypeList
+                .stream()
+                .anyMatch(type -> type.equals(Authority.AuthorityType.READ_CLUB_COMMENTS));
+
         return access;
     }
 
