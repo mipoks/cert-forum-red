@@ -3,33 +3,43 @@ package design.kfu.sunrise.service;
 import design.kfu.sunrise.domain.dto.AccountCDTO;
 import design.kfu.sunrise.domain.dto.AccountVDTO;
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.AccountRepository;
+import design.kfu.sunrise.repository.ClubRepository;
+import design.kfu.sunrise.util.model.Filter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
+
+    @Autowired
+    private ClubService clubService;
+
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public AccountVDTO saveAccount(AccountCDTO accountCDTO){
+    public Account addAccount(AccountCDTO accountCDTO){
         accountCDTO.setPassword(passwordEncoder.encode(accountCDTO.getPassword()));
         Account account = AccountCDTO.toAccount(accountCDTO);
         account.setRole(Account.Role.USER); //fixme
-        return AccountVDTO.from(accountRepository.save(account));
+        return accountRepository.save(account);
     }
 
     @Override
     @Transactional
-    public AccountVDTO getAccount(Long accountId){
-        return AccountVDTO.from(accountRepository.getById(accountId));
+    public Account getAccount(Long accountId){
+        return accountRepository.getById(accountId);
     }
 
     @Override
@@ -40,8 +50,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountVDTO updateAccount(Account account) {
+    public Account updateAccount(Account account) {
         accountRepository.save(account);
-        return AccountVDTO.from(account);
+        return account;
+    }
+
+    @Override
+    public Set<Club> getCreatedClubs(Account account) {
+        return clubService.findAllByCreator(account);
     }
 }

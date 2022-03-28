@@ -1,7 +1,6 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.ClubCDTO;
-import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.domain.model.Club;
@@ -11,9 +10,10 @@ import design.kfu.sunrise.util.model.Filter;
 import java.util.Set;
 
 public interface ClubService {
-    ClubVDTO addClub(ClubCDTO clubDTO);
+    Club addClub(ClubCDTO clubDTO);
 
-    ClubVDTO getClub(Long clubId);
+    Club findOrNull(Long clubId);
+
     Club findOrThrow(Long clubId);
 
     Set<Comment> updateComments(Club club);
@@ -22,9 +22,11 @@ public interface ClubService {
 
     void saveAndFlush(Club club);
 
-    ClubVDTO moveClub(Club club, Category category);
+    Club moveClub(Club club, Category category);
 
-    ClubVDTO deactivateClub(Club club);
+    Club deactivateClub(Club club);
 
-    Set<ClubVDTO> findClubs(Filter filter);
+    Set<Club> findClubs(Filter filter);
+
+    Set<Club> findAllByCreator(Account account);
 }

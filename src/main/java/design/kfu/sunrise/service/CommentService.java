@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface CommentService {
     @Transactional
-    CommentDTO addComment(CommentDTO commentDTO, Club club, Account account);
+    Comment addComment(CommentDTO commentDTO, Club club, Account account);
 
     @Transactional
     void editComment(Comment comment);
@@ -21,5 +21,9 @@ public interface CommentService {
     @Transactional
     Set<Comment> getComments(Club club);
 
-    CommentDTO editAllComment(Comment comment, CommentDTO commentDTO);
+    Comment editAllComment(Comment comment, CommentDTO commentDTO);
+
+    Comment findOrNull(Long commentId);
+
+    Comment findOrThrow(Long commentId);
 }

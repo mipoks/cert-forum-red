@@ -19,5 +19,6 @@ public abstract class ActiveInfo implements Serializable {
     private Date created;
     //Различные варианты: истечение по количеству участников, истечение по времени
     public abstract boolean isExpired();
+    public abstract void setExpired(boolean expired);
     public abstract String expireCondition();
 }

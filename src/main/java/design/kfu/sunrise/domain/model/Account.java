@@ -36,9 +36,6 @@ public class Account {
     @ManyToMany(mappedBy = "accounts", cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Club> clubs = new HashSet<>();
 
-//    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.ALL)
-//    private Set<Authority> authorities = new HashSet<>();
-
     public Account addClub(Club club) {
         club.addAccount(this);
         return this;

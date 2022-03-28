@@ -15,14 +15,15 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "v1")
 public class AccountController {
     private final AccountService accountService;
 
     @PermitAll
     @PostMapping("/account")
     public AccountVDTO saveAccount(@RequestBody @Valid AccountCDTO accountCDTO) {
-        log.info("accoutnDTO {}",accountCDTO);
-        return accountService.saveAccount(accountCDTO);
+        log.info("accountDTO {}",accountCDTO);
+        return AccountVDTO.from(accountService.addAccount(accountCDTO));
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -18,7 +18,7 @@ public class ClubVDTO {
     private String name;
     private String description;
 
-    public static ClubVDTO fromClub(Club club) {
+    public static ClubVDTO from(Club club) {
         return ClubVDTO.builder()
                 .name(club.getName())
                 .description(club.getDescription())

@@ -9,32 +9,36 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "v1")
 public class CommentController {
 
     private final CommentService commentService;
 
 
     @PreAuthorize("@access.hasAccessToWriteComment(#account, #club)")
-    @GetMapping("/club/{club_id}/comment")
+    @PostMapping("/club/{club_id}/comment")
     public CommentDTO addComment(@PathVariable("club_id") Club club, @Valid CommentDTO commentDTO, @AuthenticationPrincipal(expression = "account") Account account){
-        return commentService.addComment(commentDTO, club, account);
+        return CommentDTO.from(commentService.addComment(commentDTO, club, account));
     }
 
 
     @PreAuthorize("@access.hasAccessToEditComment(#comment, #account) && @access.hasAccessToWriteComment(#account, #club)")
     @PutMapping("/club/{club_id}/comment/{comment_id}")
     public CommentDTO updateComment(@PathVariable("club_id") Club club, @Valid CommentDTO commentDTO, @PathVariable("comment_id") Comment comment, @AuthenticationPrincipal(expression = "account") Account account){
-        return commentService.editAllComment(comment, commentDTO);
+        return CommentDTO.from(commentService.editAllComment(comment, commentDTO));
     }
 
+    @PreAuthorize("@access.hasAccessToEditComment(#comment, #account) && @access.hasAccessToWriteComment(#account, #club)")
+    @PostMapping("/club/{club_id}/{comment_id}/delete")
+    public Boolean deleteComment(@PathVariable("club_id") Club club, @PathVariable("comment_id") Comment comment, @AuthenticationPrincipal(expression = "account") Account account){
+        commentService.deleteComment(comment);
+        return true;
+    }
 }

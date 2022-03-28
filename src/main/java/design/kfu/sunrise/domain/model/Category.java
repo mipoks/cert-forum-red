@@ -21,6 +21,8 @@ public class Category {
 
     private String name;
 
+    private String description;
+
     //ToDo дописать
     @ManyToOne
     private Category parent;

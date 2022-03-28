@@ -24,7 +24,7 @@ public class Comment {
 
     //ToDo дописать
     @ManyToOne
-    private Comment replayed;
+    private Comment answered;
 
     //ToDo дописать
     @OneToOne

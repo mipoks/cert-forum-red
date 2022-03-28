@@ -4,6 +4,8 @@ import design.kfu.sunrise.domain.dto.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
+import design.kfu.sunrise.exception.ErrorType;
+import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,11 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private ClubService clubService;
 
-    public CommentDTO addComment(CommentDTO commentDTO, Club club, Account account) {
+    public Comment addComment(CommentDTO commentDTO, Club club, Account account) {
         Comment comment = commentRepository.save(CommentDTO.toComment(commentDTO, club, account));
         club.getComments().add(comment);
         clubService.updateComments(club);
-        return CommentDTO.fromComment(comment);
+        return comment;
     }
 
     public void editComment(Comment comment) {
@@ -49,8 +51,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO editAllComment(Comment comment, CommentDTO commentDTO) {
+    public Comment editAllComment(Comment comment, CommentDTO commentDTO) {
         comment.setValue(commentDTO.getValue());
-        return CommentDTO.fromComment(commentRepository.save(comment));
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public Comment findOrNull(Long commentId) {
+        return commentRepository.findById(commentId).orElse(null);
+    }
+
+    @Override
+    public Comment findOrThrow(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность комментария не найдена"));
     }
 }

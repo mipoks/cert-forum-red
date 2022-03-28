@@ -2,14 +2,12 @@ package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.ClubCDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
-import design.kfu.sunrise.domain.model.Account;
-import design.kfu.sunrise.domain.model.Authority;
-import design.kfu.sunrise.domain.model.Club;
-import design.kfu.sunrise.domain.model.Comment;
+import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.AccountRepository;
 import design.kfu.sunrise.repository.ClubRepository;
+import design.kfu.sunrise.util.model.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +29,13 @@ public class ClubServiceImpl implements ClubService {
     private AccountService accountService;
 
     @Override
-    public ClubVDTO addClub(ClubCDTO clubDTO) {
-        return ClubVDTO.fromClub(clubRepository.save(ClubCDTO.toClub(clubDTO)));
+    public Club addClub(ClubCDTO clubDTO) {
+        return clubRepository.save(ClubCDTO.toClub(clubDTO));
     }
 
     @Override
-    public ClubVDTO getClub(Long clubId) {
-        Club club = findOrThrow(clubId);
-        return ClubVDTO.fromClub(club);
+    public Club findOrNull(Long clubId) {
+        return clubRepository.findById(clubId).orElse(null);
     }
 
     @Override
@@ -57,28 +54,20 @@ public class ClubServiceImpl implements ClubService {
     @Autowired
     private AccountRepository accountRepository;
 
-
-    @Transactional
-    public void saveImmediately(Club club) {
-        clubRepository.saveAndFlush(club);
-    }
-
     @Override
     @Transactional
     public Set<Account> addAccountToClub(Club club, Account detachedAccount) {
 
         Account account = accountRepository.findById(detachedAccount.getId()).get();
         account.addClub(club);
-//        saveImmediately(club);
         clubRepository.saveAndFlush(club);
-//
+
         Authority authority = authorityService.findOrThrow(account, club);
         authority
                 .addAuthotityType(Authority.AuthorityType.READ_CLUB_COMMENTS)
                 .addAuthotityType(Authority.AuthorityType.WRITE_CLUB_COMMENTS);
 
         authorityService.save(authority);
-
         return club.getAccounts();
     }
 
@@ -86,4 +75,32 @@ public class ClubServiceImpl implements ClubService {
     public void saveAndFlush(Club club) {
         clubRepository.saveAndFlush(club);
     }
+
+    @Override
+    public Club moveClub(Club club, Category category) {
+        club.setCategory(category);
+        clubRepository.save(club);
+        return club;
+    }
+
+    @Override
+    public Club deactivateClub(Club club) {
+        club.getActiveInfo().setExpired(true);
+        clubRepository.save(club);
+        return club;
+    }
+
+    @Override
+    public Set<Club> findClubs(Filter filter) {
+        //ToDo реализовать поиск с фильтрами
+        return null;
+    }
+
+
+    @Override
+    public Set<Club> findAllByCreator(Account account) {
+        return clubRepository.findAllByCreator(account);
+    }
+
+
 }

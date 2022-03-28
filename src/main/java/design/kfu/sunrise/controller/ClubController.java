@@ -23,7 +23,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
+@RequestMapping(value = "v1")
 public class ClubController {
+
+    //ToDo реализовать поиск
 
     @Autowired
     private ClubService clubService;
@@ -31,19 +34,19 @@ public class ClubController {
     @PermitAll
     @GetMapping("/club/{club_id}")
     public ClubVDTO getClub(@PathVariable("club_id") Club club) {
-        return ClubVDTO.fromClub(club);
+        return ClubVDTO.from(club);
     }
 
     @PreAuthorize("@access.hasAccessToReadComment(#club, #account)")
     @GetMapping("/club/{club_id}/comments")
     public List<CommentDTO> getClubComments(@PathVariable("club_id") Club club, @AuthenticationPrincipal(expression = "account") Account account) {
-        return club.getComments().stream().map(CommentDTO::fromComment).collect(Collectors.toList());
+        return club.getComments().stream().map(CommentDTO::from).collect(Collectors.toList());
     }
 
     @PreAuthorize("@access.hasAccessToCreateClub(#account)")
     @PostMapping("/club")
     public ClubVDTO addPost(@Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
-        return clubService.addClub(clubDTO);
+        return ClubVDTO.from(clubService.addClub(clubDTO));
     }
 
     @Transactional
@@ -51,7 +54,7 @@ public class ClubController {
     @PostMapping("/club/{club_id}")
     public ClubVDTO enterClub(@PathVariable("club_id") Club club, @AuthenticationPrincipal(expression = "account") Account account) {
         clubService.addAccountToClub(club, account);
-        return ClubVDTO.fromClub(club);
+        return ClubVDTO.from(club);
     }
 
 }

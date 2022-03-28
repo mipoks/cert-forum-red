@@ -1,6 +1,7 @@
 package design.kfu.sunrise.domain.dto;
 
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.domain.model.embedded.AccountInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
 
 @Data
 @AllArgsConstructor
@@ -26,7 +30,11 @@ public class AccountCDTO {
 
     public static Account toAccount(AccountCDTO accountCDTO) {
         return Account.builder()
-                .phone(accountCDTO.getPhone())
+                .accountInfo
+                        (AccountInfo.builder()
+                                .phone(accountCDTO.getPhone())
+                                .created(Instant.now())
+                                .build())
                 .hashPassword(accountCDTO.getPassword())
                 .login(accountCDTO.getEmail())
                 .build();
