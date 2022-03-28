@@ -18,11 +18,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Configurable(preConstruction = true)
 public class CommentDTO {
-
-    @Autowired
-    private CommentService commentService;
 
     private Long id;
     @NotNull
