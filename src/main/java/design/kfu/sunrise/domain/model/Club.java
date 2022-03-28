@@ -1,5 +1,6 @@
 package design.kfu.sunrise.domain.model;
 
+import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -18,20 +19,28 @@ public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String description;
+
+    private Integer cost;
+
+    //ToDo дописать
+    @ManyToOne
+    private Category category;
+
+    @Embedded
+    private ActiveInfo activeInfo;
+
+    //ToDo дописать
+    @ManyToOne
+    private Account creator;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "club_accounts",
             joinColumns = @JoinColumn(name = "club_id"),
             inverseJoinColumns = @JoinColumn(name = "account_id"))
     private Set<Account> accounts = new HashSet<>();
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "club_authorities",
-//            joinColumns = @JoinColumn(name = "club_id"),
-//            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-//    private Set<Authority> authorities = new HashSet<>();
 
     public Club addAccount(Account account) {
         accounts.add(account);

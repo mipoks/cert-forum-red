@@ -58,14 +58,20 @@ public class ClubServiceImpl implements ClubService {
     private AccountRepository accountRepository;
 
 
+    @Transactional
+    public void saveImmediately(Club club) {
+        clubRepository.saveAndFlush(club);
+    }
+
     @Override
     @Transactional
     public Set<Account> addAccountToClub(Club club, Account detachedAccount) {
 
         Account account = accountRepository.findById(detachedAccount.getId()).get();
         account.addClub(club);
+//        saveImmediately(club);
         clubRepository.saveAndFlush(club);
-
+//
         Authority authority = authorityService.findOrThrow(account, club);
         authority
                 .addAuthotityType(Authority.AuthorityType.READ_CLUB_COMMENTS)

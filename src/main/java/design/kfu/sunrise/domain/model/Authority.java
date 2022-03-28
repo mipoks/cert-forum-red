@@ -1,7 +1,11 @@
 package design.kfu.sunrise.domain.model;
 
 
-import lombok.*;
+import design.kfu.sunrise.domain.model.embedded.ClubsInfo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,16 +15,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
 @Table(name = "club_accounts")
 public class Authority {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride( name = "dAccountId", column = @Column(name = "ACCOUNT_ID")),
+            @AttributeOverride( name = "clubId", column = @Column(name = "CLUB_ID"))
+    })
     private ClubsInfo clubsInfo;
 
     @ElementCollection(targetClass=AuthorityType.class, fetch = FetchType.EAGER)
@@ -39,22 +41,13 @@ public class Authority {
         return this;
     }
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "authorities_accounts",
-//            joinColumns = @JoinColumn(name = "authority_id"),
-//            inverseJoinColumns = @JoinColumn(name = "accounts_id"))
-//    private Set<Account> accounts = new HashSet<>();
-
-//    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.ALL)
-//    private Set<Club> clubs = new HashSet<>();
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-//        Authority that = (Authority) o;
-//        return id != null && Objects.equals(id, that.id);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Authority that = (Authority) o;
+        return clubsInfo != null && clubsInfo.equals(that.clubsInfo);
+    }
 
     @Override
     public int hashCode() {
@@ -63,5 +56,27 @@ public class Authority {
 
     public enum AuthorityType {
         READ_CLUB_COMMENTS, WRITE_CLUB_COMMENTS
+    }
+
+
+
+
+    public ClubsInfo getClubsInfo() {
+        return clubsInfo;
+    }
+
+//    @Transient
+    public void setClubsInfo(ClubsInfo clubsInfo) {
+        this.clubsInfo = clubsInfo;
+    }
+
+//    @Transient
+    public Set<AuthorityType> getAuthorityTypes() {
+        return authorityTypes;
+    }
+
+//    @Transient
+    public void setAuthorityTypes(Set<AuthorityType> authorityTypes) {
+        this.authorityTypes = authorityTypes;
     }
 }

@@ -1,5 +1,6 @@
 package design.kfu.sunrise.domain.model;
 
+import design.kfu.sunrise.domain.model.embedded.AccountInfo;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -19,9 +20,15 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String phone;
     private String login;
     private String hashPassword;
+
+    @Embedded
+    private AccountInfo accountInfo;
+
+    //ToDo дописать
+    @ManyToOne
+    private Company partnerInfo;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -56,6 +63,6 @@ public class Account {
     }
 
     public enum Role {
-        USER, ADMIN
+        USER, ADMIN, PARTNER
     }
 }
