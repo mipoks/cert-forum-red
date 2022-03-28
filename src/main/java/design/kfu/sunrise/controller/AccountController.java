@@ -1,6 +1,7 @@
 package design.kfu.sunrise.controller;
 
 import design.kfu.sunrise.domain.dto.AccountCDTO;
+import design.kfu.sunrise.domain.dto.AccountPartnerCDTO;
 import design.kfu.sunrise.domain.dto.AccountVDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.service.AccountService;
@@ -21,7 +22,7 @@ public class AccountController {
 
     @PermitAll
     @PostMapping("/account")
-    public AccountVDTO saveAccount(@RequestBody @Valid AccountCDTO accountCDTO) {
+    public AccountVDTO addAccount(@RequestBody @Valid AccountCDTO accountCDTO) {
         log.info("accountDTO {}",accountCDTO);
         return AccountVDTO.from(accountService.addAccount(accountCDTO));
     }
@@ -31,4 +32,11 @@ public class AccountController {
     public AccountVDTO getAccount(@PathVariable("account_id") Account account) {
         return AccountVDTO.from(account);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/account/partner")
+    public AccountVDTO addPartnerAccount(@RequestBody @Valid AccountPartnerCDTO accountPartnerCDTO) {
+        return AccountVDTO.from(accountService.addPartnerAccount(accountPartnerCDTO));
+    }
+
 }

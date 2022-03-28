@@ -1,14 +1,12 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.AccountCDTO;
-import design.kfu.sunrise.domain.dto.AccountVDTO;
+import design.kfu.sunrise.domain.dto.AccountPartnerCDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.AccountRepository;
-import design.kfu.sunrise.repository.ClubRepository;
-import design.kfu.sunrise.util.model.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +30,15 @@ public class AccountServiceImpl implements AccountService {
     public Account addAccount(AccountCDTO accountCDTO){
         accountCDTO.setPassword(passwordEncoder.encode(accountCDTO.getPassword()));
         Account account = AccountCDTO.toAccount(accountCDTO);
-        account.setRole(Account.Role.USER); //fixme
+        account.setRole(Account.Role.USER);
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public Account addPartnerAccount(AccountPartnerCDTO accountPartnerCDTO) {
+        accountPartnerCDTO.setPassword(passwordEncoder.encode(accountPartnerCDTO.getPassword()));
+        Account account = AccountPartnerCDTO.toAccount(accountPartnerCDTO);
+        account.setRole(Account.Role.PARTNER);
         return accountRepository.save(account);
     }
 

@@ -58,6 +58,12 @@ public class AccountAccessService {
         return access;
     }
 
+    @Transactional
+    public boolean hasAccessToCreateCategory(Account account) {
+        log.info("Account with id {} trying to read comments from Club with id {}", account.getId());
+        return account.getRole().name().equals(Account.Role.PARTNER);
+    }
+
 
     @Transactional
     public boolean hasAccessToCreateClub(Account account) {
