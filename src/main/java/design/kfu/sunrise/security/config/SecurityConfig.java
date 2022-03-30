@@ -43,8 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .httpBasic()
         .authenticationEntryPoint(authenticationEntryPoint)
         .and()
-        .authorizeRequests().antMatchers(HttpMethod.GET,"/**").authenticated()
-        .antMatchers(  "css/**", "js/**")
+            //ToDo переделать
+        .authorizeRequests().antMatchers(HttpMethod.GET,"/**")//.authenticated()
+//        .antMatchers(  "css/**", "js/**")
         .permitAll()
         .and()
         .formLogin()

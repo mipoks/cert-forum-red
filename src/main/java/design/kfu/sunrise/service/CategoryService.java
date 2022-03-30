@@ -7,4 +7,5 @@ public interface CategoryService {
     Category addCategory(CategoryDTO categoryDTO);
     void deleteCategory(Category category);
     Category findOrNull(Long categoryId);
+    Category findOrThrow(Long categoryId);
 }

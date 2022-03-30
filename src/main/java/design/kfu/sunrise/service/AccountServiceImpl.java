@@ -7,8 +7,8 @@ import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.AccountRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    @Lazy
     @Autowired
     private ClubService clubService;
 
-    private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional

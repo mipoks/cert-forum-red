@@ -1,6 +1,7 @@
 package design.kfu.sunrise.domain.model;
 
 import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
+import design.kfu.sunrise.domain.model.embedded.CostInfo;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -23,7 +24,8 @@ public class Club {
     private String name;
     private String description;
 
-    private Integer cost;
+    @Embedded
+    private CostInfo costInfo;
 
     //ToDo дописать
     @ManyToOne
