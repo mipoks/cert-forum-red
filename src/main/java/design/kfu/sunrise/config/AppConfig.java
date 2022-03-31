@@ -1,9 +1,9 @@
 package design.kfu.sunrise.config;
 
+import design.kfu.sunrise.service.StaticService;
 import design.kfu.sunrise.util.converter.LongToAccountConverter;
 import design.kfu.sunrise.util.converter.LongToClubConverter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -28,6 +28,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public LongToClubConverter  clubIdtoClubConverter() {
         return new LongToClubConverter();
+    }
+
+    @Bean
+    public StaticService getStaticService(ApplicationContext context) {
+        return new StaticService(context);
     }
 
     @Override

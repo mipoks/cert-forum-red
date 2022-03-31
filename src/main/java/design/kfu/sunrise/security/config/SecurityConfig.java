@@ -19,41 +19,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  MyBasicAuthenticationEntryPoint authenticationEntryPoint;
-  @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired
+    MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-  @Qualifier("userDetailsServiceImpl")
-  @Autowired
-  private UserDetailsService userDetailsService;
+    @Qualifier("userDetailsServiceImpl")
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) {
-    try {
-      auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        try {
+            auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
-  }
 
-  @Override
-  public void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.headers().frameOptions().sameOrigin();
-    httpSecurity
-        .httpBasic()
-        .authenticationEntryPoint(authenticationEntryPoint)
-        .and()
-            //ToDo переделать
-        .authorizeRequests().antMatchers(HttpMethod.GET,"/**")//.authenticated()
-//        .antMatchers(  "css/**", "js/**")
-        .permitAll()
-        .and()
-        .formLogin()
-        .loginProcessingUrl("/login")
-        .successForwardUrl("/success/welcome")
-        .failureForwardUrl("/unauthorized")
-        .and()
-        .csrf()
-        .disable();
-  }
+    @Override
+    public void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.headers().frameOptions().sameOrigin();
+        httpSecurity
+                .httpBasic()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .authorizeRequests(authorize -> authorize
+                        .mvcMatchers("/resources/**", "/v1/account")
+                        .anonymous().antMatchers(HttpMethod.GET, "/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/", false)
+                .failureForwardUrl("/unauthorized")
+                .and()
+                .csrf()
+                .disable();
+    }
 }

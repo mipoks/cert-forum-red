@@ -24,7 +24,7 @@ public class CommentController {
 
     @PreAuthorize("@access.hasAccessToWriteComment(#account, #club)")
     @PostMapping("/club/{club_id}/comment")
-    public CommentDTO addComment(@PathVariable("club_id") Club club, @Valid CommentDTO commentDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public CommentDTO addComment(@PathVariable("club_id") Club club, @Valid @RequestBody CommentDTO commentDTO, @AuthenticationPrincipal(expression = "account") Account account){
         return CommentDTO.from(commentService.addComment(commentDTO, club, account));
     }
 

@@ -3,14 +3,11 @@ package design.kfu.sunrise.domain.dto;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;
-import design.kfu.sunrise.service.AccountService;
-import design.kfu.sunrise.service.CategoryService;
+import design.kfu.sunrise.service.StaticService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,13 +16,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Configurable(preConstruction = true)
 public class ClubCDTO {
-
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private AccountService accountService;
 
     private Long id;
     private Long creatorId;
@@ -44,9 +35,9 @@ public class ClubCDTO {
     public static Club toClub(ClubCDTO clubDTO) {
         return Club.builder()
                 .name(clubDTO.getName())
-                .category(clubDTO.categoryService.findOrThrow(clubDTO.getCategoryId()))
+                .category(StaticService.getCategoryService().findOrThrow(clubDTO.getCategoryId()))
                 .costInfo(clubDTO.costInfo)
-                .creator(clubDTO.accountService.findOrThrow(clubDTO.getCreatorId()))
+                .creator(StaticService.getAccountService().findOrThrow(clubDTO.getCreatorId()))
                 .activeInfo(ActiveInfo.make(clubDTO.getActiveInfo()))
                 .description(clubDTO.getDescription())
                 .build();

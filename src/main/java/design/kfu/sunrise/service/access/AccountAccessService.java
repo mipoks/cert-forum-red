@@ -1,9 +1,6 @@
 package design.kfu.sunrise.service.access;
 
-import design.kfu.sunrise.domain.model.Account;
-import design.kfu.sunrise.domain.model.Authority;
-import design.kfu.sunrise.domain.model.Club;
-import design.kfu.sunrise.domain.model.Comment;
+import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.repository.CommentRepository;
 import design.kfu.sunrise.service.AccountService;
 import design.kfu.sunrise.service.AuthorityService;
@@ -60,8 +57,8 @@ public class AccountAccessService {
 
     @Transactional
     public boolean hasAccessToCreateCategory(Account account) {
-        log.info("Account with id {} trying to read comments from Club with id {}", account.getId());
-        return account.getRole().name().equals(Account.Role.PARTNER);
+        log.info("Account with id {} trying to create category", account.getId());
+        return account.getRole().name().equals(Account.Role.PARTNER) || account.getRole().name().equals(Account.Role.ADMIN);
     }
 
 
@@ -86,4 +83,7 @@ public class AccountAccessService {
         return true;
     }
 
+    public boolean hasAccessToDeleteCategory(Account account, Category category) {
+        return account.getRole().name().equals(Account.Role.ADMIN);
+    }
 }

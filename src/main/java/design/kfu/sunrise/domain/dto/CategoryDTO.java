@@ -1,13 +1,9 @@
 package design.kfu.sunrise.domain.dto;
 
 import design.kfu.sunrise.domain.model.Category;
-import design.kfu.sunrise.domain.model.Club;
-import design.kfu.sunrise.service.CategoryService;
+import design.kfu.sunrise.service.StaticService;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -19,11 +15,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Configurable(preConstruction = true)
 public class CategoryDTO {
-
-    @Autowired
-    private CategoryService categoryService;
 
     private Long id;
     @NotNull
@@ -48,7 +40,7 @@ public class CategoryDTO {
         return Category.builder()
                 .name(categoryDTO.getName())
                 .description(categoryDTO.getDescription())
-                .parent(categoryDTO.categoryService.findOrNull(categoryDTO.getParentId()))
+                .parent(categoryDTO.getParentId() == null ? null : StaticService.getCategoryService().findOrNull(categoryDTO.getParentId()))
                 .build();
     }
 }
