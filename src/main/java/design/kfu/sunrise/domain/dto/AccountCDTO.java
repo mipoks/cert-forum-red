@@ -7,12 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Calendar;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +26,8 @@ public class AccountCDTO {
     @NotNull
     @Size(min = 8, max = 15)
     private String phone;
+    @AssertTrue
+    private boolean useTerms;
 
     public static Account toAccount(AccountCDTO accountCDTO) {
         return Account.builder()

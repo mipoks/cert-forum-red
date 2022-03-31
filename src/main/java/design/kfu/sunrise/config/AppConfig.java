@@ -21,12 +21,13 @@ public class AppConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
+    //ToDo проверить, возможно, такие конвертеры используются Spring Boot по умолчанию
     @Bean
-    public LongToAccountConverter  accIdtoAccountConverter() {
+    public LongToAccountConverter accountIdToAccountConverter() {
         return new LongToAccountConverter();
     }
     @Bean
-    public LongToClubConverter  clubIdtoClubConverter() {
+    public LongToClubConverter clubIdToClubConverter() {
         return new LongToClubConverter();
     }
 
@@ -37,8 +38,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(accIdtoAccountConverter());
-        registry.addConverter(clubIdtoClubConverter());
+        registry.addConverter(accountIdToAccountConverter());
+        registry.addConverter(clubIdToClubConverter());
     }
 
 }
