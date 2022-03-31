@@ -19,6 +19,12 @@ import java.util.Properties;
 public class MailSenderConfig {
 
     @Bean
+    @ConditionalOnMissingBean(MailProperties.class)
+    public MailProperties mailProperties() {
+        return new MailProperties();
+    }
+
+    @Bean
     @ConditionalOnMissingBean(JavaMailSender.class)
     public JavaMailSenderImpl mailSender(MailProperties properties) {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
