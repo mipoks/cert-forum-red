@@ -3,20 +3,29 @@ package design.kfu.sunrise.domain.model.embedded;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.persistence.PrePersist;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.Date;
 
 /**
  * @author Daniyar Zakiev
  */
-@Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
 public class AccountInfo implements Serializable {
-    private Instant created;
+    @Getter
+    @Setter
     private String phone;
+    @Getter
+    private boolean emailConfirmed;
+
+    @PrePersist
+    public void setEmailConfirmed() {
+        this.emailConfirmed = false;
+    }
+
+    public void setEmailConfirmed(boolean confirmed) {
+        this.emailConfirmed = confirmed;
+    }
 }

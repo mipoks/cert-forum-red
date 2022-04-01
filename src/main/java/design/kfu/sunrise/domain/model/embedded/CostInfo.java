@@ -3,6 +3,7 @@ package design.kfu.sunrise.domain.model.embedded;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  * @author Daniyar Zakiev
@@ -13,7 +14,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class CostInfo {
+public class CostInfo implements Serializable {
     private Integer certificateCost;
     private Integer entryCost;
 }

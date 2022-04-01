@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
 
 /**
  * @author Daniyar Zakiev
@@ -23,7 +22,6 @@ public class ActiveInfo implements Serializable {
     @NotNull
     private String expireCondition;
 
-    private Instant created;
     //Различные варианты: истечение по количеству участников, истечение по времени
     public boolean isExpired() {
         return expired;
@@ -31,7 +29,6 @@ public class ActiveInfo implements Serializable {
 
     public static ActiveInfo make(ActiveInfo activeInfo) {
         activeInfo.setExpired(false);
-        activeInfo.setCreated(Instant.now());
         return activeInfo;
     }
 }

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 
 /**
  * @author Daniyar Zakiev
@@ -39,7 +38,6 @@ public class AccountPartnerCDTO {
                 .accountInfo
                         (AccountInfo.builder()
                                 .phone(accountCDTO.getPhone())
-                                .created(Instant.now())
                                 .build())
                 .hashPassword(accountCDTO.getPassword())
                 .login(accountCDTO.getEmail())

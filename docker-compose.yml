@@ -13,3 +13,12 @@ services:
     command: ["--autovacuum=off"]
     ports:
       - "127.0.0.6:5434:5432"
+
+  dev-redis:
+    container_name: redis-service
+    image: redis:7.0-rc-alpine
+    volumes:
+      - ./storage/redis/data:/data
+    restart: always
+    ports:
+      - 6379:6379

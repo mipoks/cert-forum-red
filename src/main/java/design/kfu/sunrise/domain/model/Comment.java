@@ -1,6 +1,5 @@
 package design.kfu.sunrise.domain.model;
 
-import design.kfu.sunrise.domain.model.embedded.CommentInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-public class Comment {
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +29,6 @@ public class Comment {
     @OneToOne
     private Club club;
 
-    @Embedded
-    private CommentInfo commentInfo;
+//    @Embedded
+//    private CommentInfo commentInfo;
 }

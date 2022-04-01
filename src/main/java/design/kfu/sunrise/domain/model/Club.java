@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-public class Club {
+public class Club extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

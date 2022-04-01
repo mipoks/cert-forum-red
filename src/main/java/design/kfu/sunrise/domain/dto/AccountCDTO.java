@@ -11,7 +11,6 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +25,7 @@ public class AccountCDTO {
     @NotNull
     @Size(min = 8, max = 15)
     private String phone;
+
     @AssertTrue
     private boolean useTerms;
 
@@ -34,7 +34,6 @@ public class AccountCDTO {
                 .accountInfo
                         (AccountInfo.builder()
                                 .phone(accountCDTO.getPhone())
-                                .created(Instant.now())
                                 .build())
                 .hashPassword(accountCDTO.getPassword())
                 .login(accountCDTO.getEmail())

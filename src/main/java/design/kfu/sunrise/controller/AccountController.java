@@ -4,9 +4,12 @@ import design.kfu.sunrise.domain.dto.AccountCDTO;
 import design.kfu.sunrise.domain.dto.AccountPartnerCDTO;
 import design.kfu.sunrise.domain.dto.AccountVDTO;
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.domain.model.util.ActivationCode;
 import design.kfu.sunrise.service.AccountService;
-import lombok.RequiredArgsConstructor;
+import design.kfu.sunrise.service.mail.EmailService;
+import design.kfu.sunrise.service.mail.util.ActivationCodeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +18,24 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "v1")
 public class AccountController {
-    private final AccountService accountService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private ActivationCodeService activationCodeService;
 
     @PermitAll
     @PostMapping("/account")
     public AccountVDTO addAccount(@RequestBody @Valid AccountCDTO accountCDTO) {
         log.info("accountDTO {}",accountCDTO);
-        return AccountVDTO.from(accountService.addAccount(accountCDTO));
+        Account account = accountService.addAccount(accountCDTO);
+        AccountVDTO accountVDTO = AccountVDTO.from(account);
+        ActivationCode activationCode = activationCodeService.generate(account);
+        activationCodeService.save(activationCode);
+        return accountVDTO;
     }
 
     @PreAuthorize("isAuthenticated()")
