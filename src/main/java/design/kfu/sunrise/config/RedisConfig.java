@@ -33,6 +33,7 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate() {
         final RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
         template.setConnectionFactory(lettuceConnectionFactory());
+        //ToDo выбрать верный Serializer
         template.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
         return template;
     }

@@ -7,13 +7,16 @@ import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.util.ActivationCode;
 import design.kfu.sunrise.service.AccountService;
 import design.kfu.sunrise.service.mail.EmailService;
+import design.kfu.sunrise.service.mail.context.AbstractEmailContext;
 import design.kfu.sunrise.service.mail.util.ActivationCodeService;
+import design.kfu.sunrise.service.mail.util.EmailContextGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @Slf4j
@@ -27,6 +30,9 @@ public class AccountController {
     @Autowired
     private ActivationCodeService activationCodeService;
 
+    @Autowired
+    private EmailContextGenerator emailContextGenerator;
+
     @PermitAll
     @PostMapping("/account")
     public AccountVDTO addAccount(@RequestBody @Valid AccountCDTO accountCDTO) {
@@ -35,6 +41,14 @@ public class AccountController {
         AccountVDTO accountVDTO = AccountVDTO.from(account);
         ActivationCode activationCode = activationCodeService.generate(account);
         activationCodeService.save(activationCode);
+
+        AbstractEmailContext abstractEmailContext = emailContextGenerator.generateConfirmationContext(account, activationCode);
+
+        try {
+            emailService.sendEmail(abstractEmailContext);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         return accountVDTO;
     }
 
