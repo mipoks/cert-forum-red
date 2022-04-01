@@ -20,7 +20,7 @@ public class EmailConfirmationController {
     private EmailService emailService;
 
     @GetMapping("/account/email")
-    public String confirmEmail(@RequestParam @NotNull String code) {
+    public String confirmEmail(@RequestParam(name = "activate") @NotNull String code) {
         return emailService.confirmEmail(code);
     }
 }

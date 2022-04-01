@@ -66,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
             account.getAccountInfo().setEmailConfirmed(true);
             accountService.updateAccount(account);
             result = EMAIL_CONFIRMED;
-//            activationCodeRepository.deleteById(code);
+            activationCodeRepository.deleteById(code);
         }
         return result;
     }
