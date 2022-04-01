@@ -40,6 +40,7 @@ public class CategoryDTO {
         return Category.builder()
                 .name(categoryDTO.getName())
                 .description(categoryDTO.getDescription())
+                .childs(new HashSet<>())
                 .parent(categoryDTO.getParentId() == null ? null : StaticService.getCategoryService().findOrNull(categoryDTO.getParentId()))
                 .build();
     }

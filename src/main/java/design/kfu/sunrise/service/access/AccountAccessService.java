@@ -58,7 +58,7 @@ public class AccountAccessService {
     @Transactional
     public boolean hasAccessToCreateCategory(Account account) {
         log.info("Account with id {} trying to create category", account.getId());
-        return account.getRole().name().equals(Account.Role.PARTNER) || account.getRole().name().equals(Account.Role.ADMIN);
+        return account.getRole().equals(Account.Role.PARTNER) || account.getRole().equals(Account.Role.ADMIN);
     }
 
 
@@ -84,6 +84,6 @@ public class AccountAccessService {
     }
 
     public boolean hasAccessToDeleteCategory(Account account, Category category) {
-        return account.getRole().name().equals(Account.Role.ADMIN);
+        return account.getRole().equals(Account.Role.ADMIN);
     }
 }

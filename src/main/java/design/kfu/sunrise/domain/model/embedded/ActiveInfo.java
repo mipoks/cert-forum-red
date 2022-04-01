@@ -3,6 +3,7 @@ package design.kfu.sunrise.domain.model.embedded;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -27,8 +28,8 @@ public class ActiveInfo implements Serializable {
         return expired;
     }
 
-    public static ActiveInfo make(ActiveInfo activeInfo) {
-        activeInfo.setExpired(false);
-        return activeInfo;
+    @PrePersist
+    public void expiredFalse() {
+        this.expired = false;
     }
 }

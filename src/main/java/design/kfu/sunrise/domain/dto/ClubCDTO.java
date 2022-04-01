@@ -38,7 +38,7 @@ public class ClubCDTO {
                 .category(StaticService.getCategoryService().findOrThrow(clubDTO.getCategoryId()))
                 .costInfo(clubDTO.costInfo)
                 .creator(StaticService.getAccountService().findOrThrow(clubDTO.getCreatorId()))
-                .activeInfo(ActiveInfo.make(clubDTO.getActiveInfo()))
+                .activeInfo(clubDTO.getActiveInfo())
                 .description(clubDTO.getDescription())
                 .build();
     }
