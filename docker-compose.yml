@@ -31,14 +31,12 @@ services:
     container_name: elastic-service
     image: elasticsearch:8.1.2
     ports:
-      - "127.0.0.5:9200:9200"
+      - "9200:9200"
 #      - 9200:9200
       - 9300:9300
     environment:
       - discovery.type=single-node
-#      - xpack.security.enabled=false
-      - ELASTIC_USERNAME=elastic
-      - ELASTIC_PASSWORD=changeme
+      - xpack.security.enabled=false
     networks:
       - app-network
 

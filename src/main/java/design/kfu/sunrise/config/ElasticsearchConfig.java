@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
+import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 import javax.net.ssl.SSLContext;
@@ -27,7 +30,7 @@ import javax.net.ssl.SSLContext;
 @Configuration
 @EnableElasticsearchRepositories(basePackages
         = "design.kfu.sunrise.esrepository.elastic")
-public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
+public class ElasticsearchConfig {
 
 
 //    @Autowired
@@ -36,50 +39,32 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
     private static final String CERT_PASSWORD = "topsecret";
 
+/*
     @Value("${spring.elasticsearch.host}")
     private String esHost;
 
     @Value("${spring.elasticsearch.port}")
     private int esPort;
+*/
 
-    @Value("${spring.elasticsearch.username}")
-    private String esUsername;
 
-    @Value("${spring.elasticsearch.password}")
-    private String esPassword;
-
-    @SneakyThrows
     @Bean
-    @Override
-    public RestHighLevelClient elasticsearchClient() {
-        SSLContextBuilder sslBuilder = SSLContexts.custom()
-                .loadTrustMaterial(null, (x509Certificates, s) -> true);
-        final SSLContext sslContext = sslBuilder.build();
-
-        ClientConfiguration configuration = ClientConfiguration.builder()
-                .connectedTo(esHost + ":" + esPort)
-                .withBasicAuth(esUsername, esPassword)
-//                .usingSsl()
+    public RestHighLevelClient client() {
+        ClientConfiguration clientConfiguration
+                = ClientConfiguration.builder()
+                .connectedTo("localhost:9200")
                 .build();
-        RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", 9200, "https"))
-                .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-                    @Override
-                    public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
-                        return httpClientBuilder
-                                .setSSLContext(sslContext)
-                                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE);
-                    }
-                })
-                .setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
-                    @Override
-                    public RequestConfig.Builder customizeRequestConfig(
-                            RequestConfig.Builder requestConfigBuilder) {
-                        return requestConfigBuilder.setConnectTimeout(5000)
-                                .setSocketTimeout(120000);
-                    }
-                }));
-        return client;
+
+        return RestClients.create(clientConfiguration).rest();
     }
+
+/*
+    @Bean
+    public ElasticsearchOperations elasticsearchTemplate() {
+        return new ElasticsearchRestTemplate(client());
+    }
+*/
+
 
 //    private SSLContext createSSLContext() {
 //        try {
