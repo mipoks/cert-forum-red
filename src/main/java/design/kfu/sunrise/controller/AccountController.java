@@ -42,8 +42,8 @@ public class AccountController {
         ActivationCode activationCode = activationCodeService.generate(account);
         activationCodeService.save(activationCode);
 
+        //ToDo отправить в отдельный Thread
         AbstractEmailContext abstractEmailContext = emailContextGenerator.generateConfirmationContext(account, activationCode);
-
         try {
             emailService.sendEmail(abstractEmailContext);
         } catch (MessagingException e) {

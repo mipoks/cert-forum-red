@@ -13,6 +13,8 @@ services:
     command: ["--autovacuum=off"]
     ports:
       - "127.0.0.6:5434:5432"
+    networks:
+      - app-network
 
   dev-redis:
     container_name: redis-service
@@ -22,3 +24,36 @@ services:
     restart: always
     ports:
       - 6379:6379
+    networks:
+      - app-network
+
+  dev-elastic:
+    container_name: elastic-service
+    image: elasticsearch:8.1.2
+    ports:
+      - "127.0.0.5:9200:9200"
+#      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+#      - xpack.security.enabled=false
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=changeme
+    networks:
+      - app-network
+
+  dev-kibana:
+    container_name: kibana-service
+    image: kibana:latest
+    links:
+      - dev-elastic
+    depends_on:
+      - dev-elastic
+    ports:
+      - 5601:5601
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
