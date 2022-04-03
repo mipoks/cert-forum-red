@@ -4,6 +4,7 @@ import design.kfu.sunrise.domain.dto.CategoryDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.service.CategoryService;
+import design.kfu.sunrise.service.mail.util.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,10 +25,16 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private SearchService searchService;
+
     @PreAuthorize("@access.hasAccessToCreateCategory(#account)")
     @PostMapping("/category")
     public CategoryDTO addCategory(@Valid @RequestBody CategoryDTO categoryDTO, @AuthenticationPrincipal(expression = "account") Account account){
-        return CategoryDTO.from(categoryService.addCategory(categoryDTO));
+        Category category = categoryService.addCategory(categoryDTO);
+        CategoryDTO fr = CategoryDTO.from(category);
+        searchService.saveCategory(fr);
+        return CategoryDTO.from(category);
     }
 
 

@@ -1,7 +1,7 @@
 package design.kfu.sunrise.service.mail.util;
 
-import design.kfu.sunrise.domain.model.Category;
-import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.dto.CategoryDTO;
+import design.kfu.sunrise.domain.dto.ClubVDTO;
 
 import java.util.Set;
 
@@ -9,12 +9,12 @@ import java.util.Set;
  * @author Daniyar Zakiev
  */
 public interface SearchService {
-    Set<Club> getClubsByName(String like);
-    Set<Category> getClubsByNameAndDescription(String like);
+    Set<ClubVDTO> getClubsByName(String like);
+    Set<CategoryDTO> getClubsByNameAndDescription(String like);
 
-    Set<Category> getCategoriesByName(String like);
-    Set<Category> getCategoriesByNameAndDescription(String like);
+    Set<CategoryDTO> getCategoriesByName(String like);
+    Set<CategoryDTO> getCategoriesByNameAndDescription(String like);
 
-    void saveCategory(Category category);
-    void saveClub(Club club);
+    void saveCategory(CategoryDTO category);
+    void saveClub(ClubVDTO club);
 }

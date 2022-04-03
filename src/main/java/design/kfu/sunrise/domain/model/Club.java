@@ -36,7 +36,7 @@ public class Club extends BaseEntity {
 
     //ToDo дописать
     @ManyToOne
-    private Account creator;
+    private Account author;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "club_accounts",

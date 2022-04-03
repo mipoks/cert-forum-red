@@ -31,8 +31,7 @@ services:
     container_name: elastic-service
     image: elasticsearch:8.1.2
     ports:
-      - "9200:9200"
-#      - 9200:9200
+      - 9200:9200
       - 9300:9300
     environment:
       - discovery.type=single-node
@@ -42,7 +41,7 @@ services:
 
   dev-kibana:
     container_name: kibana-service
-    image: kibana:latest
+    image: kibana:8.1.2
     links:
       - dev-elastic
     depends_on:

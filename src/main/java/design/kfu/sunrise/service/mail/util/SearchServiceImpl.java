@@ -1,7 +1,7 @@
 package design.kfu.sunrise.service.mail.util;
 
-import design.kfu.sunrise.domain.model.Category;
-import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.dto.CategoryDTO;
+import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.esrepository.elastic.ESCategoryRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,33 +23,33 @@ public class SearchServiceImpl implements SearchService {
 
     //ToDo подключить к Redis
     @Override
-    public Set<Club> getClubsByName(String like) {
+    public Set<ClubVDTO> getClubsByName(String like) {
         return null;
     }
 
     @Override
-    public Set<Category> getClubsByNameAndDescription(String like) {
+    public Set<CategoryDTO> getClubsByNameAndDescription(String like) {
         return null;
     }
 
     @Override
-    public Set<Category> getCategoriesByName(String like) {
-        Set<Category> allByName = esCategoryRepository.findAllByNameContaining(like);
+    public Set<CategoryDTO> getCategoriesByName(String like) {
+        Set<CategoryDTO> allByName = esCategoryRepository.findAllByNameContaining(like);
         return allByName;
     }
 
     @Override
-    public Set<Category> getCategoriesByNameAndDescription(String like) {
+    public Set<CategoryDTO> getCategoriesByNameAndDescription(String like) {
         return null;
     }
 
     @Override
-    public void saveCategory(Category category) {
+    public void saveCategory(CategoryDTO category) {
         esCategoryRepository.save(category);
     }
 
     @Override
-    public void saveClub(Club club) {
+    public void saveClub(ClubVDTO club) {
 
     }
 

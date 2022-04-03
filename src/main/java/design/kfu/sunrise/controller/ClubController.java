@@ -46,7 +46,7 @@ public class ClubController {
     @PreAuthorize("@access.hasAccessToCreateClub(#account)")
     @PostMapping("/club")
     public ClubVDTO addPost(@Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
-        clubDTO.setCreatorId(account.getId());
+        clubDTO.setAuthorId(account.getId());
         return ClubVDTO.from(clubService.addClub(clubDTO));
     }
 

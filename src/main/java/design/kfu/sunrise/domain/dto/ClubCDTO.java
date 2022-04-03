@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 public class ClubCDTO {
 
     private Long id;
-    private Long creatorId;
+    private Long authorId;
     private Long categoryId;
     private ActiveInfo activeInfo;
 
@@ -37,7 +37,7 @@ public class ClubCDTO {
                 .name(clubDTO.getName())
                 .category(StaticService.getCategoryService().findOrThrow(clubDTO.getCategoryId()))
                 .costInfo(clubDTO.costInfo)
-                .creator(StaticService.getAccountService().findOrThrow(clubDTO.getCreatorId()))
+                .author(StaticService.getAccountService().findOrThrow(clubDTO.getAuthorId()))
                 .activeInfo(clubDTO.getActiveInfo())
                 .description(clubDTO.getDescription())
                 .build();
@@ -48,7 +48,7 @@ public class ClubCDTO {
                 .activeInfo(club.getActiveInfo())
                 .id(club.getId())
                 .costInfo(club.getCostInfo())
-                .creatorId(club.getCreator().getId())
+                .authorId(club.getAuthor().getId())
                 .categoryId(club.getCategory().getId())
                 .name(club.getName())
                 .description(club.getDescription())

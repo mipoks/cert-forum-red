@@ -1,5 +1,6 @@
 package design.kfu.sunrise.controller;
 
+import design.kfu.sunrise.domain.dto.CategoryDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.service.mail.util.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class SearchController {
 
     @PermitAll
     @GetMapping("/search/category")
-    public Set<ClubVDTO> getCategories(@RequestParam("category") String categoryLike) {
-        return Set.of();
+    public Set<CategoryDTO> getCategories(@RequestParam("category") String categoryLike) {
+        return searchService.getCategoriesByName(categoryLike);
     }
 
 }
