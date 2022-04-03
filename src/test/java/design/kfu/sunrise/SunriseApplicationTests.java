@@ -79,7 +79,7 @@ class SunriseApplicationTests {
     void createClub() {
         ClubCDTO clubCDTO = ClubCDTO.builder()
                 .categoryId(1L)
-                .creatorId(1L)
+                .authorId(1L)
                 .name("Сертификат на игрушки")
                 .description("Собираю деньги на сертификат. Казань")
                 .costInfo(

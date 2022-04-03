@@ -3,6 +3,7 @@ package design.kfu.sunrise.service.mail.util;
 import design.kfu.sunrise.domain.dto.CategoryDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.esrepository.elastic.ESCategoryRepository;
+import design.kfu.sunrise.esrepository.elastic.ESClubRepository;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,20 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private ESCategoryRepository esCategoryRepository;
 
-    //ToDo подключить к Redis
+    @Autowired
+    private ESClubRepository esClubRepository;
+
     @Override
     public Set<ClubVDTO> getClubsByName(String like) {
-        return null;
+        return esClubRepository.findAllByNameContaining(like);
     }
 
     @Override
-    public Set<CategoryDTO> getClubsByNameAndDescription(String like) {
-        return null;
+    public Set<ClubVDTO> getClubsByNameAndDescription(String like) {
+        Set<ClubVDTO> allByDescriptionContaining = esClubRepository.findAllByDescriptionContaining(like);
+        allByDescriptionContaining
+                .addAll(esClubRepository.findAllByNameContaining(like));
+        return allByDescriptionContaining;
     }
 
     @Override
@@ -40,7 +46,10 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Set<CategoryDTO> getCategoriesByNameAndDescription(String like) {
-        return null;
+        Set<CategoryDTO> allByDescriptionContaining = esCategoryRepository.findAllByDescriptionContaining(like);
+        allByDescriptionContaining
+                .addAll(esCategoryRepository.findAllByNameContaining(like));
+        return allByDescriptionContaining;
     }
 
     @Override
@@ -50,7 +59,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public void saveClub(ClubVDTO club) {
-
+        esClubRepository.save(club);
     }
 
 

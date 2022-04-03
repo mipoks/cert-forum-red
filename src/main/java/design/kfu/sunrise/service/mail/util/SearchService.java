@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public interface SearchService {
     Set<ClubVDTO> getClubsByName(String like);
-    Set<CategoryDTO> getClubsByNameAndDescription(String like);
+    Set<ClubVDTO> getClubsByNameAndDescription(String like);
 
     Set<CategoryDTO> getCategoriesByName(String like);
     Set<CategoryDTO> getCategoriesByNameAndDescription(String like);

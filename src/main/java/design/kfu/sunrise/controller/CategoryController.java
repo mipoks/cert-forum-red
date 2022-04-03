@@ -34,7 +34,7 @@ public class CategoryController {
         Category category = categoryService.addCategory(categoryDTO);
         CategoryDTO fr = CategoryDTO.from(category);
         searchService.saveCategory(fr);
-        return CategoryDTO.from(category);
+        return fr;
     }
 
 

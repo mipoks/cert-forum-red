@@ -24,13 +24,13 @@ public class SearchController {
 
     @PermitAll
     @GetMapping("/search/clubs")
-    public Set<ClubVDTO> getClubs(@RequestParam("club") String clubLike) {
-        return Set.of();
+    public Set<ClubVDTO> getClubsByName(@RequestParam("name") String clubLike) {
+        return searchService.getClubsByName(clubLike);
     }
 
     @PermitAll
-    @GetMapping("/search/category")
-    public Set<CategoryDTO> getCategories(@RequestParam("category") String categoryLike) {
+    @GetMapping("/search/categories")
+    public Set<CategoryDTO> getCategoriesByName(@RequestParam("name") String categoryLike) {
         return searchService.getCategoriesByName(categoryLike);
     }
 
