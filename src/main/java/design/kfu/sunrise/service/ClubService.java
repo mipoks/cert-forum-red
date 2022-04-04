@@ -1,6 +1,6 @@
 package design.kfu.sunrise.service;
 
-import design.kfu.sunrise.domain.dto.ClubCDTO;
+import design.kfu.sunrise.domain.dto.club.ClubCDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.domain.model.Club;

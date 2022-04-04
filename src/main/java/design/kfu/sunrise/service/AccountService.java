@@ -1,7 +1,7 @@
 package design.kfu.sunrise.service;
 
-import design.kfu.sunrise.domain.dto.AccountCDTO;
-import design.kfu.sunrise.domain.dto.AccountPartnerCDTO;
+import design.kfu.sunrise.domain.dto.account.AccountCDTO;
+import design.kfu.sunrise.domain.dto.account.AccountPartnerCDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,6 @@ public interface AccountService {
 
     Account updateAccount(Account account);
 
-    //Возвращает все созданные этим пользователем аккаунты
+    //Возвращает все созданные этим пользователем клубы
     Set<Club> getCreatedClubs(Account account);
 }

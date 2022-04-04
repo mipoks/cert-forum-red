@@ -1,7 +1,7 @@
 package design.kfu.sunrise;
 
-import design.kfu.sunrise.domain.dto.CategoryDTO;
-import design.kfu.sunrise.domain.dto.ClubCDTO;
+import design.kfu.sunrise.domain.dto.category.CategoryDTO;
+import design.kfu.sunrise.domain.dto.club.ClubCDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.embedded.AccountInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;

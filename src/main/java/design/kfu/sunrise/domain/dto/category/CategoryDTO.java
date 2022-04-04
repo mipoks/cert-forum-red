@@ -1,4 +1,4 @@
-package design.kfu.sunrise.domain.dto;
+package design.kfu.sunrise.domain.dto.category;
 
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.service.StaticService;

@@ -1,15 +1,12 @@
-package design.kfu.sunrise.domain.dto;
+package design.kfu.sunrise.domain.dto.comment;
 
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
-import design.kfu.sunrise.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

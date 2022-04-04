@@ -1,6 +1,6 @@
 package design.kfu.sunrise.service;
 
-import design.kfu.sunrise.domain.dto.CommentDTO;
+import design.kfu.sunrise.domain.dto.comment.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;

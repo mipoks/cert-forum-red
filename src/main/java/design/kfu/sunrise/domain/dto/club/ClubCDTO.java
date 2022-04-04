@@ -1,4 +1,4 @@
-package design.kfu.sunrise.domain.dto;
+package design.kfu.sunrise.domain.dto.club;
 
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.embedded.ActiveInfo;

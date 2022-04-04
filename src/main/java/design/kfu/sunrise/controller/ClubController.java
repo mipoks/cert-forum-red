@@ -1,8 +1,8 @@
 package design.kfu.sunrise.controller;
 
-import design.kfu.sunrise.domain.dto.ClubCDTO;
-import design.kfu.sunrise.domain.dto.ClubVDTO;
-import design.kfu.sunrise.domain.dto.CommentDTO;
+import design.kfu.sunrise.domain.dto.club.ClubCDTO;
+import design.kfu.sunrise.domain.dto.club.ClubVDTO;
+import design.kfu.sunrise.domain.dto.comment.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.service.ClubService;

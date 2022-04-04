@@ -1,7 +1,7 @@
 package design.kfu.sunrise.controller;
 
-import design.kfu.sunrise.domain.dto.CategoryDTO;
-import design.kfu.sunrise.domain.dto.ClubVDTO;
+import design.kfu.sunrise.domain.dto.category.CategoryDTO;
+import design.kfu.sunrise.domain.dto.club.ClubVDTO;
 import design.kfu.sunrise.service.mail.util.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

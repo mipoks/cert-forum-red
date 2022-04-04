@@ -1,6 +1,6 @@
 package design.kfu.sunrise.esrepository.elastic;
 
-import design.kfu.sunrise.domain.dto.CategoryDTO;
+import design.kfu.sunrise.domain.dto.category.CategoryDTO;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

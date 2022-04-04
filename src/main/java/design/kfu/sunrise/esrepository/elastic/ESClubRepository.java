@@ -1,6 +1,6 @@
 package design.kfu.sunrise.esrepository.elastic;
 
-import design.kfu.sunrise.domain.dto.ClubVDTO;
+import design.kfu.sunrise.domain.dto.club.ClubVDTO;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package design.kfu.sunrise.domain.dto;
+package design.kfu.sunrise.domain.dto.account;
 
 import design.kfu.sunrise.domain.model.Account;
 import lombok.AllArgsConstructor;

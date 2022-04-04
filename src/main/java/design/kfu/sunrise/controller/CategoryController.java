@@ -1,6 +1,6 @@
 package design.kfu.sunrise.controller;
 
-import design.kfu.sunrise.domain.dto.CategoryDTO;
+import design.kfu.sunrise.domain.dto.category.CategoryDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.service.CategoryService;

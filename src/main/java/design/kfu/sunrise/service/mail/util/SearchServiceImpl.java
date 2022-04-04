@@ -1,7 +1,7 @@
 package design.kfu.sunrise.service.mail.util;
 
-import design.kfu.sunrise.domain.dto.CategoryDTO;
-import design.kfu.sunrise.domain.dto.ClubVDTO;
+import design.kfu.sunrise.domain.dto.category.CategoryDTO;
+import design.kfu.sunrise.domain.dto.club.ClubVDTO;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.esrepository.elastic.ESCategoryRepository;

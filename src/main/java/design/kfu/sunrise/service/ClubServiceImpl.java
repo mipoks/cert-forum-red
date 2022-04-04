@@ -1,6 +1,6 @@
 package design.kfu.sunrise.service;
 
-import design.kfu.sunrise.domain.dto.ClubCDTO;
+import design.kfu.sunrise.domain.dto.club.ClubCDTO;
 import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
