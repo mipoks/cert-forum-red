@@ -1,13 +1,13 @@
 package design.kfu.sunrise.repository;
 
 import design.kfu.sunrise.domain.model.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
-
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Set<Category> findCategoriesByParentId(Long parentId);
-    Set<Category> findCategoriesByParentIsNull();
+    Page<Category> findCategoriesByParentId(Long parentId, Pageable pageable);
+    Page<Category> findCategoriesByParentIsNull(Pageable pageable);
 }

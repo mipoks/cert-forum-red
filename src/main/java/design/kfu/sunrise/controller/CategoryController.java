@@ -6,6 +6,8 @@ import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -50,9 +52,14 @@ public class CategoryController {
         return CategoryDTO.from(category);
     }
 
+    //ToDo вернуть getTotalPages
     @GetMapping("/categories")
-    public Set<CategoryDTO> getCategories(@Nullable @RequestParam("parent_id") Long parentId) {
-        return categoryService.findByParentId(parentId)
+    public Set<CategoryDTO> getCategories(@Nullable @RequestParam("parent_id") Long parentId,
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return categoryService.findByParentId(parentId, pageable)
                 .stream()
                 .map(CategoryDTO::from)
                 .collect(Collectors.toSet());

@@ -6,10 +6,10 @@ import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -45,11 +45,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Set<Category> findByParentId(Long parentId) {
+    public Page<Category> findByParentId(Long parentId, Pageable pageable) {
         if (parentId == null) {
-            return categoryRepository.findCategoriesByParentIsNull();
+            return categoryRepository.findCategoriesByParentIsNull(pageable);
         } else {
-            return categoryRepository.findCategoriesByParentId(parentId);
+            return categoryRepository.findCategoriesByParentId(parentId, pageable);
         }
     }
 }
