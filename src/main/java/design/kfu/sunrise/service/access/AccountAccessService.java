@@ -86,4 +86,9 @@ public class AccountAccessService {
     public boolean hasAccessToDeleteCategory(Account account, Category category) {
         return account.getRole().equals(Account.Role.ADMIN);
     }
+
+    public boolean hasAccessToUpdateClub(Account account, Club club) {
+        //ToDo реализовать
+        return true;
+    }
 }

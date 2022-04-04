@@ -1,7 +1,6 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.ClubCDTO;
-import design.kfu.sunrise.domain.dto.ClubVDTO;
 import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
@@ -98,8 +97,8 @@ public class ClubServiceImpl implements ClubService {
 
 
     @Override
-    public Set<Club> findAllByCreator(Account account) {
-        return clubRepository.findAllByCreator(account);
+    public Set<Club> findAllByAuthor(Account account) {
+        return clubRepository.findAllByAuthor(account);
     }
 
 

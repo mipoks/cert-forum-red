@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
-    Set<Club> findAllByCreator(Account account);
+    Set<Club> findAllByAuthor(Account account);
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
@@ -24,14 +25,22 @@ public class SearchController {
 
     @PermitAll
     @GetMapping("/search/clubs")
-    public Set<ClubVDTO> getClubsByName(@RequestParam("name") String clubLike) {
-        return searchService.getClubsByName(clubLike);
+    public Set<ClubVDTO> getClubsByName(@Size(min = 3) @RequestParam("name") String clubLike, @RequestParam("description") Boolean withDescription) {
+        if (withDescription) {
+            return searchService.getClubsByNameAndDescription(clubLike);
+        } else {
+            return searchService.getClubsByName(clubLike);
+        }
     }
 
     @PermitAll
     @GetMapping("/search/categories")
-    public Set<CategoryDTO> getCategoriesByName(@RequestParam("name") String categoryLike) {
-        return searchService.getCategoriesByName(categoryLike);
+    public Set<CategoryDTO> getCategoriesByName(@Size(min = 3) @RequestParam("name") String categoryLike, @RequestParam("description") Boolean withDescription) {
+        if (withDescription) {
+            return searchService.getCategoriesByNameAndDescription(categoryLike);
+        } else {
+            return searchService.getCategoriesByName(categoryLike);
+        }
     }
 
 }

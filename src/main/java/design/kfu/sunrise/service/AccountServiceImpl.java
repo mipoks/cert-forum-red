@@ -66,6 +66,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Set<Club> getCreatedClubs(Account account) {
-        return clubService.findAllByCreator(account);
+        return clubService.findAllByAuthor(account);
     }
 }

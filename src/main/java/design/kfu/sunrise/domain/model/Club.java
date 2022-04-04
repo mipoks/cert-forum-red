@@ -2,13 +2,13 @@ package design.kfu.sunrise.domain.model;
 
 import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;
+import design.kfu.sunrise.util.model.ModelEvent;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @AllArgsConstructor
@@ -70,4 +70,36 @@ public class Club extends BaseEntity {
         return getClass().hashCode();
     }
 
+
+    @Transient
+    private List<ModelEvent<Club>> domainEvents = new ArrayList<>();
+
+    @DomainEvents
+    private List<ModelEvent<Club>> domainEvents() {
+        return Collections.unmodifiableList(this.domainEvents);
+    }
+
+    @PostPersist
+    private void createEventSave() {
+        createDomainEvents();
+        domainEvents.add(new ModelEvent<>(this, "save"));
+    }
+
+    @PostUpdate
+    private void createEventUpdate() {
+        createDomainEvents();
+        domainEvents.add(new ModelEvent<>(this, "update"));
+    }
+
+    @PostRemove
+    private void createEventRemove() {
+        createDomainEvents();
+        domainEvents.add(new ModelEvent<>(this, "remove"));
+    }
+
+    private void createDomainEvents() {
+        if (domainEvents == null) {
+            domainEvents = new ArrayList<>();
+        }
+    }
 }

@@ -28,5 +28,5 @@ public interface ClubService {
 
     Set<Club> findClubs(Filter filter);
 
-    Set<Club> findAllByCreator(Account account);
+    Set<Club> findAllByAuthor(Account account);
 }

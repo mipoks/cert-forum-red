@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "v1")
 public class ClubController {
 
-    //ToDo реализовать поиск
-
     @Autowired
     private ClubService clubService;
 
@@ -45,7 +43,7 @@ public class ClubController {
 
     @PreAuthorize("@access.hasAccessToCreateClub(#account)")
     @PostMapping("/club")
-    public ClubVDTO addPost(@Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public ClubVDTO addClub(@Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
         clubDTO.setAuthorId(account.getId());
         return ClubVDTO.from(clubService.addClub(clubDTO));
     }
@@ -58,4 +56,12 @@ public class ClubController {
         return ClubVDTO.from(club);
     }
 
+    @PreAuthorize("@access.hasAccessToUpdateClub(#account, #club)")
+    @PutMapping("/club/{clubId}")
+    public ClubVDTO updateClub(@PathVariable("clubId") Club club, @Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
+        club.setDescription(clubDTO.getDescription());
+        club.setName(clubDTO.getName());
+        club.setActiveInfo(clubDTO.getActiveInfo());
+        return ClubVDTO.from(clubService.addClub(clubDTO));
+    }
 }

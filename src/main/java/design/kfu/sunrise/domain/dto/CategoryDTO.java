@@ -43,7 +43,7 @@ public class CategoryDTO {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
-                .parentId(category.getId())
+                .parentId(category.getParent() != null ? category.getParent().getId() : null)
                 .childs(category.getChilds().stream().map(Category::getId).collect(Collectors.toSet()))
                 .build();
     }

@@ -8,4 +8,5 @@ public interface CategoryService {
     void deleteCategory(Category category);
     Category findOrNull(Long categoryId);
     Category findOrThrow(Long categoryId);
+    Category save(Category category);
 }

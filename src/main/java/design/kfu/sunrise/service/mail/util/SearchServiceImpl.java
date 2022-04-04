@@ -2,10 +2,15 @@ package design.kfu.sunrise.service.mail.util;
 
 import design.kfu.sunrise.domain.dto.CategoryDTO;
 import design.kfu.sunrise.domain.dto.ClubVDTO;
+import design.kfu.sunrise.domain.model.Category;
+import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.esrepository.elastic.ESCategoryRepository;
 import design.kfu.sunrise.esrepository.elastic.ESClubRepository;
+import design.kfu.sunrise.util.model.ModelEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -13,6 +18,7 @@ import java.util.Set;
 /**
  * @author Daniyar Zakiev
  */
+@Slf4j
 @Service
 public class SearchServiceImpl implements SearchService {
 
@@ -60,6 +66,28 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public void saveClub(ClubVDTO club) {
         esClubRepository.save(club);
+    }
+
+    @EventListener
+    public void handleCategoryEvent(ModelEvent<Object> modelEvent) {
+        if (modelEvent.getModel().getClass().isInstance(Category.class)) {
+            Category category = (Category) modelEvent.getModel();
+            switch (modelEvent.getEvent()) {
+                case "save", "update" -> esCategoryRepository.save(CategoryDTO.from(category));
+                case "remove" -> esCategoryRepository.delete(CategoryDTO.from(category));
+            }
+        }
+    }
+
+    @EventListener
+    public void handleClubEvent(ModelEvent<Object> modelEvent) {
+        if (modelEvent.getModel().getClass().isInstance(Club.class)) {
+            Club club = (Club) modelEvent.getModel();
+            switch (modelEvent.getEvent()) {
+                case "save", "update" -> esClubRepository.save(ClubVDTO.from(club));
+                case "remove" -> esClubRepository.delete(ClubVDTO.from(club));
+            }
+        }
     }
 
 
