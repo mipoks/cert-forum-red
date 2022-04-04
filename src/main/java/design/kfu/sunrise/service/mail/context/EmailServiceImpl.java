@@ -8,6 +8,7 @@ import design.kfu.sunrise.service.mail.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -16,6 +17,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Daniyar Zakiev
@@ -35,8 +37,9 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Async
     @Override
-    public void sendEmail(AbstractEmailContext emailContext) throws MessagingException {
+    public CompletableFuture<Boolean> sendEmail(AbstractEmailContext emailContext) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -50,6 +53,7 @@ public class EmailServiceImpl implements EmailService {
         mimeMessageHelper.setFrom(emailContext.getFrom());
         mimeMessageHelper.setText(emailContent, true);
         emailSender.send(message);
+        return CompletableFuture.completedFuture(Boolean.TRUE);
     }
 
     public static final String INCORRECT_CODE = "Вы перешли по недействительной ссылке";

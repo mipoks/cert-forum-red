@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ErrorType {
-    UNEXPECTED_ERROR(HttpStatus.BAD_REQUEST, "Неожиданная ошибка"),
+    UNEXPECTED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Неожиданная ошибка"),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Ошибка валидации"),
 
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "Не найдено"),

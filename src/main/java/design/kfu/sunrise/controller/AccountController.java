@@ -4,10 +4,8 @@ import design.kfu.sunrise.domain.dto.AccountCDTO;
 import design.kfu.sunrise.domain.dto.AccountPartnerCDTO;
 import design.kfu.sunrise.domain.dto.AccountVDTO;
 import design.kfu.sunrise.domain.model.Account;
-import design.kfu.sunrise.domain.model.util.ActivationCode;
 import design.kfu.sunrise.service.AccountService;
 import design.kfu.sunrise.service.mail.EmailService;
-import design.kfu.sunrise.service.mail.context.AbstractEmailContext;
 import design.kfu.sunrise.service.mail.util.ActivationCodeService;
 import design.kfu.sunrise.service.mail.util.EmailContextGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @Slf4j
@@ -38,18 +35,7 @@ public class AccountController {
     public AccountVDTO addAccount(@RequestBody @Valid AccountCDTO accountCDTO) {
         log.info("accountDTO {}",accountCDTO);
         Account account = accountService.addAccount(accountCDTO);
-        AccountVDTO accountVDTO = AccountVDTO.from(account);
-        ActivationCode activationCode = activationCodeService.generate(account);
-        activationCodeService.save(activationCode);
-
-        //ToDo отправить в отдельный Thread
-        AbstractEmailContext abstractEmailContext = emailContextGenerator.generateConfirmationContext(account, activationCode);
-        try {
-            emailService.sendEmail(abstractEmailContext);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        return accountVDTO;
+        return AccountVDTO.from(account);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -63,5 +49,7 @@ public class AccountController {
     public AccountVDTO addPartnerAccount(@RequestBody @Valid AccountPartnerCDTO accountPartnerCDTO) {
         return AccountVDTO.from(accountService.addPartnerAccount(accountPartnerCDTO));
     }
+
+
 
 }

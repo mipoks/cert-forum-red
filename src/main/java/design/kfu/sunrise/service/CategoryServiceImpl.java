@@ -6,7 +6,6 @@ import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +13,6 @@ import java.util.Set;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
-    @Autowired
-    ApplicationEventPublisher publisher;
-
 
     @Autowired
     private CategoryRepository categoryRepository;
