@@ -10,6 +10,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -45,5 +47,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public Set<Category> findByParentId(Long parentId) {
+        if (parentId == null) {
+            return categoryRepository.findCategoriesByParentIsNull();
+        } else {
+            return categoryRepository.findCategoriesByParentId(parentId);
+        }
     }
 }
