@@ -6,9 +6,6 @@ import design.kfu.sunrise.domain.dto.account.AccountUpdateDTO;
 import design.kfu.sunrise.domain.dto.account.AccountVDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.service.AccountService;
-import design.kfu.sunrise.service.mail.EmailService;
-import design.kfu.sunrise.service.mail.util.ActivationCodeService;
-import design.kfu.sunrise.service.mail.util.EmailContextGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,15 +20,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "v1")
 public class AccountController {
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private ActivationCodeService activationCodeService;
 
     @Autowired
-    private EmailContextGenerator emailContextGenerator;
+    private AccountService accountService;
 
     @PermitAll
     @PostMapping("/account")

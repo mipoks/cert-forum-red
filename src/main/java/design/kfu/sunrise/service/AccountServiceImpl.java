@@ -2,12 +2,14 @@ package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.account.AccountCDTO;
 import design.kfu.sunrise.domain.dto.account.AccountPartnerCDTO;
+import design.kfu.sunrise.domain.event.AccountEvent;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,10 @@ import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Lazy
     @Autowired
@@ -34,7 +40,9 @@ public class AccountServiceImpl implements AccountService {
         accountCDTO.setPassword(passwordEncoder.encode(accountCDTO.getPassword()));
         Account account = AccountCDTO.toAccount(accountCDTO);
         account.setRole(Account.Role.USER);
-        return accountRepository.save(account);
+        Account saved = accountRepository.save(account);
+        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.SAVE.getName(), saved));
+        return saved;
     }
 
     @Override
@@ -42,7 +50,9 @@ public class AccountServiceImpl implements AccountService {
         accountPartnerCDTO.setPassword(passwordEncoder.encode(accountPartnerCDTO.getPassword()));
         Account account = AccountPartnerCDTO.toAccount(accountPartnerCDTO);
         account.setRole(Account.Role.PARTNER);
-        return accountRepository.save(account);
+        Account saved = accountRepository.save(account);
+        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.SAVE.getName(), saved));
+        return saved;
     }
 
     @Override
@@ -60,8 +70,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account updateAccount(Account account) {
-        accountRepository.save(account);
-        return account;
+        Account updated = accountRepository.save(account);
+        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.UPDATE.getName(), updated));
+        return updated;
     }
 
     @Override

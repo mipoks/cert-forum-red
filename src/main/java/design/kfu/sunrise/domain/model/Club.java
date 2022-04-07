@@ -16,6 +16,9 @@ import java.util.*;
 @Builder
 @Getter
 @Setter
+@NamedEntityGraph(name = "Club.comments",
+        attributeNodes = @NamedAttributeNode("comments")
+)
 public class Club extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +57,8 @@ public class Club extends BaseEntity {
         return this;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @OneToMany(cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
 
     @Override

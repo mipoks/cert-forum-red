@@ -48,7 +48,7 @@ public class CategoryController {
     public CategoryDTO updateCategory(@PathVariable("category_id") Category category, @Valid @RequestBody CategoryDTO categoryDTO, @AuthenticationPrincipal(expression = "account") Account account){
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
-        categoryService.save(category);
+        categoryService.update(category);
         return CategoryDTO.from(category);
     }
 

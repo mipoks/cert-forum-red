@@ -1,6 +1,7 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.club.ClubCDTO;
+import design.kfu.sunrise.domain.event.ClubEvent;
 import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
@@ -9,6 +10,7 @@ import design.kfu.sunrise.repository.ClubRepository;
 import design.kfu.sunrise.util.model.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,9 @@ import java.util.Set;
 @Slf4j
 @Service
 public class ClubServiceImpl implements ClubService {
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Autowired
     private ClubRepository clubRepository;
@@ -29,7 +34,9 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Club addClub(ClubCDTO clubDTO) {
-        return clubRepository.save(ClubCDTO.toClub(clubDTO));
+        Club saved = clubRepository.save(ClubCDTO.toClub(clubDTO));
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.SAVE.getName(), saved));
+        return saved;
     }
 
     @Override
@@ -46,7 +53,8 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Set<Comment> updateComments(Club club) {
-        clubRepository.save(club);
+        Club saved = clubRepository.save(club);
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.COMMENT_UPDATE.getName(), saved));
         return club.getComments();
     }
 
@@ -60,6 +68,8 @@ public class ClubServiceImpl implements ClubService {
         Account account = accountRepository.findById(detachedAccount.getId()).get();
         account.addClub(club);
         clubRepository.saveAndFlush(club);
+
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.ACCOUNT_ENTER.getName(), account));
 
         Authority authority = authorityService.findOrThrow(account, club);
         authority
@@ -78,15 +88,17 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public Club moveClub(Club club, Category category) {
         club.setCategory(category);
-        clubRepository.save(club);
-        return club;
+        Club saved = clubRepository.save(club);
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.CLUB_MOVE.getName(), saved));
+        return saved;
     }
 
     @Override
     public Club deactivateClub(Club club) {
         club.getActiveInfo().setExpired(true);
-        clubRepository.save(club);
-        return club;
+        Club saved = clubRepository.save(club);
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.CLUB_DEACTIVATE.getName(), saved));
+        return saved;
     }
 
     @Override

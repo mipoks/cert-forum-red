@@ -1,6 +1,7 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.dto.comment.CommentDTO;
+import design.kfu.sunrise.domain.event.CommentEvent;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
@@ -8,6 +9,7 @@ import design.kfu.sunrise.exception.ErrorType;
 import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,10 @@ import java.util.Set;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -26,6 +32,8 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.save(CommentDTO.toComment(commentDTO, club, account));
         club.getComments().add(comment);
         clubService.updateComments(club);
+
+        publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.SAVE.getName(), comment));
         return comment;
     }
 
@@ -35,7 +43,8 @@ public class CommentServiceImpl implements CommentService {
             Comment savedComment = commentOptional.get();
             savedComment.setValue(comment.getValue());
         }
-        commentRepository.save(comment);
+        Comment saved = commentRepository.save(comment);
+        publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.UPDATE.getName(), saved));
     }
 
     public void deleteComment(Comment comment) {
@@ -43,6 +52,7 @@ public class CommentServiceImpl implements CommentService {
         if (commentOptional.isPresent()) {
             Comment savedComment = commentOptional.get();
             commentRepository.delete(savedComment);
+            publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.DELETE.getName(), savedComment));
         }
     }
 
@@ -53,7 +63,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment editAllComment(Comment comment, CommentDTO commentDTO) {
         comment.setValue(commentDTO.getValue());
-        return commentRepository.save(comment);
+        Comment saved = commentRepository.save(comment);
+        publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.UPDATE.getName(), saved));
+        return saved;
     }
 
     @Override
