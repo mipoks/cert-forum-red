@@ -16,4 +16,6 @@ public class ReviewResult {
     private String reason;
     @NotEmpty
     private boolean status;
+    @NotEmpty
+    private Long reviewId;
 }

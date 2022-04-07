@@ -16,9 +16,9 @@ import java.util.*;
 @Builder
 @Getter
 @Setter
-@NamedEntityGraph(name = "Club.comments",
-        attributeNodes = @NamedAttributeNode("comments")
-)
+//@NamedEntityGraph(name = "Club.comments",
+//        attributeNodes = @NamedAttributeNode("comments")
+//)
 public class Club extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

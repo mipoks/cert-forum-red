@@ -13,5 +13,7 @@ import lombok.*;
 public class Review {
     private String name;
     private String description;
-    private String url;
+    //comment, club, category
+    private String object;
+    private Long objectId;
 }

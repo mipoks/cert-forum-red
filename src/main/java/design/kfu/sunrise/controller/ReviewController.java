@@ -34,6 +34,22 @@ public class ReviewController {
     @PreAuthorize("@access.hasAccessToMakeReview(#account, #review)")
     @PutMapping("/review/{review_id}")
     public boolean markReview(@Valid @RequestBody ReviewResult reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
-        return reviewService.processReview(review, reviewResult);
+//        String[] splited = review.getUrl().split("/");
+//        String object;
+//        Long id;
+//        if (splited.length > 1) {
+//            object = splited[splited.length - 2].toLowerCase();
+//            id = Long.parseLong(splited[splited.length - 1]);
+//        } else {
+//            throw Exc.gen(ErrorType.INCORRECT_PARAMETERS);
+//        }
+//        switch (object) {
+//            case "comment" :
+//
+//        }
+//        if (object.equals("comment")) {
+//
+//        }
+//        return reviewService.processReview(review, reviewResult);
     }
 }

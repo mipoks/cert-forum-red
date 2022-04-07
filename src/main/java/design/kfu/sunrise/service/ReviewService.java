@@ -13,9 +13,11 @@ import java.util.Set;
  * @author Daniyar Zakiev
  */
 public interface ReviewService {
-    void reviewComment(Comment comment);
-    void reviewCategory(Category category);
-    void reviewClub(Club club);
+    void addCommentForReview(Comment comment);
+    void addCategoryForReview(Category category);
+    void addClubForReview(Club club);
     Set<Review> findReviews(Pageable pageable);
-    boolean processReview(Review review, ReviewResult reviewResult);
+    boolean reviewComment(Comment comment, ReviewResult reviewResult);
+    boolean reviewCategory(Category category, ReviewResult reviewResult);
+    boolean reviewClub(Club club, ReviewResult reviewResult);
 }
