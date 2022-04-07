@@ -14,4 +14,5 @@ public interface NotificationService {
     void notifyClub(Notification notification, Club club);
     Set<Notification> findByAccount(Account account);
     void markAsRed(Notification notification);
+    void markAsNotRed(Notification notification);
 }

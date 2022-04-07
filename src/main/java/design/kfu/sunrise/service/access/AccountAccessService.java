@@ -1,6 +1,7 @@
 package design.kfu.sunrise.service.access;
 
 import design.kfu.sunrise.domain.model.*;
+import design.kfu.sunrise.domain.model.util.Notification;
 import design.kfu.sunrise.repository.CommentRepository;
 import design.kfu.sunrise.service.AccountService;
 import design.kfu.sunrise.service.AuthorityService;
@@ -90,5 +91,9 @@ public class AccountAccessService {
     public boolean hasAccessToUpdateClub(Account account, Club club) {
         //ToDo реализовать
         return true;
+    }
+
+    public boolean hasAccessToReadNotification(Account account, Notification notification) {
+        return notification.getAccountId().equals(account.getId());
     }
 }

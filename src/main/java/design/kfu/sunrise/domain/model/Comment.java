@@ -1,5 +1,6 @@
 package design.kfu.sunrise.domain.model;
 
+import design.kfu.sunrise.domain.model.embedded.CommentInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +30,6 @@ public class Comment extends BaseEntity {
     @OneToOne
     private Club club;
 
-//    @Embedded
-//    private CommentInfo commentInfo;
+    @Embedded
+    private CommentInfo commentInfo;
 }

@@ -49,8 +49,10 @@ public class AccountController {
 
     @PutMapping("/account")
     public AccountVDTO updateAccount(@RequestBody @Valid AccountUpdateDTO accountUpdateDTO, @AuthenticationPrincipal(expression = "account") Account account) {
-        account.setLogin(accountUpdateDTO.getEmail());
-        account.getAccountInfo().setEmailConfirmed(false);
+        if (!accountUpdateDTO.getEmail().equals(account.getLogin())) {
+            account.setLogin(accountUpdateDTO.getEmail());
+            account.getAccountInfo().setEmailConfirmed(false);
+        }
         account.getAccountInfo().setPhone(accountUpdateDTO.getPhone());
         if (account.getHashPassword().equals(passwordEncoder.encode(accountUpdateDTO.getOldPassword()))) {
             account.setHashPassword(passwordEncoder.encode(accountUpdateDTO.getNewPassword()));

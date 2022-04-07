@@ -56,7 +56,7 @@ public class ClubController {
         return ClubVDTO.from(club);
     }
 
-    @PreAuthorize("@access.hasAccessToUpdateClub(#account, #club)")
+    @PreAuthorize("@access.hasAccessToEditClub(#account, #club)")
     @PutMapping("/club/{clubId}")
     public ClubVDTO updateClub(@PathVariable("clubId") Club club, @Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
         club.setDescription(clubDTO.getDescription());
