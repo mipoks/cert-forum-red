@@ -68,6 +68,7 @@ public class SearchServiceImpl implements SearchService {
         esClubRepository.save(club);
     }
 
+    //ToDo переделать
     @EventListener
     public void handleCategoryEvent(ModelEvent<Object> modelEvent) {
         if (modelEvent.getModel().getClass().isInstance(Category.class)) {

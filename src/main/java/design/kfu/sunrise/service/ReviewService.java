@@ -17,7 +17,7 @@ public interface ReviewService {
     void addCategoryForReview(Category category);
     void addClubForReview(Club club);
     Set<Review> findReviews(Pageable pageable);
-    boolean reviewComment(Comment comment, ReviewResult reviewResult);
+    boolean reviewComment(Comment comment, Review review, ReviewResult reviewResult);
     boolean reviewCategory(Category category, ReviewResult reviewResult);
     boolean reviewClub(Club club, ReviewResult reviewResult);
 }

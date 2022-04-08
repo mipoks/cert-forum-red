@@ -2,6 +2,7 @@ package design.kfu.sunrise.service.access;
 
 import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.domain.model.util.Notification;
+import design.kfu.sunrise.domain.model.util.Review;
 import design.kfu.sunrise.repository.CommentRepository;
 import design.kfu.sunrise.service.AccountService;
 import design.kfu.sunrise.service.AuthorityService;
@@ -88,12 +89,17 @@ public class AccountAccessService {
         return account.getRole().equals(Account.Role.ADMIN);
     }
 
-    public boolean hasAccessToUpdateClub(Account account, Club club) {
-        //ToDo реализовать
-        return true;
+    public boolean hasAccessToEditClub(Account account, Club club) {
+        return account.getRole().equals(Account.Role.PARTNER)
+                || account.getRole().equals(Account.Role.ADMIN)
+                || club.getAuthor().equals(account);
     }
 
     public boolean hasAccessToReadNotification(Account account, Notification notification) {
         return notification.getAccountId().equals(account.getId());
+    }
+
+    public boolean hasAccessToMakeReview(Account account, Review review) {
+        return account.getRole().equals(Account.Role.PARTNER) || account.getRole().equals(Account.Role.ADMIN);
     }
 }

@@ -33,7 +33,7 @@ public class ReviewController {
 
     @PreAuthorize("@access.hasAccessToMakeReview(#account, #review)")
     @PutMapping("/review/{review_id}")
-    public boolean markReview(@Valid @RequestBody ReviewResult reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
+    public boolean makeReview(@Valid @RequestBody ReviewResult reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
 //        String[] splited = review.getUrl().split("/");
 //        String object;
 //        Long id;
@@ -51,5 +51,6 @@ public class ReviewController {
 //
 //        }
 //        return reviewService.processReview(review, reviewResult);
+        return false;
     }
 }

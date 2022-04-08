@@ -8,6 +8,6 @@ import java.util.List;
 /**
  * @author Daniyar Zakiev
  */
-public interface NotificationRepository extends CrudRepository<Notification, String> {
+public interface NotificationRepository extends CrudRepository<Notification, Long> {
     List<Notification> findByAccountId(Long accountId);
 }
