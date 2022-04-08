@@ -2,8 +2,10 @@ package design.kfu.sunrise.domain.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.util.DigestUtils;
 
 import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,6 +24,8 @@ public class Category extends BaseEntity {
     private String name;
 
     private String description;
+
+    private boolean visible;
 
     //ToDo дописать
     @ManyToOne
@@ -43,6 +47,9 @@ public class Category extends BaseEntity {
         return getClass().hashCode();
     }
 
+    public String generateHash() {
+        return DigestUtils.md5DigestAsHex((id + ":" + name.hashCode() + ":" + description.hashCode() + ":" + parent.getId()).getBytes(StandardCharsets.UTF_8));
+    }
 
 //    @Transient
 //    private List<ModelEvent<Category>> domainEvents = new ArrayList<>();

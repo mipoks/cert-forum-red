@@ -1,7 +1,7 @@
 package design.kfu.sunrise.domain.dto.club;
 
 import design.kfu.sunrise.domain.model.Club;
-import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
+import design.kfu.sunrise.domain.model.embedded.ClubInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;
 import design.kfu.sunrise.service.StaticService;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class ClubCDTO {
     private Long id;
     private Long authorId;
     private Long categoryId;
-    private ActiveInfo activeInfo;
+    private ClubInfo clubInfo;
 
     @NotNull
     @Size(min = 5, max = 255)
@@ -38,14 +38,14 @@ public class ClubCDTO {
                 .category(StaticService.getCategoryService().findOrThrow(clubDTO.getCategoryId()))
                 .costInfo(clubDTO.costInfo)
                 .author(StaticService.getAccountService().findOrThrow(clubDTO.getAuthorId()))
-                .activeInfo(clubDTO.getActiveInfo())
+                .clubInfo(clubDTO.getClubInfo())
                 .description(clubDTO.getDescription())
                 .build();
     }
 
     public static ClubCDTO fromClub(Club club) {
         return ClubCDTO.builder()
-                .activeInfo(club.getActiveInfo())
+                .clubInfo(club.getClubInfo())
                 .id(club.getId())
                 .costInfo(club.getCostInfo())
                 .authorId(club.getAuthor().getId())

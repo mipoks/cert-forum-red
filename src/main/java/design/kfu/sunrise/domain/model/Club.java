@@ -1,11 +1,13 @@
 package design.kfu.sunrise.domain.model;
 
-import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
+import design.kfu.sunrise.domain.model.embedded.ClubInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.util.DigestUtils;
 
 import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,7 +37,7 @@ public class Club extends BaseEntity {
     private Category category;
 
     @Embedded
-    private ActiveInfo activeInfo;
+    private ClubInfo clubInfo;
 
     //ToDo дописать
     @ManyToOne
@@ -74,6 +76,9 @@ public class Club extends BaseEntity {
         return getClass().hashCode();
     }
 
+    public String generateHash() {
+        return DigestUtils.md5DigestAsHex((id + ":" + name.hashCode() + ":" + description.hashCode() + ":" + category.getId()).getBytes(StandardCharsets.UTF_8));
+    }
 
 //    @Transient
 //    private List<ModelEvent<Club>> domainEvents = new ArrayList<>();

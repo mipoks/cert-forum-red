@@ -31,7 +31,9 @@ public class CategoryEvent extends AbstractEvent {
     public enum Event {
         SAVE("save"),
         UPDATE("update"),
-        DELETE("delete");
+        DELETE("delete"),
+        PUBLISH("publish"),
+        DECLINE("decline");
         private final String name;
     }
 }

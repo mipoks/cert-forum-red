@@ -99,7 +99,7 @@ public class AccountAccessService {
         return notification.getAccountId().equals(account.getId());
     }
 
-    public boolean hasAccessToMakeReview(Account account, Review review) {
+    public boolean hasAccessToMakeReview(Account account, Review review, String object) {
         return account.getRole().equals(Account.Role.PARTNER) || account.getRole().equals(Account.Role.ADMIN);
     }
 }

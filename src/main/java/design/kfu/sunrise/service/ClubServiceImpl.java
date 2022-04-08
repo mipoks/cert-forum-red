@@ -95,7 +95,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Club deactivateClub(Club club) {
-        club.getActiveInfo().setExpired(true);
+        club.getClubInfo().setExpired(true);
         Club saved = clubRepository.save(club);
         publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.CLUB_DEACTIVATE.getName(), saved));
         return saved;

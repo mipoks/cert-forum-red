@@ -61,7 +61,7 @@ public class ClubController {
     public ClubVDTO updateClub(@PathVariable("clubId") Club club, @Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
         club.setDescription(clubDTO.getDescription());
         club.setName(clubDTO.getName());
-        club.setActiveInfo(clubDTO.getActiveInfo());
+        club.setClubInfo(clubDTO.getClubInfo());
         return ClubVDTO.from(clubService.addClub(clubDTO));
     }
 }

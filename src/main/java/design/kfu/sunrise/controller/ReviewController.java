@@ -1,8 +1,13 @@
 package design.kfu.sunrise.controller;
 
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.domain.model.Category;
+import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.domain.model.util.Review;
-import design.kfu.sunrise.domain.model.util.ReviewResult;
+import design.kfu.sunrise.service.CategoryService;
+import design.kfu.sunrise.service.ClubService;
+import design.kfu.sunrise.service.CommentService;
 import design.kfu.sunrise.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,38 +24,60 @@ import java.util.Set;
  */
 @RestController(value = "v1")
 public class ReviewController {
-    //Сделать маппинг для получения объектов для проверки из пула
 
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private ClubService clubService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+
     @PreAuthorize("hasRole('ADMIN') || hasRole('PARTNER')")
     @GetMapping("/reviews")
-    public Set<Review> getReviews(@RequestParam(value = "size", defaultValue = "20") int size, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public Set<Review> getReviews(@RequestParam(value = "of", defaultValue = "all") String all, @RequestParam(value = "size", defaultValue = "20") int size, @RequestParam(value = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, size);
-        return reviewService.findReviews(pageable);
+        return switch (all) {
+            case "comment" -> reviewService.findReviewsForComments(pageable);
+            case "club" -> reviewService.findReviewsForClubs(pageable);
+            case "category" -> reviewService.findReviewsForCategories(pageable);
+            default -> reviewService.findReviews(pageable);
+        };
     }
 
-    @PreAuthorize("@access.hasAccessToMakeReview(#account, #review)")
-    @PutMapping("/review/{review_id}")
-    public boolean makeReview(@Valid @RequestBody ReviewResult reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
-//        String[] splited = review.getUrl().split("/");
-//        String object;
-//        Long id;
-//        if (splited.length > 1) {
-//            object = splited[splited.length - 2].toLowerCase();
-//            id = Long.parseLong(splited[splited.length - 1]);
-//        } else {
-//            throw Exc.gen(ErrorType.INCORRECT_PARAMETERS);
-//        }
-//        switch (object) {
-//            case "comment" :
-//
-//        }
-//        if (object.equals("comment")) {
-//
-//        }
-//        return reviewService.processReview(review, reviewResult);
-        return false;
+
+    @PreAuthorize("@access.hasAccessToMakeReview(#account, #review, \"comment\")")
+    @PutMapping("/comment/review/{review_id}")
+    public boolean makeReviewComment(@Valid @RequestBody Review reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
+        review.setAccept(reviewResult.isAccept());
+        review.setReason(review.getReason());
+
+        Comment comment = commentService.findOrThrow(review.getObjectId());
+        return reviewService.reviewComment(comment, review);
+    }
+
+    @PreAuthorize("@access.hasAccessToMakeReview(#account, #review, \"club\")")
+    @PutMapping("/club/review/{review_id}")
+    public boolean makeReviewClub(@Valid @RequestBody Review reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
+        review.setAccept(reviewResult.isAccept());
+        review.setReason(review.getReason());
+
+        Club club = clubService.findOrThrow(review.getObjectId());
+        return reviewService.reviewClub(club, review);
+    }
+
+    @PreAuthorize("@access.hasAccessToMakeReview(#account, #review, \"category\")")
+    @PutMapping("/category/review/{review_id}")
+    public boolean makeReviewCategory(@Valid @RequestBody Review reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
+        review.setAccept(reviewResult.isAccept());
+        review.setReason(review.getReason());
+
+        Category category = categoryService.findOrThrow(review.getObjectId());
+        return reviewService.reviewCategory(category, review);
     }
 }

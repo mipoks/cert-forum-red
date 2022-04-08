@@ -16,9 +16,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class ActiveInfo implements Serializable {
+public class ClubInfo implements Serializable {
 
     private boolean expired;
+    private boolean visible;
     //ToDo сделать проверку на условие
     @NotNull
     private String expireCondition;

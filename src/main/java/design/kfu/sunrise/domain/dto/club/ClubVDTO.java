@@ -1,7 +1,7 @@
 package design.kfu.sunrise.domain.dto.club;
 
 import design.kfu.sunrise.domain.model.Club;
-import design.kfu.sunrise.domain.model.embedded.ActiveInfo;
+import design.kfu.sunrise.domain.model.embedded.ClubInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +32,7 @@ public class ClubVDTO {
     @Field(type = FieldType.Text, name = "description")
     private String description;
 
-    private ActiveInfo activeInfo;
+    private ClubInfo activeInfo;
 
     @Transient
     private CostInfo costInfo;
@@ -54,7 +54,7 @@ public class ClubVDTO {
                 .id(club.getId())
                 .name(club.getName())
                 .description(club.getDescription())
-                .activeInfo(club.getActiveInfo())
+                .activeInfo(club.getClubInfo())
                 .costInfo(club.getCostInfo())
                 .created(club.getCreated())
                 .updated(club.getUpdated())

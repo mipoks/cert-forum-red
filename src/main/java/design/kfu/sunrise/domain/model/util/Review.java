@@ -3,6 +3,7 @@ package design.kfu.sunrise.domain.model.util;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
@@ -19,9 +20,14 @@ import java.time.Instant;
 public class Review {
     @Id
     private Long id;
+    private boolean viewed;
 
+    @Indexed
     private String objectName;
+    @Indexed
     private Long objectId;
+    private String objectHash;
+
     private Instant instant;
 
     @NotEmpty
