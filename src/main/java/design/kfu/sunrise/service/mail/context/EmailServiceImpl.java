@@ -37,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    //ToDo проверить Async
     @Async
     @Override
     public CompletableFuture<Boolean> sendEmail(AbstractEmailContext emailContext) throws MessagingException {

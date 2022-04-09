@@ -2,18 +2,23 @@ package design.kfu.sunrise;
 
 import design.kfu.sunrise.domain.dto.category.CategoryDTO;
 import design.kfu.sunrise.domain.dto.club.ClubCDTO;
+import design.kfu.sunrise.domain.dto.comment.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
+import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.model.Comment;
 import design.kfu.sunrise.domain.model.embedded.AccountInfo;
+import design.kfu.sunrise.domain.model.embedded.ClubInfo;
 import design.kfu.sunrise.domain.model.embedded.CostInfo;
 import design.kfu.sunrise.repository.AccountRepository;
 import design.kfu.sunrise.repository.ClubRepository;
-import design.kfu.sunrise.service.AccountService;
-import design.kfu.sunrise.service.AuthorityService;
-import design.kfu.sunrise.service.CategoryService;
-import design.kfu.sunrise.service.ClubService;
+import design.kfu.sunrise.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @SpringBootTest
 class SunriseApplicationTests {
@@ -23,6 +28,8 @@ class SunriseApplicationTests {
     private AccountRepository accountRepository;
     @Autowired
     private ClubRepository clubRepository;
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private AuthorityService authorityService;
@@ -32,10 +39,6 @@ class SunriseApplicationTests {
     private AccountService accountService;
     @Autowired
     private CategoryService categoryService;
-
-    @Test
-    void contextLoads() {
-    }
 
 //    @Test
 //    void testOneToMany() {
@@ -88,8 +91,58 @@ class SunriseApplicationTests {
                                 .entryCost(5000)
                                 .build()
                 )
+                .clubInfo(ClubInfo.builder()
+                        .expireCondition("Когда-то")
+                        .build())
                 .build();
         clubService.addClub(clubCDTO);
+    }
+
+    @Test
+    void create40Clubs() {
+        for (int i = 0; i < 40; i++) {
+            ClubCDTO clubCDTO = ClubCDTO.builder()
+                    .categoryId(1L)
+                    .authorId(1L)
+                    .name("Сертификат на игрушки" + i)
+                    .description("Собираю деньги на сертификат. Казань" + i)
+                    .costInfo(
+                            CostInfo.builder()
+                                    .certificateCost(25000)
+                                    .entryCost(5000)
+                                    .build()
+                    )
+                    .clubInfo(ClubInfo.builder()
+                            .expireCondition("Когда-то")
+                            .build())
+                    .build();
+            clubService.addClub(clubCDTO);
+        }
+    }
+
+    @Test
+    @Rollback(value = false)
+    @Transactional
+    void create10Comments() {
+        Club club = null;
+        for (int i = 0; i < 10; i++) {
+            CommentDTO commentDTO = CommentDTO.builder()
+                    .accountId(1L)
+                    .value("Comment" + i)
+                    .clubId(4L)
+                    .build();
+            club = clubRepository.findById(4L).get();
+            Account account = accountRepository.findById(1L).get();
+            commentService.addComment(commentDTO, club, account);
+        }
+        clubService.saveAndFlush(club);
+    }
+
+    @Test
+    void testGetCommentsOfClub() {
+        Club club = clubService.findOrThrow(4L);
+        Set<Comment> commentSet = club.getComments();
+        commentSet.stream().forEach(System.out::println);
     }
 
 //    @Test

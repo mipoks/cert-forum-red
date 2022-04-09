@@ -3,6 +3,7 @@ package design.kfu.sunrise.domain.dto.comment;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.domain.model.Comment;
+import design.kfu.sunrise.domain.model.embedded.CommentInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +37,11 @@ public class CommentDTO {
                         .filter(comment -> comment.getId().equals(commentDTO.getAnswered()))
                         .findFirst()
                         .orElse(null))
+                .commentInfo(
+                        CommentInfo.builder()
+                                .visible(false)
+                                .build()
+                )
                 .build();
     }
 

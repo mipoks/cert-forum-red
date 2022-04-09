@@ -1,8 +1,11 @@
 package design.kfu.sunrise.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @author Daniyar Zakiev
  */
+@Service
 public class EventListener {
 
     //CommentEvent -> отправить в клуб

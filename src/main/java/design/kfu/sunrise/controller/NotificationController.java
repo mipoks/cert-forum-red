@@ -6,17 +6,15 @@ import design.kfu.sunrise.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 /**
  * @author Daniyar Zakiev
  */
-@RestController(value = "v1")
+@RestController
+@RequestMapping(value = "v1")
 public class NotificationController {
 
     @Autowired

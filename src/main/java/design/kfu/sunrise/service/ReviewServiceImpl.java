@@ -14,12 +14,12 @@ import design.kfu.sunrise.repository.CommentRepository;
 import design.kfu.sunrise.repository.util.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Set;
 
 /**
  * @author Daniyar Zakiev
@@ -76,22 +76,22 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Set<Review> findReviewsForComments(Pageable pageable) {
+    public Page<Review> findReviewsForComments(Pageable pageable) {
         return reviewRepository.findAllByViewedAndObjectNameOrderByInstant(false, Comment.class.getSimpleName(), pageable);
     }
 
     @Override
-    public Set<Review> findReviewsForClubs(Pageable pageable) {
+    public Page<Review> findReviewsForClubs(Pageable pageable) {
         return reviewRepository.findAllByViewedAndObjectNameOrderByInstant(false, Club.class.getSimpleName(), pageable);
     }
 
     @Override
-    public Set<Review> findReviewsForCategories(Pageable pageable) {
+    public Page<Review> findReviewsForCategories(Pageable pageable) {
         return reviewRepository.findAllByViewedAndObjectNameOrderByInstant(false, Category.class.getSimpleName(), pageable);
     }
 
     @Override
-    public Set<Review> findReviews(Pageable pageable) {
+    public Page<Review> findReviews(Pageable pageable) {
         return reviewRepository.findAllByViewedAndOrderByInstant(false, pageable);
     }
 

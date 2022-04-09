@@ -10,6 +10,7 @@ import design.kfu.sunrise.service.ClubService;
 import design.kfu.sunrise.service.CommentService;
 import design.kfu.sunrise.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,12 +18,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 /**
  * @author Daniyar Zakiev
  */
-@RestController(value = "v1")
+@RestController
+@RequestMapping(value = "v1")
 public class ReviewController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class ReviewController {
 
     @PreAuthorize("hasRole('ADMIN') || hasRole('PARTNER')")
     @GetMapping("/reviews")
-    public Set<Review> getReviews(@RequestParam(value = "of", defaultValue = "all") String all, @RequestParam(value = "size", defaultValue = "20") int size, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public Page<Review> getReviews(@RequestParam(value = "of", defaultValue = "all") String all, @RequestParam(value = "size", defaultValue = "20") int size, @RequestParam(value = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, size);
         return switch (all) {
             case "comment" -> reviewService.findReviewsForComments(pageable);

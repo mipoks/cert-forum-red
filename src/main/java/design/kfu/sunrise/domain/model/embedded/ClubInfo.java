@@ -31,6 +31,7 @@ public class ClubInfo implements Serializable {
 
     @PrePersist
     public void expiredFalse() {
+        this.visible = false;
         this.expired = false;
     }
 }
