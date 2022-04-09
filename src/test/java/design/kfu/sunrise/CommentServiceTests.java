@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -55,12 +57,22 @@ class CommentServiceTests {
         return commentRepository.findAll().stream().findFirst().orElseThrow();
     }
 
+    List<CommentDTO> clubCDTOGenerator(int count) {
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            commentDTOS.add(ModelGenerator.generateCommentDTO());
+        }
+        return commentDTOS;
+    }
+
+
     void testAddComment() {
-        CommentDTO commentDTO = ModelGenerator.generateCommentDTO();
         Club club = getClubFromRepository();
         Account account = getAccountFromRepository();
-        Comment comment = CommentDTO.toComment(commentDTO, club, account);
-        assertNotNull(comment.getId());
+        List<CommentDTO> clubCDTOS = clubCDTOGenerator(10);
+        for(CommentDTO commentDTO : clubCDTOS) {
+            commentService.addComment(commentDTO, club, account);
+        }
     }
 
     void testEditComment() {
