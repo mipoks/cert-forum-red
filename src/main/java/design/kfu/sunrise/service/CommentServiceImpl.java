@@ -63,6 +63,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment editAllComment(Comment comment, CommentDTO commentDTO) {
         comment.setValue(commentDTO.getValue());
+        if (commentDTO.getAnswered() != null) {
+            Comment answered = findOrThrow(commentDTO.getAnswered());
+            if (!answered.getId().equals(comment.getId())) {
+                comment.setAnswered(answered);
+            }
+        }
         Comment saved = commentRepository.save(comment);
         publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.UPDATE.getName(), saved));
         return saved;

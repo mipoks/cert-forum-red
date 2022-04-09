@@ -1,25 +1,18 @@
 package design.kfu.sunrise;
 
 import design.kfu.sunrise.domain.dto.category.CategoryDTO;
-import design.kfu.sunrise.domain.dto.club.ClubCDTO;
-import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Category;
-import design.kfu.sunrise.domain.model.embedded.AccountInfo;
-import design.kfu.sunrise.domain.model.embedded.CostInfo;
 import design.kfu.sunrise.exception.RestException;
-import design.kfu.sunrise.repository.AccountRepository;
 import design.kfu.sunrise.repository.CategoryRepository;
-import design.kfu.sunrise.repository.ClubRepository;
-import design.kfu.sunrise.service.AccountService;
-import design.kfu.sunrise.service.AuthorityService;
 import design.kfu.sunrise.service.CategoryService;
-import design.kfu.sunrise.service.ClubService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;

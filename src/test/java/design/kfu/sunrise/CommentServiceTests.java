@@ -1,22 +1,118 @@
 package design.kfu.sunrise;
 
-import design.kfu.sunrise.domain.dto.category.CategoryDTO;
-import design.kfu.sunrise.domain.dto.club.ClubCDTO;
+import design.kfu.sunrise.domain.dto.comment.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
-import design.kfu.sunrise.domain.model.embedded.AccountInfo;
-import design.kfu.sunrise.domain.model.embedded.CostInfo;
+import design.kfu.sunrise.domain.model.Club;
+import design.kfu.sunrise.domain.model.Comment;
+import design.kfu.sunrise.exception.RestException;
 import design.kfu.sunrise.repository.AccountRepository;
 import design.kfu.sunrise.repository.ClubRepository;
-import design.kfu.sunrise.service.AccountService;
-import design.kfu.sunrise.service.AuthorityService;
-import design.kfu.sunrise.service.CategoryService;
-import design.kfu.sunrise.service.ClubService;
-import org.junit.jupiter.api.Test;
+import design.kfu.sunrise.repository.CommentRepository;
+import design.kfu.sunrise.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
+
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CommentServiceTests {
 
+    /*
+    Comment addComment(CommentDTO commentDTO, Club club, Account account);
+    void editComment(Comment comment);
+    void deleteComment(Comment comment);
+    Set<Comment> getComments(Club club);
+    Comment editAllComment(Comment comment, CommentDTO commentDTO);
+    Comment findOrNull(Long commentId);
+    Comment findOrThrow(Long commentId);
+    */
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
+
+    Club getClubFromRepository() {
+        return clubRepository.findAll().stream().findFirst().orElseThrow();
+    }
+
+    Account getAccountFromRepository() {
+        return accountRepository.findAll().stream().findFirst().orElseThrow();
+    }
+
+    Comment getCommentFromRepository() {
+        return commentRepository.findAll().stream().findFirst().orElseThrow();
+    }
+
+    void testAddComment() {
+        CommentDTO commentDTO = ModelGenerator.generateCommentDTO();
+        Club club = getClubFromRepository();
+        Account account = getAccountFromRepository();
+        Comment comment = CommentDTO.toComment(commentDTO, club, account);
+        assertNotNull(comment.getId());
+    }
+
+    void testEditComment() {
+        Comment comment = getCommentFromRepository();
+        Long id = comment.getId();
+        String str = (ModelGenerator.generateString());
+        comment.setValue(str);
+        commentService.editComment(comment);
+        Optional<Comment> optional = commentRepository.findById(id);
+        assertEquals(str, optional.get().getValue());
+    }
+
+    void testDeleteComment() {
+        Comment comment = getCommentFromRepository();
+        Long id = comment.getId();
+        commentService.deleteComment(comment);
+        boolean present = commentRepository.findById(id).isPresent();
+        assertFalse(present);
+    }
+
+    void testGetComments() {
+        Comment comment = getCommentFromRepository();
+        Club club = comment.getClub();
+        Set<Comment> comments = commentService.getComments(club);
+        assertTrue(comments.size() > 0);
+    }
+
+    void testEditAllComment() {
+        Comment comment = getCommentFromRepository();
+        Long id = comment.getId();
+        String str = (ModelGenerator.generateString());
+        CommentDTO commentDTO = ModelGenerator.generateCommentDTO();
+        commentDTO.setValue(str);
+        commentService.editAllComment(comment, commentDTO);
+        Optional<Comment> optional = commentRepository.findById(id);
+        assertEquals(str, optional.get().getValue());
+    }
+
+    void testFindOrNull() {
+        Comment comment = getCommentFromRepository();
+        Comment notNullComment = commentService.findOrNull(comment.getId());
+        Assert.notNull(notNullComment, "Comment is null, but shouldn't");
+        Comment nullComment = commentService.findOrNull(42147242L);
+        Assert.isNull(nullComment, "Comment is not present, but it is not null");
+    }
+
+    void testFindOrThrow() {
+        Comment comment = getCommentFromRepository();
+        Comment notNullComment = commentService.findOrThrow(comment.getId());
+        Assert.notNull(notNullComment, "Comment is null, but shouldn't");
+
+        Throwable exception = assertThrows(RestException.class, () -> commentService.findOrThrow(42147242L));
+        assertNotNull(exception, "Exception did not throw");
+    }
 }
