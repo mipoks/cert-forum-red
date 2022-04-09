@@ -62,6 +62,6 @@ public class ClubController {
         club.setDescription(clubDTO.getDescription());
         club.setName(clubDTO.getName());
         club.setClubInfo(clubDTO.getClubInfo());
-        return ClubVDTO.from(clubService.addClub(clubDTO));
+        return ClubVDTO.from(clubService.updateClub(club));
     }
 }

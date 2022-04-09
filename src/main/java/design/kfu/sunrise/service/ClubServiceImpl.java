@@ -54,6 +54,7 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public Set<Comment> updateComments(Club club) {
         Club saved = clubRepository.save(club);
+        //Не перехватывается
         publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.COMMENT_UPDATE.getName(), saved));
         return club.getComments();
     }
@@ -69,7 +70,7 @@ public class ClubServiceImpl implements ClubService {
         account.addClub(club);
         clubRepository.saveAndFlush(club);
 
-        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.ACCOUNT_ENTER.getName(), account));
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.ACCOUNT_ENTER.getName(), club));
 
         Authority authority = authorityService.findOrThrow(account, club);
         authority
@@ -111,6 +112,14 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public Set<Club> findAllByAuthor(Account account) {
         return clubRepository.findAllByAuthor(account);
+    }
+
+    @Override
+    public Club updateClub(Club club) {
+        club.getClubInfo().setVisible(false);
+        Club saved = clubRepository.save(club);
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.UPDATE.getName(), saved));
+        return saved;
     }
 
 

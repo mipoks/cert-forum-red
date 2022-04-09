@@ -30,6 +30,7 @@ public class ClubEvent extends AbstractEvent {
     @AllArgsConstructor
     public enum Event {
         SAVE("save"),
+        UPDATE("update"),
         CLUB_MOVE("club_move"),
         CLUB_DEACTIVATE("club_deactivate"),
         COMMENT_UPDATE("comment_update"),

@@ -29,7 +29,7 @@ public class AccountEvent extends AbstractEvent {
     @Getter
     @AllArgsConstructor
     public enum Event {
-        SAVE("save"),
+        CREATE("create"),
         UPDATE("update");
         private final String name;
     }

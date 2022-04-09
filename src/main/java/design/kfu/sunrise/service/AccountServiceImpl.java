@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = AccountCDTO.toAccount(accountCDTO);
         account.setRole(Account.Role.USER);
         Account saved = accountRepository.save(account);
-        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.SAVE.getName(), saved));
+        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.CREATE.getName(), saved));
         return saved;
     }
 
@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = AccountPartnerCDTO.toAccount(accountPartnerCDTO);
         account.setRole(Account.Role.PARTNER);
         Account saved = accountRepository.save(account);
-        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.SAVE.getName(), saved));
+        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.CREATE.getName(), saved));
         return saved;
     }
 

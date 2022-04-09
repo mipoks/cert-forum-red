@@ -17,4 +17,6 @@ public interface SearchService {
 
     void saveCategory(CategoryDTO category);
     void saveClub(ClubVDTO club);
+    void deleteCategory(CategoryDTO category);
+    void deleteClub(ClubVDTO club);
 }

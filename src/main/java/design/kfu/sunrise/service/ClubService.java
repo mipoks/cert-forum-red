@@ -29,4 +29,6 @@ public interface ClubService {
     Set<Club> findClubs(Filter filter);
 
     Set<Club> findAllByAuthor(Account account);
+
+    Club updateClub(Club club);
 }
