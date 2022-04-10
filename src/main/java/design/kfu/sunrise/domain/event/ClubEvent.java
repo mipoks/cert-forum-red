@@ -31,6 +31,8 @@ public class ClubEvent extends AbstractEvent {
     public enum Event {
         SAVE("save"),
         UPDATE("update"),
+        PUBLISH("publish"),
+        DECLINE("decline"),
         CLUB_MOVE("club_move"),
         CLUB_DEACTIVATE("club_deactivate"),
         COMMENT_UPDATE("comment_update"),

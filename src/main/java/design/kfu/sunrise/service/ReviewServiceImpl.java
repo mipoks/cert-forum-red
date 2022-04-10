@@ -1,6 +1,7 @@
 package design.kfu.sunrise.service;
 
 import design.kfu.sunrise.domain.event.CategoryEvent;
+import design.kfu.sunrise.domain.event.ClubEvent;
 import design.kfu.sunrise.domain.event.CommentEvent;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.domain.model.Club;
@@ -130,6 +131,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.save(review);
 
         CategoryEvent event;
+        //Не перехватывается
         if (category.isVisible()) {
             event = new CategoryEvent(Comment.class.getName(), CategoryEvent.Event.PUBLISH.getName(), category);
         } else {
@@ -151,11 +153,11 @@ public class ReviewServiceImpl implements ReviewService {
         review.setViewed(true);
         reviewRepository.save(review);
 
-        CategoryEvent event;
+        ClubEvent event;
         if (club.getClubInfo().isVisible()) {
-            event = new CategoryEvent(Comment.class.getName(), CategoryEvent.Event.PUBLISH.getName(), club);
+            event = new ClubEvent(Club.class.getName(), ClubEvent.Event.PUBLISH.getName(), club);
         } else {
-            event = new CategoryEvent(Comment.class.getName(), CategoryEvent.Event.DECLINE.getName(), club);
+            event = new ClubEvent(Club.class.getName(), ClubEvent.Event.DECLINE.getName(), club);
         }
         publisher.publishEvent(event);
         return true;

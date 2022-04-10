@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
             savedComment.setValue(comment.getValue());
         }
         Comment saved = commentRepository.save(comment);
+        //Не перехватывается
         publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.UPDATE.getName(), saved));
     }
 
@@ -52,6 +53,7 @@ public class CommentServiceImpl implements CommentService {
         if (commentOptional.isPresent()) {
             Comment savedComment = commentOptional.get();
             commentRepository.delete(savedComment);
+            //Не перехватывается
             publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.DELETE.getName(), savedComment));
         }
     }
@@ -70,6 +72,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
         Comment saved = commentRepository.save(comment);
+        //Не перехватывается
         publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.UPDATE.getName(), saved));
         return saved;
     }
