@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * @author Daniyar Zakiev
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String ACCESS_DENIED = "Access denied!";

@@ -11,9 +11,11 @@ import design.kfu.sunrise.util.model.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
@@ -30,7 +32,7 @@ public class ClubServiceImpl implements ClubService {
     private AuthorityService authorityService;
 
     @Autowired
-    private AccountService accountService;
+    private CategoryService categoryService;
 
     @Override
     public Club addClub(ClubCDTO clubDTO) {
@@ -104,8 +106,13 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Set<Club> findClubs(Filter filter) {
-        //ToDo реализовать поиск с фильтрами
-        return null;
+        Club club = Club.builder().build();
+        if (filter.getCategoryId() != null) {
+            Category category = categoryService.findOrThrow(filter.getCategoryId());
+            club.setCategory(category);
+        }
+        Example<Club> example = Example.of(club);
+        return new HashSet<>(clubRepository.findAll(example));
     }
 
 

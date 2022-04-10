@@ -63,6 +63,9 @@ public class DomainEventListener {
     @Autowired
     private SearchService searchService;
 
+    @Autowired
+    private ReviewService reviewService;
+
     @EventListener
     public void handleCategoryEventSaveUpdate(CategoryEvent event) {
         if (event.getEvent().equals(CategoryEvent.Event.SAVE.getName())
@@ -84,7 +87,7 @@ public class DomainEventListener {
     public void handleClubEventSaveUpdate(ClubEvent event) {
         if (event.getEvent().equals(ClubEvent.Event.SAVE.getName()) || event.getEvent().equals(CategoryEvent.Event.UPDATE.getName())) {
             Club club = (Club) event.getObject();
-            searchService.saveClub(ClubVDTO.from(club));
+            reviewService.addClubForReview(club);
         }
     }
 
@@ -114,7 +117,6 @@ public class DomainEventListener {
                     .url(club.getId().toString())
                     .build();
             notificationService.notifyClub(notification, club);
-            searchService.deleteClub(ClubVDTO.from(club));
         }
     }
 
@@ -134,14 +136,7 @@ public class DomainEventListener {
         if (event.getEvent().equals(CommentEvent.Event.SAVE.getName())) {
             Comment comment = (Comment) event.getObject();
 
-            Notification notification = Notification.builder()
-                    .description(COMMENT_ADD_TO_CLUB)
-                    .name(comment.getClub().getName())
-                    .instant(Instant.now())
-                    .read(false)
-                    .url(comment.getId().toString())
-                    .build();
-            notificationService.notifyClub(notification, comment.getClub());
+            reviewService.addCommentForReview(comment);
         }
     }
 
@@ -194,6 +189,8 @@ public class DomainEventListener {
                     .url(club.getId().toString())
                     .build();
             notificationService.notifyAccount(notification, club.getAuthor());
+
+            searchService.saveClub(ClubVDTO.from(club));
         }
     }
 

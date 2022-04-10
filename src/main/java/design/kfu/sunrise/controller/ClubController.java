@@ -6,6 +6,7 @@ import design.kfu.sunrise.domain.dto.comment.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.service.ClubService;
+import design.kfu.sunrise.util.model.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +45,7 @@ public class ClubController {
 
     @PreAuthorize("@access.hasAccessToCreateClub(#account)")
     @PostMapping("/club")
-    public ClubVDTO addClub(@Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public ClubVDTO addClub(@Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account) {
         clubDTO.setAuthorId(account.getId());
         return ClubVDTO.from(clubService.addClub(clubDTO));
     }
@@ -58,10 +60,19 @@ public class ClubController {
 
     @PreAuthorize("@access.hasAccessToEditClub(#account, #club)")
     @PutMapping("/club/{clubId}")
-    public ClubVDTO updateClub(@PathVariable("clubId") Club club, @Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public ClubVDTO updateClub(@PathVariable("clubId") Club club, @Valid @RequestBody ClubCDTO clubDTO, @AuthenticationPrincipal(expression = "account") Account account) {
         club.setDescription(clubDTO.getDescription());
         club.setName(clubDTO.getName());
         club.setClubInfo(clubDTO.getClubInfo());
         return ClubVDTO.from(clubService.updateClub(club));
+    }
+
+
+    @GetMapping("/clubs")
+    public Set<ClubVDTO> getClubs(@RequestParam("category_id") Long categoryId) {
+        Filter filter = Filter.builder()
+                .categoryId(categoryId)
+                .build();
+        return clubService.findClubs(filter).stream().map(ClubVDTO::from).collect(Collectors.toSet());
     }
 }
