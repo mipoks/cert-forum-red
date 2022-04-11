@@ -57,7 +57,7 @@ public class ModelGenerator {
                 .description(generateString())
                 .name(generateString())
                 .authorId(1L)
-                .categoryId(6L)
+                .categoryId(20L)
                 .costInfo(
                         CostInfo.builder()
                                 .entryCost(3000)

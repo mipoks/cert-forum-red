@@ -48,6 +48,15 @@ public class CategoryDTO {
                 .build();
     }
 
+    public static CategoryDTO fromExcludeChilds(Category category) {
+        return CategoryDTO.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .description(category.getDescription())
+                .parentId(category.getParent() != null ? category.getParent().getId() : null)
+                .build();
+    }
+
     public static Category toCategory(CategoryDTO categoryDTO) {
         return Category.builder()
                 .name(categoryDTO.getName())

@@ -29,7 +29,7 @@ services:
 
   dev-elastic:
     container_name: elastic-service
-    image: elasticsearch:8.1.2
+    image: elasticsearch:7.17.2
     ports:
       - 9200:9200
       - 9300:9300

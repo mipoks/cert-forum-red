@@ -21,21 +21,28 @@ public class Comment extends BaseEntity {
     private String value;
 
     //ToDo дописать
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Account account;
 
     //ToDo дописать
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Comment answered;
 
     //ToDo дописать
-    @OneToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Club club;
 
     @Embedded
     private CommentInfo commentInfo;
 
     public String generateHash() {
-        return DigestUtils.md5DigestAsHex((id + ":" + value.hashCode() + ":" + answered.getId() + ":" + club.getId()).getBytes(StandardCharsets.UTF_8));
+        StringBuilder stringBuilder = new StringBuilder(id.toString());
+        stringBuilder.append(value);
+        if (answered != null) {
+            stringBuilder.append(answered.getId());
+        }
+        stringBuilder.append(club.getId());
+
+        return DigestUtils.md5DigestAsHex(stringBuilder.toString().getBytes(StandardCharsets.UTF_8));
     }
 }

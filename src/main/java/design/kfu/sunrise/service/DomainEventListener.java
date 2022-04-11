@@ -71,7 +71,7 @@ public class DomainEventListener {
         if (event.getEvent().equals(CategoryEvent.Event.SAVE.getName())
                 || event.getEvent().equals(CategoryEvent.Event.UPDATE.getName())) {
             Category category = (Category) event.getObject();
-            searchService.saveCategory(CategoryDTO.from(category));
+            searchService.saveCategory(CategoryDTO.fromExcludeChilds(category));
         }
     }
 
@@ -79,7 +79,7 @@ public class DomainEventListener {
     public void handleCategoryEventDelete(CategoryEvent event) {
         if (event.getEvent().equals(CategoryEvent.Event.DELETE.getName())) {
             Category category = (Category) event.getObject();
-            searchService.deleteCategory(CategoryDTO.from(category));
+            searchService.deleteCategory(CategoryDTO.fromExcludeChilds(category));
         }
     }
 

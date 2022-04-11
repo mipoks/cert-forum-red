@@ -9,6 +9,10 @@ import design.kfu.sunrise.repository.AccountRepository;
 import design.kfu.sunrise.repository.ClubRepository;
 import design.kfu.sunrise.repository.CommentRepository;
 import design.kfu.sunrise.service.CommentService;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
@@ -21,6 +25,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CommentServiceTests {
 
     /*
@@ -65,7 +70,8 @@ class CommentServiceTests {
         return commentDTOS;
     }
 
-
+    @Test
+    @Order(1)
     void testAddComment() {
         Club club = getClubFromRepository();
         Account account = getAccountFromRepository();
@@ -75,6 +81,7 @@ class CommentServiceTests {
         }
     }
 
+    @Test
     void testEditComment() {
         Comment comment = getCommentFromRepository();
         Long id = comment.getId();
@@ -85,6 +92,7 @@ class CommentServiceTests {
         assertEquals(str, optional.get().getValue());
     }
 
+    @Test
     void testDeleteComment() {
         Comment comment = getCommentFromRepository();
         Long id = comment.getId();
@@ -93,6 +101,7 @@ class CommentServiceTests {
         assertFalse(present);
     }
 
+    @Test
     void testGetComments() {
         Comment comment = getCommentFromRepository();
         Club club = comment.getClub();
@@ -100,6 +109,7 @@ class CommentServiceTests {
         assertTrue(comments.size() > 0);
     }
 
+    @Test
     void testEditAllComment() {
         Comment comment = getCommentFromRepository();
         Long id = comment.getId();
@@ -111,6 +121,7 @@ class CommentServiceTests {
         assertEquals(str, optional.get().getValue());
     }
 
+    @Test
     void testFindOrNull() {
         Comment comment = getCommentFromRepository();
         Comment notNullComment = commentService.findOrNull(comment.getId());
@@ -119,6 +130,7 @@ class CommentServiceTests {
         Assert.isNull(nullComment, "Comment is not present, but it is not null");
     }
 
+    @Test
     void testFindOrThrow() {
         Comment comment = getCommentFromRepository();
         Comment notNullComment = commentService.findOrThrow(comment.getId());

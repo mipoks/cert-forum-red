@@ -11,6 +11,7 @@ import design.kfu.sunrise.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -28,10 +29,11 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private ClubService clubService;
 
+    @Transactional
     public Comment addComment(CommentDTO commentDTO, Club club, Account account) {
         Comment comment = commentRepository.save(CommentDTO.toComment(commentDTO, club, account));
-        club.getComments().add(comment);
-        clubService.updateComments(club);
+//        club.getComments().add(comment);
+//        clubService.updateComments(club);
 
         publisher.publishEvent(new CommentEvent(Comment.class.getName(), CommentEvent.Event.SAVE.getName(), comment));
         return comment;
