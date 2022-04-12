@@ -17,6 +17,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class Category extends BaseEntity {
+
+    @Version
+    private Long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

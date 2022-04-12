@@ -18,13 +18,12 @@ import java.time.Instant;
 @Builder
 @RedisHash(value = "Review", timeToLive = 60 * 60 * 24 * 30 * 2 /* 60 суток */)
 public class Review {
-    @Id
-    private Long id;
+    @Indexed
     private boolean viewed;
 
     @Indexed
     private String objectName;
-    @Indexed
+    @Id
     private Long objectId;
     private String objectHash;
 

@@ -50,6 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .objectId(comment.getId())
                 .objectHash(comment.generateHash())
                 .objectName(Comment.class.getSimpleName())
+                .viewed(false)
                 .build();
         reviewRepository.save(review);
     }
@@ -61,6 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .objectId(category.getId())
                 .objectHash(category.generateHash())
                 .objectName(Category.class.getSimpleName())
+                .viewed(false)
                 .build();
         reviewRepository.save(review);
     }
@@ -72,6 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .objectId(club.getId())
                 .objectHash(club.generateHash())
                 .objectName(Club.class.getSimpleName())
+                .viewed(false)
                 .build();
         reviewRepository.save(review);
     }

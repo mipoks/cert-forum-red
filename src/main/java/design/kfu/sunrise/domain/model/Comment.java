@@ -15,6 +15,9 @@ import java.nio.charset.StandardCharsets;
 @Getter
 @Setter
 public class Comment extends BaseEntity {
+
+    @Version
+    private Long version;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
