@@ -79,4 +79,10 @@ public class AccountServiceImpl implements AccountService {
     public Set<Club> getCreatedClubs(Account account) {
         return clubService.findAllByAuthor(account);
     }
+
+    @Override
+    public Account getAccountByUsername(String name) {
+        return accountRepository
+                .getAccountByLogin(name).orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND));
+    }
 }

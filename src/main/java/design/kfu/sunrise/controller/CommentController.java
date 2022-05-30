@@ -15,8 +15,9 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-@RequestMapping(value = "v1")
+@RequestMapping(value = "/v1")
 public class CommentController {
 
     private final CommentService commentService;

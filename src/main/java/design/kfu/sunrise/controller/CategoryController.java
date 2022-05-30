@@ -21,8 +21,9 @@ import java.util.stream.Collectors;
  * @author Daniyar Zakiev
  */
 @Slf4j
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "v1")
+@RequestMapping(value = "/v1")
 public class CategoryController {
 
     @Autowired

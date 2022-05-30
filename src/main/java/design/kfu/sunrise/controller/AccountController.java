@@ -9,7 +9,9 @@ import design.kfu.sunrise.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +20,15 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "v1")
+@CrossOrigin(origins = "*")
+@RequestMapping(value = "/v1")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @PermitAll
     @PostMapping("/account")
@@ -38,14 +44,18 @@ public class AccountController {
         return AccountVDTO.from(account);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/account")
+    public AccountVDTO findAccountByEmail(){
+        return AccountVDTO.from(accountService.getAccountByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/account/partner")
     public AccountVDTO addPartnerAccount(@RequestBody @Valid AccountPartnerCDTO accountPartnerCDTO) {
         return AccountVDTO.from(accountService.addPartnerAccount(accountPartnerCDTO));
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PutMapping("/account")
     public AccountVDTO updateAccount(@RequestBody @Valid AccountUpdateDTO accountUpdateDTO, @AuthenticationPrincipal(expression = "account") Account account) {

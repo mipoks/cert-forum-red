@@ -24,4 +24,6 @@ public interface AccountService {
 
     //Возвращает все созданные этим пользователем клубы
     Set<Club> getCreatedClubs(Account account);
+
+    Account getAccountByUsername(String name);
 }

@@ -25,7 +25,8 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "v1")
+@CrossOrigin(origins = "*")
+@RequestMapping(value = "/v1")
 public class ClubController {
 
     @Autowired
