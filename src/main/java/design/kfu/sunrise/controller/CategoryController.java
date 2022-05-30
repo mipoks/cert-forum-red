@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +28,12 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @PermitAll
+    @GetMapping("/category/{category_id}")
+    public CategoryDTO getCategory(@PathVariable("category_id") Category category){
+        return CategoryDTO.from(category);
+    }
 
     @PreAuthorize("@access.hasAccessToCreateCategory(#account)")
     @PostMapping("/category")

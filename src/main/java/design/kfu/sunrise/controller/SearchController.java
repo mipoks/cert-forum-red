@@ -25,8 +25,8 @@ public class SearchController {
 
     @PermitAll
     @GetMapping("/search/clubs")
-    public Set<ClubVDTO> getClubsByName(@Size(min = 3) @RequestParam("name") String clubLike, @RequestParam("description") Boolean withDescription) {
-        if (withDescription) {
+    public Set<ClubVDTO> getClubsByName(@Size(min = 3) @RequestParam("name") String clubLike, @RequestParam(value = "description", required = false) Boolean withDescription) {
+        if (withDescription != null) {
             return searchService.getClubsByNameAndDescription(clubLike);
         } else {
             return searchService.getClubsByName(clubLike);
@@ -35,8 +35,8 @@ public class SearchController {
 
     @PermitAll
     @GetMapping("/search/categories")
-    public Set<CategoryDTO> getCategoriesByName(@Size(min = 3) @RequestParam("name") String categoryLike, @RequestParam("description") Boolean withDescription) {
-        if (withDescription) {
+    public Set<CategoryDTO> getCategoriesByName(@Size(min = 3) @RequestParam("name") String categoryLike, @RequestParam(value = "description", required = false) Boolean withDescription) {
+        if (withDescription != null) {
             return searchService.getCategoriesByNameAndDescription(categoryLike);
         } else {
             return searchService.getCategoriesByName(categoryLike);
