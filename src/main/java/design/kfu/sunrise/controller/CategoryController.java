@@ -4,6 +4,7 @@ import design.kfu.sunrise.domain.dto.category.CategoryDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Category;
 import design.kfu.sunrise.service.CategoryService;
+import design.kfu.sunrise.service.access.AccountAccessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,15 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AccountAccessService accountAccessService;
+
+    @PermitAll
+    @GetMapping("/categories/account")
+    public boolean canCreateCategory(@AuthenticationPrincipal(expression = "account") Account account){
+        return accountAccessService.hasAccessToCreateCategory(account);
+    }
 
     @PermitAll
     @GetMapping("/category/{category_id}")
@@ -62,6 +72,8 @@ public class CategoryController {
 
     //ToDo вернуть getTotalPages
     @GetMapping("/categories")
+    @PermitAll
+    public Set<CategoryDTO> getCategories(@Nullable @RequestParam("parent_id") Long parentId,
     public Set<CategoryDTO> getCategories(@Nullable @RequestParam(value = "parent_id", required = false) Long parentId,
                                           @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "20") int size) {
