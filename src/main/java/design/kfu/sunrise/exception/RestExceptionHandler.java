@@ -135,6 +135,9 @@ public class RestExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, NativeWebRequest request) {
+        log.info("ощибка");
+        ex.printStackTrace();
+        log.info(request.toString());
         Map<String, String> errors = ex
                 .getBindingResult()
                 .getFieldErrors()

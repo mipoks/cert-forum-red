@@ -3,6 +3,7 @@ package design.kfu.sunrise.security.config;
 import design.kfu.sunrise.security.entrypoint.MyBasicAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,10 +13,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -36,24 +44,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throw new IllegalStateException(e);
         }
     }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:9096/"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
-                .authorizeRequests(authorize -> authorize
-                        .mvcMatchers("/resources/**", "/v1/account")
-                        .anonymous().antMatchers(HttpMethod.GET, "/**")
+                .cors().and()
+                .authorizeRequests()
+                        .antMatchers("/resources/**", "/v1/account/**")
+                        .permitAll().antMatchers(HttpMethod.GET, "/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
-                )
+                .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/", false)
+                .defaultSuccessUrl("/v1/account", false)
                 .failureForwardUrl("/unauthorized")
                 .and()
                 .csrf()

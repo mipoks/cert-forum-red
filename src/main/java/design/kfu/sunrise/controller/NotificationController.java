@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Daniyar Zakiev
  */
 @RestController
-@RequestMapping(value = "v1")
+@RequestMapping(value = "/v1")
 public class NotificationController {
 
     @Autowired
