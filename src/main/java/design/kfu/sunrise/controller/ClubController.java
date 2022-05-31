@@ -6,6 +6,7 @@ import design.kfu.sunrise.domain.dto.comment.CommentDTO;
 import design.kfu.sunrise.domain.model.Account;
 import design.kfu.sunrise.domain.model.Club;
 import design.kfu.sunrise.service.ClubService;
+import design.kfu.sunrise.service.access.AccountAccessService;
 import design.kfu.sunrise.util.model.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,25 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
+    @Autowired
+    private AccountAccessService accountAccessService;
+
+    @PermitAll
+    @GetMapping("/clubs/account")
+    public boolean canCreateClub(@AuthenticationPrincipal(expression = "account") Account account){
+        return accountAccessService.hasAccessToCreateClub(account);
+    }
+
     @PermitAll
     @GetMapping("/club/{club_id}")
     public ClubVDTO getClub(@PathVariable("club_id") Club club) {
         return ClubVDTO.from(club);
+    }
+
+    @PermitAll
+    @GetMapping("/club/{club_id}/account")
+    public boolean isAccountInClub(@PathVariable("club_id") Club club, @AuthenticationPrincipal(expression = "account") Account account) {
+        return club.getAccounts().contains(account);
     }
 
     @PreAuthorize("@access.hasAccessToReadComment(#club, #account)")
