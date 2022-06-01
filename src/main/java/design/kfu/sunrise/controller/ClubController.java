@@ -39,7 +39,7 @@ public class ClubController {
     @PermitAll
     @GetMapping("/clubs/account")
     public boolean canCreateClub(@AuthenticationPrincipal(expression = "account") Account account){
-        return accountAccessService.hasAccessToCreateClub(account);
+        return account != null ? accountAccessService.hasAccessToCreateClub(account) : false;
     }
 
     @PermitAll
