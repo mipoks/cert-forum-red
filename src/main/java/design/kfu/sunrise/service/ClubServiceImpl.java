@@ -38,6 +38,8 @@ public class ClubServiceImpl implements ClubService {
     public Club addClub(ClubCDTO clubDTO) {
         Club saved = clubRepository.save(ClubCDTO.toClub(clubDTO));
         publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.SAVE.getName(), saved));
+        //ToDo убрать след строку после сдачи проекта:
+        publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.PUBLISH.getName(), saved));
         return saved;
     }
 
