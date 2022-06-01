@@ -37,7 +37,7 @@ public class CategoryController {
     @PermitAll
     @GetMapping("/categories/account")
     public boolean canCreateCategory(@AuthenticationPrincipal(expression = "account") Account account){
-        return accountAccessService.hasAccessToCreateCategory(account);
+        return account != null ? accountAccessService.hasAccessToCreateCategory(account) : false;
     }
 
     @PermitAll
