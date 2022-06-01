@@ -58,8 +58,8 @@ public class ClubVDTO {
                 .costInfo(club.getCostInfo())
                 .created(club.getCreated())
                 .updated(club.getUpdated())
-                .authorId(club.getAuthor().getId())
-                .categoryName(club.getCategory().getName())
+                .authorId(club.getAuthor()==null? null :club.getAuthor().getId())
+                .categoryName(club.getCategory()==null? null : club.getCategory().getName())
                 .build();
     }
 }

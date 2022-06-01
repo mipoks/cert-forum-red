@@ -73,7 +73,6 @@ public class CategoryController {
     //ToDo вернуть getTotalPages
     @GetMapping("/categories")
     @PermitAll
-    public Set<CategoryDTO> getCategories(@Nullable @RequestParam("parent_id") Long parentId,
     public Set<CategoryDTO> getCategories(@Nullable @RequestParam(value = "parent_id", required = false) Long parentId,
                                           @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "20") int size) {

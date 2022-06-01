@@ -24,10 +24,8 @@ public class ClubCDTO {
     private ClubInfo clubInfo;
 
     @NotNull
-    @Size(min = 5, max = 255)
     private String name;
     @NotNull
-    @Size(min = 120, max = 4096)
     private String description;
 
     private CostInfo costInfo;

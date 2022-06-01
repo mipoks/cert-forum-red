@@ -25,7 +25,6 @@ public class CategoryDTO {
     private Long id;
 
     @NotNull
-    @Size(min = 4, max = 256)
     @Field(type = FieldType.Text, name = "name")
     private String name;
 
