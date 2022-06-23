@@ -22,7 +22,7 @@ public class CommentDTO {
     @NotNull
     @Size(min = 2, max = 4096)
     private String value;
-    private Long accountId;
+    private String accountId;
     private Long clubId;
     private Long answered;
 

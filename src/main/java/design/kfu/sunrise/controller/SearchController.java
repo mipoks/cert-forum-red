@@ -13,18 +13,15 @@ import javax.annotation.security.PermitAll;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-/**
- * @author Daniyar Zakiev
- */
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/search")
 public class SearchController {
 
     @Autowired
     private SearchService searchService;
 
     @PermitAll
-    @GetMapping("/search/clubs")
+    @GetMapping("/clubs")
     public Set<ClubVDTO> getClubsByName(@Size(min = 3) @RequestParam("name") String clubLike, @RequestParam(value = "description", required = false) Boolean withDescription) {
         if (withDescription != null) {
             return searchService.getClubsByNameAndDescription(clubLike);
@@ -34,7 +31,7 @@ public class SearchController {
     }
 
     @PermitAll
-    @GetMapping("/search/categories")
+    @GetMapping("/categories")
     public Set<CategoryDTO> getCategoriesByName(@Size(min = 3) @RequestParam("name") String categoryLike, @RequestParam(value = "description", required = false) Boolean withDescription) {
         if (withDescription != null) {
             return searchService.getCategoriesByNameAndDescription(categoryLike);

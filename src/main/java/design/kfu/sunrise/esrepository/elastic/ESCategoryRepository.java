@@ -6,11 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
-/**
- * @author Daniyar Zakiev
- */
 @Repository
 public interface ESCategoryRepository extends ElasticsearchRepository<CategoryDTO, Long> {
     Set<CategoryDTO> findAllByNameContaining(String like);
+
     Set<CategoryDTO> findAllByDescriptionContaining(String like);
 }

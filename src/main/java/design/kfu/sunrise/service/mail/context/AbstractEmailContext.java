@@ -4,9 +4,6 @@ import lombok.*;
 
 import java.util.Map;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @Builder

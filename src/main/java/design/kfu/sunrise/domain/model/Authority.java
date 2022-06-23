@@ -20,14 +20,14 @@ public class Authority {
 
     @EmbeddedId
     @AttributeOverrides({
-            @AttributeOverride( name = "dAccountId", column = @Column(name = "ACCOUNT_ID")),
-            @AttributeOverride( name = "clubId", column = @Column(name = "CLUB_ID"))
+            @AttributeOverride(name = "dAccountId", column = @Column(name = "ACCOUNT_ID")),
+            @AttributeOverride(name = "clubId", column = @Column(name = "CLUB_ID"))
     })
     private ClubsInfo clubsInfo;
 
-    @ElementCollection(targetClass=AuthorityType.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = AuthorityType.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name="authority_type")
+    @CollectionTable(name = "authority_type")
     private Set<AuthorityType> authorityTypes = new HashSet<>();
 
 
@@ -54,29 +54,26 @@ public class Authority {
         return getClass().hashCode();
     }
 
-    public enum AuthorityType {
-        READ_CLUB_COMMENTS, WRITE_CLUB_COMMENTS
-    }
-
-
-
-
     public ClubsInfo getClubsInfo() {
         return clubsInfo;
     }
 
-//    @Transient
+    //    @Transient
     public void setClubsInfo(ClubsInfo clubsInfo) {
         this.clubsInfo = clubsInfo;
     }
 
-//    @Transient
+    //    @Transient
     public Set<AuthorityType> getAuthorityTypes() {
         return authorityTypes;
     }
 
-//    @Transient
+    //    @Transient
     public void setAuthorityTypes(Set<AuthorityType> authorityTypes) {
         this.authorityTypes = authorityTypes;
+    }
+
+    public enum AuthorityType {
+        READ_CLUB_COMMENTS, WRITE_CLUB_COMMENTS
     }
 }

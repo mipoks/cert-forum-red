@@ -8,9 +8,6 @@ import org.springframework.data.redis.core.index.Indexed;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @NoArgsConstructor

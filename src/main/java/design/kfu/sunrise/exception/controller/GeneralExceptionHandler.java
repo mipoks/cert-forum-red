@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @author Daniyar Zakiev
- */
 //@ControllerAdvice
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -81,10 +78,10 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
         ResponseStatus responseStatus =
                 exception.getClass().getAnnotation(ResponseStatus.class);
         final HttpStatus status =
-                responseStatus!=null ? responseStatus.value():HttpStatus.INTERNAL_SERVER_ERROR;
+                responseStatus != null ? responseStatus.value() : HttpStatus.INTERNAL_SERVER_ERROR;
         final String localizedMessage = exception.getLocalizedMessage();
         final String path = request.getDescription(false);
-        String message = ((localizedMessage != null && !localizedMessage.equals("")) ? localizedMessage:status.getReasonPhrase());
+        String message = ((localizedMessage != null && !localizedMessage.equals("")) ? localizedMessage : status.getReasonPhrase());
         logger.error(String.format(ERROR_MESSAGE_TEMPLATE, message, path), exception);
         return getExceptionResponseEntity(exception, status, request, Collections.singletonList(message));
     }
@@ -106,7 +103,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
         body.put(MESSAGE, getMessageForStatus(status));
         final String errorsMessage = (errors != null && errors.size() > 0) ?
                 errors.stream().filter(x -> x.length() > 0).collect(Collectors.joining(LIST_JOIN_DELIMITER))
-                :status.getReasonPhrase();
+                : status.getReasonPhrase();
         local_logger.error(ERRORS_FOR_PATH, errorsMessage, path);
         return new ResponseEntity<>(body, status);
     }

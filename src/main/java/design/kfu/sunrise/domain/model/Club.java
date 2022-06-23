@@ -32,14 +32,12 @@ public class Club extends BaseEntity {
     @Embedded
     private CostInfo costInfo;
 
-    //ToDo дописать
     @ManyToOne
     private Category category;
 
     @Embedded
     private ClubInfo clubInfo;
 
-    //ToDo дописать
     @ManyToOne
     private Account author;
 
@@ -48,19 +46,7 @@ public class Club extends BaseEntity {
             joinColumns = @JoinColumn(name = "club_id"),
             inverseJoinColumns = @JoinColumn(name = "account_id"))
     private Set<Account> accounts = new HashSet<>();
-
-    public Club addAccount(Account account) {
-        accounts.add(account);
-        return this;
-    }
-
-    public Club removeAccount(Account account) {
-        accounts.remove(account);
-        return this;
-    }
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @OneToMany(cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
 
     @Override

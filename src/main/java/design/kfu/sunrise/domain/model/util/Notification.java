@@ -7,9 +7,6 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import java.time.Instant;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,7 +17,7 @@ public class Notification {
     @Id
     private Long id;
     @Indexed
-    private Long accountId;
+    private String accountId;
     private Instant instant;
     private String name;
     private String description;

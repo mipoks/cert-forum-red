@@ -6,11 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
-/**
- * @author Daniyar Zakiev
- */
 @Repository
 public interface ESClubRepository extends ElasticsearchRepository<ClubVDTO, Long> {
     Set<ClubVDTO> findAllByNameContaining(String like);
+
     Set<ClubVDTO> findAllByDescriptionContaining(String like);
 }

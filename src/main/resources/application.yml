@@ -12,14 +12,22 @@ server:
       enabled: ${LOGGING_STACKTRACE:true}
       deep: 5
 spring:
+  liquibase:
+    change-log: classpath:changelog/db.changelog-master.xml
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8484/auth/realms/my-first-realm/protocol/openid-connect/certs
   datasource:
-    url: jdbc:postgresql://${DB_HOST:127.0.0.6}:${DB_PORT:5434}/${DB_DATABASE:devDB}?ApplicationName=cert-projects&sslmode=${DB_SSL_MODE:disable}&prepareThreshold=0
+    url: jdbc:postgresql://localhost:5439/registered_clients_db
     username: ${DB_USERNAME:qwerty007}
     password: ${DB_PASSWORD:qwerty007}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
@@ -37,6 +45,25 @@ spring:
           auth: true
         starttls:
           enable: true
+  kafka:
+    enabled: ${KAFKA_ENABLED:true}
+    client-id: ${KAFKA_CLIENT_ID:cert-sunrice}
+    bootstrap-servers: ${KAFKA_URL:127.0.0.1:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.UUIDSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.UUIDDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:krst-dev-kafka-consumer-group-1}
+    listener:
+      ack-mode: manual_immediate
+    properties:
+      spring.json.trusted.packages: '*'
+    topics:
+      user-report-request: ${USER_REPORT_REQUEST_TOPIC:sunrise-create-report-request}
+      user-report-response: ${USER_REPORT_RESPONSE_TOPIC:sunrise-create-report-response}
+
 
   redis:
     host: localhost

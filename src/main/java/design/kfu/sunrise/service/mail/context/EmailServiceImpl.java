@@ -18,22 +18,18 @@ import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
-/**
- * @author Daniyar Zakiev
- */
+@Deprecated
 @Service
 public class EmailServiceImpl implements EmailService {
 
+    public static final String INCORRECT_CODE = "Вы перешли по недействительной ссылке";
+    public static final String EMAIL_CONFIRMED = "Ваш Email подвержден";
     @Autowired
     private ActivationCodeRepository activationCodeRepository;
-
     @Autowired
     private JavaMailSender emailSender;
-
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private SpringTemplateEngine templateEngine;
 
@@ -56,9 +52,6 @@ public class EmailServiceImpl implements EmailService {
         emailSender.send(message);
         return CompletableFuture.completedFuture(Boolean.TRUE);
     }
-
-    public static final String INCORRECT_CODE = "Вы перешли по недействительной ссылке";
-    public static final String EMAIL_CONFIRMED = "Ваш Email подвержден";
 
     @Override
     public String confirmEmail(String code) {

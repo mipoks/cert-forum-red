@@ -7,9 +7,6 @@ import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @Builder

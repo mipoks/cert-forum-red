@@ -13,11 +13,11 @@ import java.util.Set;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
-//    @EntityGraph(value = "Club.comments")
+    //    @EntityGraph(value = "Club.comments")
     Optional<Club> findById(Long id);
+
     Set<Club> findAllByAuthor(Account account);
 
-    @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT c FROM Club c WHERE c.id = :id")
     Optional<Club> findByIdWithLock(Long id);
 }

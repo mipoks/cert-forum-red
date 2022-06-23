@@ -7,24 +7,21 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * @author Daniyar Zakiev
- */
 @Embeddable
 @Builder
 public class ClubsInfo implements Serializable {
 
-    @Column(name="ACCOUNT_ID")
-    private Long dAccountId;
+    @Column(name = "ACCOUNT_ID")
+    private String dAccountId;
 
-    @Column(name="CLUB_ID")
+    @Column(name = "CLUB_ID")
     private Long clubId;
 
     public ClubsInfo() {
 
     }
 
-    public ClubsInfo(Long accountId, Long clubId) {
+    public ClubsInfo(String accountId, Long clubId) {
         this.dAccountId = accountId;
         this.clubId = clubId;
     }
@@ -42,17 +39,17 @@ public class ClubsInfo implements Serializable {
         return Objects.hash(clubId, dAccountId);
     }
 
-    @Column(name="ACCOUNT_ID")
-    public Long getAccountId() {
+    @Column(name = "ACCOUNT_ID")
+    public String getAccountId() {
         return dAccountId;
     }
 
-    public void setAccountId(Long accountId) {
+    public void setAccountId(String accountId) {
         this.dAccountId = accountId;
     }
 
 
-    @Column(name="CLUB_ID")
+    @Column(name = "CLUB_ID")
     public Long getClubId() {
         return clubId;
     }

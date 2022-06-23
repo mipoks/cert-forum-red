@@ -36,36 +36,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public Account addAccount(AccountCDTO accountCDTO){
-        accountCDTO.setPassword(passwordEncoder.encode(accountCDTO.getPassword()));
-        Account account = AccountCDTO.toAccount(accountCDTO);
-        account.setRole(Account.Role.USER);
-        Account saved = accountRepository.save(account);
-        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.CREATE.getName(), saved));
-        return saved;
-    }
-
-    @Override
-    public Account addPartnerAccount(AccountPartnerCDTO accountPartnerCDTO) {
-        accountPartnerCDTO.setPassword(passwordEncoder.encode(accountPartnerCDTO.getPassword()));
-        Account account = AccountPartnerCDTO.toAccount(accountPartnerCDTO);
-        account.setRole(Account.Role.PARTNER);
-        Account saved = accountRepository.save(account);
-        publisher.publishEvent(new AccountEvent(Account.class.getName(), AccountEvent.Event.CREATE.getName(), saved));
-        return saved;
-    }
-
-    @Override
-    @Transactional
-    public Account getAccount(Long accountId){
+    public Account getAccount(String accountId) {
         return accountRepository.getById(accountId);
     }
 
     @Override
-    public Account findOrThrow(Long userId) {
+    public Account findOrThrow(String userId) {
         return accountRepository
                 .findById(userId)
-                .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность пользователя не найдена"));
+                .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND, "Сущность пользователя не найдена"));
     }
 
     @Override
@@ -83,6 +62,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountByUsername(String name) {
         return accountRepository
-                .getAccountByLogin(name).orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND));
+                .getAccountByEmail(name).orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND));
     }
 }

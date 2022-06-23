@@ -4,9 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-/**
- * @author Daniyar Zakiev
- */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

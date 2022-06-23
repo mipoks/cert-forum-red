@@ -13,40 +13,28 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.Instant;
-
-/**
- * @author Daniyar Zakiev
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(indexName = "clubind")
 public class ClubVDTO {
 
     private Long id;
 
-    @Field(type = FieldType.Text, name = "name")
     private String name;
 
-    @Field(type = FieldType.Text, name = "description")
     private String description;
 
     private ClubInfo activeInfo;
 
-    @Transient
     private CostInfo costInfo;
 
-    @Transient
     private Instant created;
 
-    @Transient
     private Instant updated;
 
-    @Transient
-    private Long authorId;
+    private String authorId;
 
-    @Transient
     private String categoryName;
 
     public static ClubVDTO from(Club club) {
@@ -58,8 +46,8 @@ public class ClubVDTO {
                 .costInfo(club.getCostInfo())
                 .created(club.getCreated())
                 .updated(club.getUpdated())
-                .authorId(club.getAuthor()==null? null :club.getAuthor().getId())
-                .categoryName(club.getCategory()==null? null : club.getCategory().getName())
+                .authorId(club.getAuthor() == null ? null : club.getAuthor().getId())
+                .categoryName(club.getCategory() == null ? null : club.getCategory().getName())
                 .build();
     }
 }

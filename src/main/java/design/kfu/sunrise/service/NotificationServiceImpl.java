@@ -11,9 +11,6 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author Daniyar Zakiev
- */
 @Service
 public class NotificationServiceImpl implements NotificationService {
 

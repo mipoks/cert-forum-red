@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findOrThrow(Long categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность категории не найдена"));
+        return categoryRepository.findById(categoryId).orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND, "Сущность категории не найдена"));
     }
 
     @Override

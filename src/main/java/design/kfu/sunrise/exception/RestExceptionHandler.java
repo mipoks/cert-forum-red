@@ -31,11 +31,11 @@ public class RestExceptionHandler {
     /**
      * Рекурсивно проходится по stackTrace собирая первые трейсы исключений.
      * Пример трейса:
-     *
+     * <p>
      * "java.lang.RuntimeException: Ошибка #1 -
-     *      * ru.waveaccess.krst.projects.api.project.ProjectController.getProjects(ProjectController.java:53)"
+     * * ru.waveaccess.krst.projects.api.project.ProjectController.getProjects(ProjectController.java:53)"
      *
-     * @param throwable исключение
+     * @param throwable      исключение
      * @param stackTraceDeep начало погружения, должно быть 0
      * @return лист подготовленных трейсов
      */
@@ -45,7 +45,7 @@ public class RestExceptionHandler {
         Optional.ofNullable(throwable.getStackTrace()).ifPresent((stackTrace -> {
             if (stackTrace.length > 0) {
                 stackTraces.add(String.format("%s - %s",
-                        throwable.toString(),
+                        throwable,
                         stackTrace[0].toString())
                 );
             }
@@ -59,6 +59,7 @@ public class RestExceptionHandler {
 
     /**
      * Вызывает рекурсивную подготовку трейсов.
+     *
      * @param throwable исключение
      * @return лист подготовленных трейсов
      */
@@ -71,17 +72,18 @@ public class RestExceptionHandler {
 
     /**
      * Собирает ответ для ошибки
+     *
      * @param exceptionMessage сообщение ошибки
-     * @param errorType тип ошибки
-     * @param errors дополнительные сообщения при нескольких ошибках
-     * @param stackTrace стектрейс ошибки
-     * @param request запрос
+     * @param errorType        тип ошибки
+     * @param errors           дополнительные сообщения при нескольких ошибках
+     * @param stackTrace       стектрейс ошибки
+     * @param request          запрос
      */
     private ResponseEntity<ErrorMessage> buildResponse(String exceptionMessage,
-                                                                                             ErrorType errorType,
-                                                                                             Map<String, String> errors,
-                                                                                             List<String> stackTrace,
-                                                                                             NativeWebRequest request) {
+                                                       ErrorType errorType,
+                                                       Map<String, String> errors,
+                                                       List<String> stackTrace,
+                                                       NativeWebRequest request) {
         String url = Optional.ofNullable(request)
                 .map((r) -> r.getNativeRequest(HttpServletRequest.class))
                 .map(HttpServletRequest::getRequestURI)
@@ -104,33 +106,36 @@ public class RestExceptionHandler {
 
     /**
      * Собирает ответ для ошибки
+     *
      * @param exceptionMessage сообщение ошибки
-     * @param errorType тип ошибки
-     * @param errors дополнительные сообщения при нескольких ошибках
-     * @param request запрос
+     * @param errorType        тип ошибки
+     * @param errors           дополнительные сообщения при нескольких ошибках
+     * @param request          запрос
      */
     private ResponseEntity<ErrorMessage> buildResponse(String exceptionMessage,
-                                                                                             ErrorType errorType,
-                                                                                             Map<String, String> errors,
-                                                                                             NativeWebRequest request) {
+                                                       ErrorType errorType,
+                                                       Map<String, String> errors,
+                                                       NativeWebRequest request) {
         return buildResponse(exceptionMessage, errorType, errors, new ArrayList<>(), request);
     }
 
     /**
      * Собирает ответ для ошибки
+     *
      * @param exceptionMessage сообщение ошибки
-     * @param errorType тип ошибки
-     * @param request запрос
+     * @param errorType        тип ошибки
+     * @param request          запрос
      */
     private ResponseEntity<ErrorMessage> buildResponse(String exceptionMessage,
-                                                                                             ErrorType errorType,
-                                                                                             NativeWebRequest request) {
+                                                       ErrorType errorType,
+                                                       NativeWebRequest request) {
         return buildResponse(exceptionMessage, errorType, new HashMap<>(), new ArrayList<>(), request);
     }
 
     /**
      * Перехватывает ошибку недействительных параметров метода
-     * @param ex экземпляр ошибки класса MethodArgumentNotValidException
+     *
+     * @param ex      экземпляр ошибки класса MethodArgumentNotValidException
      * @param request запрос
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -150,7 +155,8 @@ public class RestExceptionHandler {
 
     /**
      * Перехватывает непредвиденную ошибку
-     * @param ex экземпляр ошибки Exception
+     *
+     * @param ex      экземпляр ошибки Exception
      * @param request запрос
      */
     @ExceptionHandler(Exception.class)
@@ -165,7 +171,8 @@ public class RestExceptionHandler {
 
     /**
      * Перехватывает AccessDeniedException
-     * @param ex экземпляр ошибки Exception
+     *
+     * @param ex      экземпляр ошибки Exception
      * @param request запрос
      */
     @ExceptionHandler(AccessDeniedException.class)
@@ -180,7 +187,8 @@ public class RestExceptionHandler {
 
     /**
      * Перехватывает rest ошибку
-     * @param ex экземпляр ошибки класса RestException
+     *
+     * @param ex      экземпляр ошибки класса RestException
      * @param request запрос
      */
     @ExceptionHandler(RestException.class)

@@ -11,9 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Map;
 import java.util.Properties;
 
-/**
- * @author Daniyar Zakiev
- */
+
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "spring.mail", name = "host")
 public class MailSenderConfig {

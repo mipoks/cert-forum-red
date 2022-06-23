@@ -12,15 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
-  @Autowired private AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    log.info("Loading account details login  is{}", username);
-    Account account =
-        accountRepository
-                .getAccountByLogin(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
-    return new UserDetailsImpl(account);
-  }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("Loading account details login  is{}", username);
+        Account account =
+                accountRepository
+                        .getAccountByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
+        return new UserDetailsImpl(account);
+    }
 }

@@ -8,17 +8,16 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @Builder
 public class AccountUpdateDTO {
+    @Deprecated
     @NotNull
     @Size(min = 6, max = 25)
     private String newPassword;
 
+    @Deprecated
     @NotNull
     @Size(min = 6, max = 25)
     private String oldPassword;

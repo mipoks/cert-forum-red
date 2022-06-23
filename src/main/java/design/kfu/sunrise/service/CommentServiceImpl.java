@@ -87,6 +87,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment findOrThrow(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность комментария не найдена"));
+                .orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND, "Сущность комментария не найдена"));
     }
 }

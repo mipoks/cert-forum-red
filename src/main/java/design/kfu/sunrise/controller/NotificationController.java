@@ -10,24 +10,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-/**
- * @author Daniyar Zakiev
- */
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/notification")
 public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/notifications")
+    @GetMapping("")
     public Set<Notification> getNotifications(@AuthenticationPrincipal(expression = "account") Account account) {
         return notificationService.findByAccount(account);
     }
 
     @PreAuthorize("@access.hasAccessToReadNotification(#account, #notification)")
-    @PutMapping("/notification/{notification_id}")
+    @PutMapping("/{notification_id}")
     public void markAsRed(@PathVariable("notification_id") Notification notification, @AuthenticationPrincipal(expression = "account") Account account) {
         notificationService.markAsRed(notification);
     }

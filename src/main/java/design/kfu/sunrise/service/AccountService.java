@@ -9,16 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 public interface AccountService {
-    @Transactional
-    Account addAccount(AccountCDTO accountCDTO);
 
     @Transactional
-    Account addPartnerAccount(AccountPartnerCDTO accountPartnerCDTO);
+    Account getAccount(String accountId);
 
-    @Transactional
-    Account getAccount(Long accountId);
-
-    Account findOrThrow(Long accountId);
+    Account findOrThrow(String accountId);
 
     Account updateAccount(Account account);
 

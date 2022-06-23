@@ -2,9 +2,6 @@ package design.kfu.sunrise.util.model;
 
 import lombok.*;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @AllArgsConstructor

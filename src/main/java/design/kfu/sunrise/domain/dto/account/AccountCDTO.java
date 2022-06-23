@@ -35,8 +35,7 @@ public class AccountCDTO {
                         (AccountInfo.builder()
                                 .phone(accountCDTO.getPhone())
                                 .build())
-                .hashPassword(accountCDTO.getPassword())
-                .login(accountCDTO.getEmail())
+                .email(accountCDTO.getEmail())
                 .build();
     }
 }

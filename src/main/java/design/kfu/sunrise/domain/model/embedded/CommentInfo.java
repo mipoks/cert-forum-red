@@ -5,9 +5,6 @@ import lombok.*;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-/**
- * @author Daniyar Zakiev
- */
 @Getter
 @Setter
 @Builder

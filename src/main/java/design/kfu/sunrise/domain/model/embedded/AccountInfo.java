@@ -6,9 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.PrePersist;
 import java.io.Serializable;
 
-/**
- * @author Daniyar Zakiev
- */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

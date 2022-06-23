@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1655924983801-1" author="xsolla (generated)">
+        <createTable tableName="oauth2_registered_client">
+            <column name="id" type="VARCHAR(100)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="oauth2_registered_client_pkey"/>
+            </column>
+            <column name="client_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="client_id_issued_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="NULL::character varying" name="client_secret" type="VARCHAR(200)"/>
+            <column name="client_secret_expires_at" type="timestamp"/>
+            <column name="client_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_authentication_methods" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_grant_types" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="NULL::character varying" name="redirect_uris" type="VARCHAR(1000)"/>
+            <column name="scopes" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_settings" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_settings" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-2" author="xsolla (generated)">
+        <createTable tableName="oauth2_authorization">
+            <column name="id" type="VARCHAR(100)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="oauth2_authorization_pkey"/>
+            </column>
+            <column name="registered_client_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="principal_name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_grant_type" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attributes" type="CLOB"/>
+            <column defaultValue="NULL::character varying" name="state" type="VARCHAR(500)"/>
+            <column name="authorization_code_value" type="CLOB"/>
+            <column name="authorization_code_issued_at" type="timestamp"/>
+            <column name="authorization_code_expires_at" type="timestamp"/>
+            <column name="authorization_code_metadata" type="CLOB"/>
+            <column name="access_token_value" type="CLOB"/>
+            <column name="access_token_issued_at" type="timestamp"/>
+            <column name="access_token_expires_at" type="timestamp"/>
+            <column name="access_token_metadata" type="CLOB"/>
+            <column defaultValue="NULL::character varying" name="access_token_type" type="VARCHAR(100)"/>
+            <column defaultValue="NULL::character varying" name="access_token_scopes" type="VARCHAR(1000)"/>
+            <column name="oidc_id_token_value" type="CLOB"/>
+            <column name="oidc_id_token_issued_at" type="timestamp"/>
+            <column name="oidc_id_token_expires_at" type="timestamp"/>
+            <column name="oidc_id_token_metadata" type="CLOB"/>
+            <column name="refresh_token_value" type="CLOB"/>
+            <column name="refresh_token_issued_at" type="timestamp"/>
+            <column name="refresh_token_expires_at" type="timestamp"/>
+            <column name="refresh_token_metadata" type="CLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-3" author="xsolla (generated)">
+        <createTable tableName="club_comments">
+            <column name="club_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="club_comments_pkey"/>
+            </column>
+            <column name="comments_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="club_comments_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-4" author="xsolla (generated)">
+        <createTable tableName="category_childs">
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="category_childs_pkey"/>
+            </column>
+            <column name="childs_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="category_childs_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-5" author="xsolla (generated)">
+        <addUniqueConstraint columnNames="comments_id" constraintName="uk_2a4fnyrqqodd3xm5rel2h0sih"
+                             tableName="club_comments"/>
+    </changeSet>
+    <changeSet id="1655924983801-6" author="xsolla (generated)">
+        <addUniqueConstraint columnNames="childs_id" constraintName="uk_c0ce5fxdeb7n0096gwuq5rthm"
+                             tableName="category_childs"/>
+    </changeSet>
+    <changeSet id="1655924983801-7" author="xsolla (generated)">
+        <createTable tableName="authority_type">
+            <column name="authority_club_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_account_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_types" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-8" author="xsolla (generated)">
+        <createTable tableName="category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="category_pkey"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="visible" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-9" author="xsolla (generated)">
+        <createTable tableName="club">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="club_pkey"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="expire_condition" type="VARCHAR(255)"/>
+            <column name="expired" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visible" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="certificate_cost" type="INT"/>
+            <column name="entry_cost" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="author_id" type="VARCHAR(255)"/>
+            <column name="category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-10" author="xsolla (generated)">
+        <createTable tableName="club_accounts">
+            <column name="club_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="club_accounts_pkey"/>
+            </column>
+            <column name="account_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="club_accounts_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-11" author="xsolla (generated)">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="comment_pkey"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="visible" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="account_id" type="VARCHAR(255)"/>
+            <column name="answered_id" type="BIGINT"/>
+            <column name="club_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-12" author="xsolla (generated)">
+        <createTable tableName="company">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="company_pkey"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-13" author="xsolla (generated)">
+        <createTable tableName="document">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="document_pkey"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="mime_type" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
+            <column name="owner_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-14" author="xsolla (generated)">
+        <createTable tableName="oauth2_authorization_consent">
+            <column name="registered_client_id" type="VARCHAR(100)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="oauth2_authorization_consent_pkey"/>
+            </column>
+            <column name="principal_name" type="VARCHAR(200)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="oauth2_authorization_consent_pkey"/>
+            </column>
+            <column name="authorities" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-15" author="xsolla (generated)">
+        <createTable tableName="tech_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tech_info_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1655924983801-16" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="club_accounts"
+                                 constraintName="fk1o0usibstat80t0ms899ut31q" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_entity"
+                                 referencedTableSchemaName="keycloak"/>
+    </changeSet>
+    <changeSet id="1655924983801-17" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="category"
+                                 constraintName="fk2y94svpmqttx80mshyny85wqr" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="category"/>
+    </changeSet>
+    <changeSet id="1655924983801-18" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="category_childs"
+                                 constraintName="fk384e7n8sm6gnvrilx2l2ygjj5" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="category"/>
+    </changeSet>
+    <changeSet id="1655924983801-19" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="club_id" baseTableName="club_comments"
+                                 constraintName="fk4lt4bwppkf1fr6i93afa10kdu" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="club"/>
+    </changeSet>
+    <changeSet id="1655924983801-20" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="club_id" baseTableName="club_accounts"
+                                 constraintName="fk5mftsj17wxcdt7y7575vjyjb2" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="club"/>
+    </changeSet>
+    <changeSet id="1655924983801-21" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="club"
+                                 constraintName="fk7r2d0mrithdrh92f1e9e3od8f" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="category"/>
+    </changeSet>
+    <changeSet id="1655924983801-22" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="comment"
+                                 constraintName="fk8et6uh88brk33savfdc4pga7m" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_entity"
+                                 referencedTableSchemaName="keycloak"/>
+    </changeSet>
+    <changeSet id="1655924983801-23" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="childs_id" baseTableName="category_childs"
+                                 constraintName="fkarxyqunl9g787ep4vi9hlv4xj" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="category"/>
+    </changeSet>
+    <changeSet id="1655924983801-24" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="answered_id" baseTableName="comment"
+                                 constraintName="fkcoyq18t1o5l8pdxn0p27wqr2c" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="comment"/>
+    </changeSet>
+    <changeSet id="1655924983801-25" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="comments_id" baseTableName="club_comments"
+                                 constraintName="fkdntthadlrafadpl99gt87bkyc" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="comment"/>
+    </changeSet>
+    <changeSet id="1655924983801-26" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="authority_club_id,authority_account_id" baseTableName="authority_type"
+                                 constraintName="fkeudhqx1ig9m629fsnx21oesxv" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="club_id,account_id" referencedTableName="club_accounts"/>
+    </changeSet>
+    <changeSet id="1655924983801-27" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="club_id" baseTableName="comment"
+                                 constraintName="fkfas0jm4664vilp9k50ixnqj0h" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="club"/>
+    </changeSet>
+    <changeSet id="1655924983801-28" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="club"
+                                 constraintName="fklj4wr495kdv3qcdd65afc2e20" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_entity"
+                                 referencedTableSchemaName="keycloak"/>
+    </changeSet>
+    <changeSet id="1655924983801-29" author="xsolla (generated)">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="document"
+                                 constraintName="fkmd1y124hl0qyae3y5ea2g5v9c" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_entity"
+                                 referencedTableSchemaName="keycloak"/>
+    </changeSet>
+
+</databaseChangeLog>

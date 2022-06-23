@@ -22,9 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
-/**
- * @author Daniyar Zakiev
- */
 @Service
 public class ReviewServiceImpl implements ReviewService {
 

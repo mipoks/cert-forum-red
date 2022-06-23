@@ -2,9 +2,6 @@ package design.kfu.sunrise.service;
 
 import org.springframework.context.ApplicationContext;
 
-/**
- * @author Daniyar Zakiev
- */
 public class StaticService {
 
     private static ApplicationContext applicationContext;

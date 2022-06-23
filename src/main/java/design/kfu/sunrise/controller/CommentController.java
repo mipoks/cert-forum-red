@@ -17,28 +17,28 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/comment")
 public class CommentController {
 
     private final CommentService commentService;
 
 
     @PreAuthorize("@access.hasAccessToWriteComment(#account, #club)")
-    @PostMapping("/club/{club_id}/comment")
-    public CommentDTO addComment(@PathVariable("club_id") Club club, @Valid @RequestBody CommentDTO commentDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    @PostMapping("/club/{club_id}")
+    public CommentDTO addComment(@PathVariable("club_id") Club club, @Valid @RequestBody CommentDTO commentDTO, @AuthenticationPrincipal(expression = "account") Account account) {
         return CommentDTO.from(commentService.addComment(commentDTO, club, account));
     }
 
 
     @PreAuthorize("@access.hasAccessToEditComment(#comment, #account) && @access.hasAccessToWriteComment(#account, #club)")
-    @PutMapping("/club/{club_id}/comment/{comment_id}")
-    public CommentDTO updateComment(@PathVariable("club_id") Club club, @Valid CommentDTO commentDTO, @PathVariable("comment_id") Comment comment, @AuthenticationPrincipal(expression = "account") Account account){
+    @PutMapping("/{comment_id}/club/{club_id}")
+    public CommentDTO updateComment(@PathVariable("club_id") Club club, @Valid CommentDTO commentDTO, @PathVariable("comment_id") Comment comment, @AuthenticationPrincipal(expression = "account") Account account) {
         return CommentDTO.from(commentService.editAllComment(comment, commentDTO));
     }
 
     @PreAuthorize("@access.hasAccessToEditComment(#comment, #account) && @access.hasAccessToWriteComment(#account, #club)")
-    @PostMapping("/club/{club_id}/{comment_id}/delete")
-    public Boolean deleteComment(@PathVariable("club_id") Club club, @PathVariable("comment_id") Comment comment, @AuthenticationPrincipal(expression = "account") Account account){
+    @DeleteMapping ("/{comment_id}/club/{club_id}")
+    public Boolean deleteComment(@PathVariable("club_id") Club club, @PathVariable("comment_id") Comment comment, @AuthenticationPrincipal(expression = "account") Account account) {
         commentService.deleteComment(comment);
         return true;
     }

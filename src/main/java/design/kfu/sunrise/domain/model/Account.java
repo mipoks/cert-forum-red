@@ -15,36 +15,26 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "account")
+@Table(schema = "keycloak", name = "user_entity")
 public class Account extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String login;
-    private String hashPassword;
+    private String id;
 
     @Embedded
     private AccountInfo accountInfo;
 
-    //ToDo дописать
+    private String email;
+
+    private String firstName;
+
+    private String lastName;
+
     @ManyToOne
     private Company partnerInfo;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     @ManyToMany(mappedBy = "accounts", cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Set<Club> clubs = new HashSet<>();
-
-    public Account addClub(Club club) {
-        club.addAccount(this);
-        return this;
-    }
-
-    public Account removeClub(Club club) {
-        club.removeAccount(this);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

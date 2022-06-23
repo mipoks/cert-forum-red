@@ -29,7 +29,7 @@ public class AuthorityServiceImpl implements AuthorityService {
                 .dAccountId(account.getId())
                 .clubId(club.getId())
                 .build());
-        return optional.orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND,"Сущность прав не найдена"));
+        return optional.orElseThrow(Exc.sup(ErrorType.ENTITY_NOT_FOUND, "Сущность прав не найдена"));
     }
 
 

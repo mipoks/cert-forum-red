@@ -9,9 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
-/**
- * @author Daniyar Zakiev
- */
 @Configuration
 @EnableRedisRepositories(basePackageClasses = {ActivationCode.class, Notification.class})
 public class RedisConfig {

@@ -65,24 +65,10 @@ class SunriseApplicationTests {
     }
 
     @Test
-    void createAccount() {
-        Account account = Account.builder()
-                .accountInfo(
-                        AccountInfo.builder()
-                                .phone("+79272422387")
-                                .build()
-                )
-                .hashPassword("testPwd")
-                .login("temp@mail.ru")
-                .build();
-        accountRepository.save(account);
-    }
-
-    @Test
     void createClub() {
         ClubCDTO clubCDTO = ClubCDTO.builder()
                 .categoryId(1L)
-                .authorId(1L)
+                .authorId("wewer-ewrwer-ewrewr-werewr")
                 .name("Сертификат на игрушки")
                 .description("Собираю деньги на сертификат. Казань")
                 .costInfo(
@@ -103,7 +89,7 @@ class SunriseApplicationTests {
         for (int i = 0; i < 40; i++) {
             ClubCDTO clubCDTO = ClubCDTO.builder()
                     .categoryId(1L)
-                    .authorId(1L)
+                    .authorId("wewer-ewrwer-ewrewr-werewr")
                     .name("Сертификат на игрушки" + i)
                     .description("Собираю деньги на сертификат. Казань" + i)
                     .costInfo(
@@ -127,12 +113,12 @@ class SunriseApplicationTests {
         Club club = null;
         for (int i = 0; i < 10; i++) {
             CommentDTO commentDTO = CommentDTO.builder()
-                    .accountId(1L)
+                    .accountId("wewer-ewrwer-ewrewr-werewr")
                     .value("Comment" + i)
                     .clubId(4L)
                     .build();
             club = clubRepository.findById(4L).get();
-            Account account = accountRepository.findById(1L).get();
+            Account account = accountRepository.findById("wewer-ewrwer-ewrewr-werewr").get();
             commentService.addComment(commentDTO, club, account);
         }
         clubService.saveAndFlush(club);

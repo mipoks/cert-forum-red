@@ -12,9 +12,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * @author Daniyar Zakiev
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,8 +36,7 @@ public class AccountPartnerCDTO {
                         (AccountInfo.builder()
                                 .phone(accountCDTO.getPhone())
                                 .build())
-                .hashPassword(accountCDTO.getPassword())
-                .login(accountCDTO.getEmail())
+                .email(accountCDTO.getEmail())
                 .partnerInfo(Company.builder()
                         .address(accountCDTO.companyAddress)
                         .name(accountCDTO.companyName)

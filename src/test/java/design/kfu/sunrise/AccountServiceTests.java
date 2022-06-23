@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
-/**
- * @author Daniyar Zakiev
- */
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountServiceTests {
@@ -29,11 +27,5 @@ public class AccountServiceTests {
 
     @Autowired
     private AccountService accountService;
-
-    @Test
-    void testAddAccount() {
-        AccountCDTO accountCDTO = ModelGenerator.generateAccountCDTO();
-        Account account = accountService.addAccount(accountCDTO);
-        Assert.notNull(account, "Account is null");
-    }
+    
 }

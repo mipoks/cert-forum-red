@@ -34,7 +34,7 @@ public class ModelGenerator {
         ClubCDTO dto = ClubCDTO.builder()
                 .description(generateString())
                 .name(generateString())
-                .authorId(1L)
+                .authorId("\"wewer-ewrwer-ewrewr-werewr\"")
                 .categoryId(6L)
                 .costInfo(
                         CostInfo.builder()
@@ -56,7 +56,7 @@ public class ModelGenerator {
         ClubCDTO dto = ClubCDTO.builder()
                 .description(generateString())
                 .name(generateString())
-                .authorId(1L)
+                .authorId("\"wewer-ewrwer-ewrewr-werewr\"")
                 .categoryId(20L)
                 .costInfo(
                         CostInfo.builder()

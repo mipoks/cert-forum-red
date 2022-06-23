@@ -19,9 +19,7 @@ import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author Daniyar Zakiev
- */
+
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
@@ -36,19 +34,19 @@ public class CategoryController {
 
     @PermitAll
     @GetMapping("/categories/account")
-    public boolean canCreateCategory(@AuthenticationPrincipal(expression = "account") Account account){
-        return account != null ? accountAccessService.hasAccessToCreateCategory(account) : false;
+    public boolean canCreateCategory(@AuthenticationPrincipal(expression = "account") Account account) {
+        return account != null && accountAccessService.hasAccessToCreateCategory(account);
     }
 
     @PermitAll
     @GetMapping("/category/{category_id}")
-    public CategoryDTO getCategory(@PathVariable("category_id") Category category){
+    public CategoryDTO getCategory(@PathVariable("category_id") Category category) {
         return CategoryDTO.from(category);
     }
 
     @PreAuthorize("@access.hasAccessToCreateCategory(#account)")
     @PostMapping("/category")
-    public CategoryDTO addCategory(@Valid @RequestBody CategoryDTO categoryDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public CategoryDTO addCategory(@Valid @RequestBody CategoryDTO categoryDTO, @AuthenticationPrincipal(expression = "account") Account account) {
         Category category = categoryService.addCategory(categoryDTO);
         return CategoryDTO.from(category);
     }
@@ -56,14 +54,14 @@ public class CategoryController {
 
     @PreAuthorize("@access.hasAccessToDeleteCategory(#account, #category)")
     @PostMapping("/category/{category_id}/delete")
-    public Boolean deleteCategory(@PathVariable("category_id") Category category, @AuthenticationPrincipal(expression = "account") Account account){
+    public Boolean deleteCategory(@PathVariable("category_id") Category category, @AuthenticationPrincipal(expression = "account") Account account) {
         categoryService.deleteCategory(category);
         return true;
     }
 
     @PreAuthorize("@access.hasAccessToCreateCategory(#account)")
     @PutMapping("/category/{category_id}")
-    public CategoryDTO updateCategory(@PathVariable("category_id") Category category, @Valid @RequestBody CategoryDTO categoryDTO, @AuthenticationPrincipal(expression = "account") Account account){
+    public CategoryDTO updateCategory(@PathVariable("category_id") Category category, @Valid @RequestBody CategoryDTO categoryDTO, @AuthenticationPrincipal(expression = "account") Account account) {
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
         categoryService.update(category);

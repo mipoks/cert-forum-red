@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Lock(LockModeType.OPTIMISTIC)
+
     @Query("SELECT c FROM Comment c WHERE c.id = :id")
     Optional<Comment> findByIdWithLock(Long id);
 }

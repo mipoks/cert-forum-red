@@ -5,10 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
-/**
- * @author Daniyar Zakiev
- */
 public interface ReviewRepository extends CrudRepository<Review, String> {
     Page<Review> findAllByViewedAndOrderByInstant(boolean viewed, Pageable pageable);
+
     Page<Review> findAllByViewedAndObjectNameOrderByInstant(boolean viewed, String objectName, Pageable pageable);
 }

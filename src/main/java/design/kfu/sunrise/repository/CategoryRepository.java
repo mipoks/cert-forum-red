@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Page<Category> findCategoriesByParentId(Long parentId, Pageable pageable);
+
     Page<Category> findCategoriesByParentIsNull(Pageable pageable);
 
-    @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT c FROM Category c WHERE c.id = :id")
     Optional<Category> findByIdWithLock(Long id);
 }

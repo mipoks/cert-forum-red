@@ -18,12 +18,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Collections;
 
-/**
- * @author Daniyar Zakiev
- */
+
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/review")
 public class ReviewController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class ReviewController {
 
 
     @PreAuthorize("hasRole('ADMIN') || hasRole('PARTNER')")
-    @GetMapping("/reviews")
+    @GetMapping()
     public Page<Review> getReviews(@RequestParam(value = "of", defaultValue = "all") String all, @RequestParam(value = "size", defaultValue = "20") int size, @RequestParam(value = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, size);
         return switch (all) {
@@ -53,7 +53,7 @@ public class ReviewController {
 
 
     @PreAuthorize("@access.hasAccessToMakeReview(#account, #review, \"comment\")")
-    @PutMapping("/comment/review/{review_id}")
+    @PutMapping("/comment/{review_id}")
     public boolean makeReviewComment(@Valid @RequestBody Review reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
         review.setAccept(reviewResult.isAccept());
         review.setReason(review.getReason());
@@ -63,7 +63,7 @@ public class ReviewController {
     }
 
     @PreAuthorize("@access.hasAccessToMakeReview(#account, #review, \"club\")")
-    @PutMapping("/club/review/{review_id}")
+    @PutMapping("/{review_id}/club")
     public boolean makeReviewClub(@Valid @RequestBody Review reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
         review.setAccept(reviewResult.isAccept());
         review.setReason(review.getReason());
@@ -73,7 +73,7 @@ public class ReviewController {
     }
 
     @PreAuthorize("@access.hasAccessToMakeReview(#account, #review, \"category\")")
-    @PutMapping("/category/review/{review_id}")
+    @PutMapping("/{review_id}/category")
     public boolean makeReviewCategory(@Valid @RequestBody Review reviewResult, @PathVariable("review_id") Review review, @AuthenticationPrincipal(expression = "account") Account account) {
         review.setAccept(reviewResult.isAccept());
         review.setReason(review.getReason());

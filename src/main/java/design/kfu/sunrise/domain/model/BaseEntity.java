@@ -8,9 +8,6 @@ import javax.persistence.PreUpdate;
 import java.io.Serializable;
 import java.time.Instant;
 
-/**
- * @author Daniyar Zakiev
- */
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 

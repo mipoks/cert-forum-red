@@ -3,9 +3,13 @@ package design.kfu.sunrise.service.access;
 import design.kfu.sunrise.domain.model.*;
 import design.kfu.sunrise.domain.model.util.Notification;
 import design.kfu.sunrise.domain.model.util.Review;
+import design.kfu.sunrise.exception.ErrorType;
+import design.kfu.sunrise.exception.Exc;
 import design.kfu.sunrise.repository.CommentRepository;
+import design.kfu.sunrise.security.TokenUser;
 import design.kfu.sunrise.service.AccountService;
 import design.kfu.sunrise.service.AuthorityService;
+import design.kfu.sunrise.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,39 +63,44 @@ public class AccountAccessService {
 
     @Transactional
     public boolean hasAccessToCreateCategory(Account account) {
+        TokenUser tokenUser=SecurityUtils.getUser().orElseThrow(Exc.sup(ErrorType.UNEXPECTED_ERROR));
+        log.info("account {}", SecurityUtils.getUser());
         log.info("Account with id {} trying to create category", account.getId());
-        return account.getRole().equals(Account.Role.PARTNER) || account.getRole().equals(Account.Role.ADMIN);
+        return tokenUser.getRoles().contains(Account.Role.PARTNER.name())
+                || tokenUser.getRoles().contains(Account.Role.ADMIN.name());
     }
 
 
     @Transactional
-    public boolean hasAccessToCreateClub(Account account) {
-        //ToDo реализовать
-        return true;
+    public boolean hasAccessToCreateClub() {
+        log.info("invoked");
+        if(SecurityUtils.getUser().isPresent()){
+           return SecurityUtils.getUser().get().getRoles().contains("ROLE_ADMIN");
+        }
+        return false;
     }
 
     @Transactional
     public boolean hasAccessToEditComment(Comment comment, Account account) {
-        if (comment.getAccount() == account) {
-            return true;
-        } else {
-            return false;
-        }
+        return comment.getAccount() == account;
     }
 
     @Transactional
     public boolean hasAccessToEnterClub(Account account, Club club) {
+        log.info("invoked");
         //ToDo реализовать
         return true;
     }
 
     public boolean hasAccessToDeleteCategory(Account account, Category category) {
-        return account.getRole().equals(Account.Role.ADMIN);
+        TokenUser tokenUser=SecurityUtils.getUser().orElseThrow(Exc.sup(ErrorType.UNEXPECTED_ERROR));
+        return tokenUser.getRoles().contains(Account.Role.ADMIN);
     }
 
     public boolean hasAccessToEditClub(Account account, Club club) {
-        return account.getRole().equals(Account.Role.PARTNER)
-                || account.getRole().equals(Account.Role.ADMIN)
+        TokenUser tokenUser=SecurityUtils.getUser().orElseThrow(Exc.sup(ErrorType.UNEXPECTED_ERROR));
+        return tokenUser.getRoles().contains(Account.Role.PARTNER.name())
+                || tokenUser.getRoles().contains(Account.Role.ADMIN.name())
                 || club.getAuthor().equals(account);
     }
 
@@ -100,6 +109,8 @@ public class AccountAccessService {
     }
 
     public boolean hasAccessToMakeReview(Account account, Review review, String object) {
-        return account.getRole().equals(Account.Role.PARTNER) || account.getRole().equals(Account.Role.ADMIN);
+        TokenUser tokenUser=SecurityUtils.getUser().orElseThrow(Exc.sup(ErrorType.UNEXPECTED_ERROR));
+        return tokenUser.getRoles().contains(Account.Role.PARTNER.name())
+                || tokenUser.getRoles().contains(Account.Role.ADMIN.name());
     }
 }

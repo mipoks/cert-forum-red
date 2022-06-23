@@ -27,22 +27,29 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.time.Instant;
 
-/**
- * @author Daniyar Zakiev
- */
 @Service
 @Slf4j
 public class DomainEventListener {
 
+    public static final String ACCOUNT_TO_CLUB_ENTER = "В клуб вошел новый участник";
+    public static final String COMMENT_ADD_TO_CLUB = "Участник оставил новый комментарий";
+    public static final String COMMENT_DECLINED = "Комментарий не прошел проверку";
+    public static final String CLUB_PUBLISHED = "Клуб был опубликован";
+    public static final String CLUB_DECLINED = "Клуб не прошел проверку";
     @Autowired
     private EmailService emailService;
-
     @Autowired
     private ActivationCodeService activationCodeService;
-
     @Autowired
     private EmailContextGenerator emailContextGenerator;
+    @Autowired
+    private SearchService searchService;
+    @Autowired
+    private ReviewService reviewService;
+    @Autowired
+    private NotificationService notificationService;
 
+    @Deprecated
     @EventListener
     public void handleAccountEventCreate(AccountEvent event) {
         if (event.getEvent().equals(AccountEvent.Event.CREATE.getName())) {
@@ -59,12 +66,6 @@ public class DomainEventListener {
             }
         }
     }
-
-    @Autowired
-    private SearchService searchService;
-
-    @Autowired
-    private ReviewService reviewService;
 
     @EventListener
     public void handleCategoryEventSaveUpdate(CategoryEvent event) {
@@ -83,13 +84,13 @@ public class DomainEventListener {
         }
     }
 
-    @EventListener
+    /*@EventListener
     public void handleClubEventSaveUpdate(ClubEvent event) {
         if (event.getEvent().equals(ClubEvent.Event.SAVE.getName()) || event.getEvent().equals(CategoryEvent.Event.UPDATE.getName())) {
             Club club = (Club) event.getObject();
             reviewService.addClubForReview(club);
         }
-    }
+    }*/
 
     @EventListener
     public void handleClubEventDeactivate(ClubEvent event) {
@@ -98,11 +99,6 @@ public class DomainEventListener {
             searchService.deleteClub(ClubVDTO.from(club));
         }
     }
-
-    @Autowired
-    private NotificationService notificationService;
-
-    public static final String ACCOUNT_TO_CLUB_ENTER = "В клуб вошел новый участник";
 
     @EventListener
     public void handleClubEventAccountEnter(ClubEvent event) {
@@ -128,14 +124,10 @@ public class DomainEventListener {
         }
     }
 
-
-    public static final String COMMENT_ADD_TO_CLUB = "Участник оставил новый комментарий";
-
     @EventListener
     public void handleCommentEventSave(CommentEvent event) {
         if (event.getEvent().equals(CommentEvent.Event.SAVE.getName())) {
             Comment comment = (Comment) event.getObject();
-
             reviewService.addCommentForReview(comment);
         }
     }
@@ -156,8 +148,6 @@ public class DomainEventListener {
         }
     }
 
-    public static final String COMMENT_DECLINED = "Комментарий не прошел проверку";
-
     @EventListener
     public void handleCommentEventDecline(CommentEvent event) {
         if (event.getEvent().equals(CommentEvent.Event.DECLINE.getName())) {
@@ -173,8 +163,6 @@ public class DomainEventListener {
             notificationService.notifyAccount(notification, comment.getAccount());
         }
     }
-
-    public static final String CLUB_PUBLISHED = "Клуб был опубликован";
 
     @EventListener
     public void handleClubEventPublish(ClubEvent event) {
@@ -193,9 +181,6 @@ public class DomainEventListener {
             searchService.saveClub(ClubVDTO.from(club));
         }
     }
-
-
-    public static final String CLUB_DECLINED = "Клуб не прошел проверку";
 
     @EventListener
     public void handleClubEventDecline(ClubEvent event) {

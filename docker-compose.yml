@@ -16,6 +16,15 @@ services:
     networks:
       - app-network
 
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - '8001:8001'
+    volumes:
+      - ./Users/ajeetraina/data/redisinsight:/db
+    networks:
+      - app-network
+
   dev-redis:
     container_name: redis-service
     image: redis:7.0-rc-alpine
@@ -38,6 +47,30 @@ services:
       - xpack.security.enabled=false
     networks:
       - app-network
+
+  cert-zookeeper:
+    container_name: cert-zookeeper
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+
+  cert-kafka:
+    container_name: cert-kafka
+    image: bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LOG4J_LOGGER_KAFKA=DEBUG,kafkaAppender
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=cert-zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - cert-zookeeper
 
   dev-kibana:
     container_name: kibana-service

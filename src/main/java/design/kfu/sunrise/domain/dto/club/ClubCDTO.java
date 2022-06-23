@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +18,7 @@ import javax.validation.constraints.Size;
 public class ClubCDTO {
 
     private Long id;
-    private Long authorId;
+    private String authorId;
     private Long categoryId;
     private ClubInfo clubInfo;
 

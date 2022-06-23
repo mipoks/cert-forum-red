@@ -33,6 +33,8 @@ public class ClubServiceImpl implements ClubService {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Override
     public Club addClub(ClubCDTO clubDTO) {
@@ -61,15 +63,12 @@ public class ClubServiceImpl implements ClubService {
         return club.getComments();
     }
 
-    @Autowired
-    private AccountRepository accountRepository;
-
     @Override
     @Transactional
     public Set<Account> addAccountToClub(Club club, Account detachedAccount) {
 
         Account account = accountRepository.findById(detachedAccount.getId()).get();
-        account.addClub(club);
+        club.getAccounts().add(account);
         clubRepository.saveAndFlush(club);
 
         publisher.publishEvent(new ClubEvent(Club.class.getName(), ClubEvent.Event.ACCOUNT_ENTER.getName(), club));
